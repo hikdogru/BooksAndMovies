@@ -10,7 +10,6 @@ namespace BooksAndMovies.WebUI.Models
     public class JsonModel
     {
         public int Page { get; set; }
-        public List<MovieModel> Results { get; set; }
         public int TotalPages { get; set; }
         public int TotalResults { get; set; }
     }

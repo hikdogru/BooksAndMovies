@@ -1,0 +1,15 @@
+﻿@model List<TVShowModel>
+@{
+}
+
+@foreach (var tvShow in Model)
+{
+    if (tvShow.PosterPath != null)
+    {
+        <h3>@tvShow.Name </h3>
+        <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="TV Show Image" />
+
+    }
+}
+
+

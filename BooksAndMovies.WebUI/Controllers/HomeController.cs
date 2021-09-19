@@ -38,7 +38,7 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() }
             };
-            var content = JsonConvert.DeserializeObject<JsonModel>(response.Content, settings);
+            var content = JsonConvert.DeserializeObject<MovieJsonModel>(response.Content, settings);
             return content.Results;
         }
 
