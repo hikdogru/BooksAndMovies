@@ -1,0 +1,22 @@
+﻿@model List<MovieModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div>
+    @foreach (var item in Model)
+    {
+        if (item.PosterPath != null)
+        {
+
+            <h3>@item.Title</h3>
+            <img src="https://image.tmdb.org/t/p/w500/@item.PosterPath" alt="Movie Image" />
+        }
+    }
+</div>
