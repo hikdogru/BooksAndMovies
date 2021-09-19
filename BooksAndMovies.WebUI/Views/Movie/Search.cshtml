@@ -1,0 +1,13 @@
+﻿@model List<MovieModel>
+
+
+@foreach (var movie in Model)
+{
+    if (movie.PosterPath != null)
+    {
+        <h3>@movie.Title </h3>
+        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+
+    }
+}
+

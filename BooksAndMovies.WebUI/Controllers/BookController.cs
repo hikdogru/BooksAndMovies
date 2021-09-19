@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.WebUI.Controllers
 {
-    public class MovieController : Controller
+    public class BookController : Controller
     {
         public IActionResult Index()
         {
@@ -18,21 +18,21 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchMovie(string query)
+        public async Task<IActionResult> SearchBook(string query)
         {
             if (!string.IsNullOrEmpty(query))
             {
-                var client = new RestClient("https://api.themoviedb.org/3/search/movie?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US&page=1" + "&query=" + query);
+                var client = new RestClient("https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=5" + "&q=" + query);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = await client.ExecuteAsync(request);
                 var settings = new JsonSerializerSettings
                 {
-                    ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() }
+                    ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() }
                 };
-                var content = JsonConvert.DeserializeObject<MovieJsonModel>(response.Content, settings);
-                var movies = content.Results;
-                return View("Search", movies);
+                var content = JsonConvert.DeserializeObject<BookJsonModel>(response.Content, settings);
+                var books = content.Items ;
+                return View("Search", books);
             }
 
             return null;
