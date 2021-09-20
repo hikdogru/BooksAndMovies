@@ -1,4 +1,6 @@
 ﻿using BooksAndMovies.WebUI.Models;
+using BooksAndMovies.WebUI.Models.Client;
+using BooksAndMovies.WebUI.Models.TMDB;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -12,9 +14,11 @@ namespace BooksAndMovies.WebUI.Controllers
 {
     public class TVShowController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            string clientUrl = "https://api.themoviedb.org/3/tv/popular?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
+            var tvShows = await new TMDBModel().GetTVShowsFromTMDB<TVShowJsonModel>(url: clientUrl);
+            return View(tvShows);
         }
 
         [HttpPost]
@@ -22,17 +26,9 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                var client = new RestClient("https://api.themoviedb.org/3/search/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US&page=1" + "&query=" + query);
-                client.Timeout = -1;
-                var request = new RestRequest(Method.GET);
-                IRestResponse response = await client.ExecuteAsync(request);
-                var settings = new JsonSerializerSettings
-                {
-                    ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() }
-                };
-                var content = JsonConvert.DeserializeObject<TVShowJsonModel>(response.Content, settings);
-                var tvShows = content.Results;
-                return View("Search" , tvShows);
+                string clientUrl = "https://api.themoviedb.org/3/search/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US" + "&query=" + query;
+                var tvShows = await new TMDBModel().GetTVShowsFromTMDB<TVShowJsonModel>(url: clientUrl);
+                return View("Search", tvShows);
             }
 
             return null;
