@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksAndMovies.WebUI", "BooksAndMovies.WebUI\BooksAndMovies.WebUI.csproj", "{3937F941-385D-4446-B96B-5742FF8B227C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksAndMovies.WebUI", "BooksAndMovies.WebUI\BooksAndMovies.WebUI.csproj", "{3937F941-385D-4446-B96B-5742FF8B227C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksAndMovies.Data", "BooksAndMovies.Data\BooksAndMovies.Data.csproj", "{CE4037F6-90CD-45E0-A353-629071585671}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksAndMovies.Business", "BooksAndMovies.Business\BooksAndMovies.Business.csproj", "{4ECBA278-87B9-42E4-9862-4AE2DFC044C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksAndMovies.Entity", "BooksAndMovies.Entity\BooksAndMovies.Entity.csproj", "{DDBD4B37-C173-4ECF-B68F-87D486A9C768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksAndMovies.Core", "BooksAndMovies.Core\BooksAndMovies.Core.csproj", "{909969AB-B1D0-4637-8334-95797D1D5450}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{3937F941-385D-4446-B96B-5742FF8B227C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3937F941-385D-4446-B96B-5742FF8B227C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3937F941-385D-4446-B96B-5742FF8B227C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE4037F6-90CD-45E0-A353-629071585671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE4037F6-90CD-45E0-A353-629071585671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE4037F6-90CD-45E0-A353-629071585671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE4037F6-90CD-45E0-A353-629071585671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ECBA278-87B9-42E4-9862-4AE2DFC044C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ECBA278-87B9-42E4-9862-4AE2DFC044C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ECBA278-87B9-42E4-9862-4AE2DFC044C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ECBA278-87B9-42E4-9862-4AE2DFC044C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDBD4B37-C173-4ECF-B68F-87D486A9C768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDBD4B37-C173-4ECF-B68F-87D486A9C768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDBD4B37-C173-4ECF-B68F-87D486A9C768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDBD4B37-C173-4ECF-B68F-87D486A9C768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909969AB-B1D0-4637-8334-95797D1D5450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909969AB-B1D0-4637-8334-95797D1D5450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909969AB-B1D0-4637-8334-95797D1D5450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909969AB-B1D0-4637-8334-95797D1D5450}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,13 +13,13 @@ namespace BooksAndMovies.WebUI.Models.TMDB
     {
         public MovieJsonModel MovieJsonModel { get; set; }
         public TVShowJsonModel TVShowJsonModel { get; set; }
-        public async Task<List<TVShowModel>> GetTVShowsFromTMDB<T>(string url) where T : TVShowJsonModel
+        public async Task<List<TVShowModel>> GetTVShowsFromTMDB(string url)
         {
             await GetContentFromTMDB(url: url, modelNo: 1);
             return TVShowJsonModel.Results;
         }
 
-        public async Task<List<MovieModel>> GetMoviesFromTMDB<T>(string url) where T : MovieJsonModel
+        public async Task<List<MovieModel>> GetMoviesFromTMDB(string url)
         {
             await GetContentFromTMDB(url: url, modelNo: 2);
             return MovieJsonModel.Results;

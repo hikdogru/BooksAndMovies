@@ -17,7 +17,7 @@ namespace BooksAndMovies.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             string clientUrl = "https://api.themoviedb.org/3/tv/popular?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
-            var tvShows = await new TMDBModel().GetTVShowsFromTMDB<TVShowJsonModel>(url: clientUrl);
+            var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
             return View(tvShows);
         }
 
@@ -27,7 +27,7 @@ namespace BooksAndMovies.WebUI.Controllers
             if (!string.IsNullOrEmpty(query))
             {
                 string clientUrl = "https://api.themoviedb.org/3/search/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US" + "&query=" + query;
-                var tvShows = await new TMDBModel().GetTVShowsFromTMDB<TVShowJsonModel>(url: clientUrl);
+                var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
                 return View("Search", tvShows);
             }
 
