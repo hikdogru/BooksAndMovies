@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
-
+using BooksAndMovies.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BooksAndMovies.WebUI
 {
@@ -26,15 +27,9 @@ namespace BooksAndMovies.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddControllers().AddNewtonsoftJson(x =>
-            //{
-            //    x.SerializerSettings.ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() };
-            //    // Json formatter
-            //    x.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-            //});
+            // DbContext
+            services.AddDbContext<BookAndMovieContext>(option => option.UseSqlServer(Configuration.GetConnectionString("BookAndMovieConnectionString")));
 
-            
-     
             services.AddControllersWithViews();
         }
 

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BooksAndMovies.Entity
+namespace BooksAndMovies.Core.Entities
 {
-    public class BookImage
+    public interface IEntity
     {
         public int Id { get; set; }
-        public string Thumbnail { get; set; }
-        public string SmallThumbnail { get; set; }
     }
 }

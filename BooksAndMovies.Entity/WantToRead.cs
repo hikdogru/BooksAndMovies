@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Entity
 {
-    public class WishList
+    public class WantToRead
     {
+        // Book Id
         public int Id { get; set; }
     }
 }
