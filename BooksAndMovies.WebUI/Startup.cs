@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using BooksAndMovies.Data;
 using Microsoft.EntityFrameworkCore;
+using BooksAndMovies.Data.Concrete.Ef;
+using BooksAndMovies.Business.Abstract;
+using BooksAndMovies.Business.Concrete;
+using BooksAndMovies.Data.Abstract;
 
 namespace BooksAndMovies.WebUI
 {
@@ -29,6 +33,9 @@ namespace BooksAndMovies.WebUI
 
             // DbContext
             services.AddDbContext<BookAndMovieContext>(option => option.UseSqlServer(Configuration.GetConnectionString("BookAndMovieConnectionString")));
+
+            services.AddScoped<IWantToReadService, WantToReadManager>();
+            services.AddScoped<IWantToReadRepository, EfWantToReadRepository>();
 
             services.AddControllersWithViews();
         }

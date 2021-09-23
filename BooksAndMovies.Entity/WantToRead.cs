@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BooksAndMovies.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Entity
 {
-    public class WantToRead
+    public class WantToRead:Book, IEntity
     {
-        // Book Id
-        public int Id { get; set; }
+        
     }
 }

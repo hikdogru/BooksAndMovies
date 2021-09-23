@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
-    <Folder Include="Concrete\" />
+    <ProjectReference Include="..\BooksAndMovies.Data\BooksAndMovies.Data.csproj" />
+    <ProjectReference Include="..\BooksAndMovies.Entity\BooksAndMovies.Entity.csproj" />
   </ItemGroup>
 
 </Project>
