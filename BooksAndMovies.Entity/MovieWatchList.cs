@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Entity
 {
-    public class TVShow : Media , IEntity
+    public class MovieWatchList : Movie , IEntity
     {
-        public string Name { get; set; }
-        public string OriginalName { get; set; }
-        public string FirstAirDate { get; set; }
+        
     }
 }

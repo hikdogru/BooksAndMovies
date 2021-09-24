@@ -30,12 +30,23 @@ namespace BooksAndMovies.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Automapper
+            services.AddAutoMapper(typeof(Startup));
 
             // DbContext
             services.AddDbContext<BookAndMovieContext>(option => option.UseSqlServer(Configuration.GetConnectionString("BookAndMovieConnectionString")));
 
-            services.AddScoped<IWantToReadService, WantToReadManager>();
-            services.AddScoped<IWantToReadRepository, EfWantToReadRepository>();
+            // WantToRead
+            services.AddScoped<IBookService, BookManager>();
+            services.AddScoped<IBookRepository, EfBookRepository>();
+
+            // MovieWatchList
+            services.AddScoped<IMovieService, MovieManager>();
+            services.AddScoped<IMovieRepository, EfMovieRepository>();
+
+            // TVShowWatchList
+            services.AddScoped<ITVShowService, TVShowManager>();
+            services.AddScoped<ITVShowRepository, EfTVShowRepository>();
 
             services.AddControllersWithViews();
         }

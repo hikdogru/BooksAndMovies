@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Business.Abstract
 {
-    public interface IWantToReadService
+    public interface IBookService
     {
         WantToRead GetById(int id);
         List<WantToRead> GetAll();

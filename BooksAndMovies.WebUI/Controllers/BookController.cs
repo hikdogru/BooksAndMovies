@@ -18,12 +18,12 @@ namespace BooksAndMovies.WebUI.Controllers
     public class BookController : Controller
     {
         private readonly BookAndMovieContext _context;
-        private readonly IWantToReadService _wantToReadService;
+        private readonly IBookService _bookService;
 
-        public BookController(BookAndMovieContext context, IWantToReadService wantToReadService)
+        public BookController(BookAndMovieContext context, IBookService bookService)
         {
             _context = context;
-            _wantToReadService = wantToReadService;
+            _bookService = bookService;
         }
 
         public IActionResult Index()
@@ -38,7 +38,7 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 string clientUrl = "https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=5" + "&q=" + query;
                 var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
-                await _wantToReadService.AddAsync(new WantToRead
+                await _bookService.AddAsync(new WantToRead
                 {
                     UniqueId = books[0].Id,
                     Author = books[0].VolumeInfo.Authors[0],

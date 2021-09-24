@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Data.Abstract
 {
-    public interface IWatchListRepository : IEntityRepository<WatchList>
+    public interface IBookRepository : IEntityRepository<WantToRead>
     {
     }
 }

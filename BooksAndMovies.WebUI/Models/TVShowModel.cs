@@ -10,6 +10,6 @@ namespace BooksAndMovies.WebUI.Models
         public string Name { get; set; }
         public string OriginalName { get; set; }
         public string FirstAirDate { get; set; }
-        public List<string> OriginCountry { get; set; }
+        
     }
 }

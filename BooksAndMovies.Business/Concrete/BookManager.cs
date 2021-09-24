@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Business.Concrete
 {
-    public class WantToReadManager : IWantToReadService
+    public class BookManager : IBookService
     {
-        private readonly IWantToReadRepository _wantToReadRepository;
+        private readonly IBookRepository _wantToReadRepository;
 
-        public WantToReadManager(IWantToReadRepository wantToReadRepository)
+        public BookManager(IBookRepository wantToReadRepository)
         {
             _wantToReadRepository = wantToReadRepository;
         }
@@ -27,42 +27,42 @@ namespace BooksAndMovies.Business.Concrete
 
         public void Delete(WantToRead entity)
         {
-            throw new NotImplementedException();
+            _wantToReadRepository.Delete(entity);
         }
 
-        public Task DeleteAsync(WantToRead entity)
+        public async Task DeleteAsync(WantToRead entity)
         {
-            throw new NotImplementedException();
+            await _wantToReadRepository.DeleteAsync(entity);
         }
 
         public List<WantToRead> GetAll()
         {
-            throw new NotImplementedException();
+           return _wantToReadRepository.GetAll();
         }
 
-        public Task<List<WantToRead>> GetAllAsync()
+        public async Task<List<WantToRead>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _wantToReadRepository.GetAllAsync();
         }
 
         public WantToRead GetById(int id)
         {
-            throw new NotImplementedException();
+            return _wantToReadRepository.GetById(x => x.Id == id);
         }
 
-        public Task<WantToRead> GetByIdAsync(int id)
+        public async Task<WantToRead> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _wantToReadRepository.GetByIdAsync(x => x.Id == id);
         }
 
         public void Update(WantToRead entity)
         {
-            throw new NotImplementedException();
+            _wantToReadRepository.Update(entity);
         }
 
-        public Task UpdateAsync(WantToRead entity)
+        public async Task UpdateAsync(WantToRead entity)
         {
-            throw new NotImplementedException();
+            await _wantToReadRepository.UpdateAsync(entity);
         }
     }
 }
