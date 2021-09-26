@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BooksAndMovies.Entity;
+using BooksAndMovies.WebUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace BooksAndMovies.WebUI.Profiles
     {
         public BookProfile()
         {
-            
+            CreateMap<BookModel, WantToRead>().ReverseMap();
         }
     }
 }

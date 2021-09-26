@@ -10,26 +10,28 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Core.Data.Concrete.Ef
 {
-    public class EfEntityRepositoryBase<TEntity, T_context> : IEntityRepository<TEntity>
+    public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : class, IEntity, new()
-        where T_context : DbContext, new()
+        where TContext : DbContext, new()
     {
-        private readonly T_context _context;
+        private readonly TContext _context;
+        private DbSet<TEntity> Table { get; set; }
 
-        public EfEntityRepositoryBase(T_context context)
+        public EfEntityRepositoryBase(TContext context)
         {
             _context = context;
+            Table = _context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
+            Table.Add(entity);
             _context.SaveChanges();
         }
 
         public async Task AddAsync(TEntity entity)
         {
-            await _context.Set<TEntity>().AddAsync(entity);
+            await Table.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -47,22 +49,22 @@ namespace BooksAndMovies.Core.Data.Concrete.Ef
 
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            return filter == null ? _context.Set<TEntity>().ToList() : _context.Set<TEntity>().Where(filter).ToList();
+            return filter == null ? Table.ToList() : Table.Where(filter).ToList();
         }
 
         public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
         {
-            return filter == null ? await _context.Set<TEntity>().ToListAsync() : await _context.Set<TEntity>().Where(filter).ToListAsync();
+            return filter == null ? await Table.ToListAsync() : await Table.Where(filter).ToListAsync();
         }
 
         public TEntity GetById(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<TEntity>().SingleOrDefault(filter);
+            return Table.SingleOrDefault(filter);
         }
 
         public async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> filter)
         {
-            return await _context.Set<TEntity>().SingleOrDefaultAsync(filter);
+            return await Table.SingleOrDefaultAsync(filter);
         }
 
         public void Update(TEntity entity)

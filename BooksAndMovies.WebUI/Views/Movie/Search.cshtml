@@ -1,13 +1,30 @@
-﻿@model List<MovieModel>
+﻿@model IEnumerable<MovieModel>
 
 
 @foreach (var movie in Model)
 {
     if (movie.PosterPath != null)
     {
-        <h3>@movie.Title </h3>
-        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+        <div id="movie">
+            <form asp-action="AddMovieToWishList" method="post">
+                <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+                <input type="hidden" name="title" value="@movie.Title" />
+                <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
+                <input type="hidden" name="overview" asp-for="@movie.Overview" />
+                <input type="hidden" name="posterPath" asp-for="@movie.PosterPath" />
+                <input type="hidden" name="backdropPath" asp-for="@movie.BackdropPath" />
+                <input type="hidden" name="releaseDate" asp-for="@movie.ReleaseDate" />
+                <input type="hidden" name="voteAverage" asp-for="@movie.VoteAverage" />
+                <input type="hidden" name="voteCount" asp-for="@movie.VoteCount" />
+                <input type="hidden" name="popularity" asp-for="@movie.Popularity" />
 
+                <h3>@movie.Title </h3>
+                <p>@movie.OriginalTitle</p>
+                <p>@movie.VoteAverage</p>
+                <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                <input type="submit" value="Add" />
+            </form>
+        </div>
     }
 }
 

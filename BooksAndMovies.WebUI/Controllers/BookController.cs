@@ -1,4 +1,5 @@
-﻿using BooksAndMovies.Business.Abstract;
+﻿using AutoMapper;
+using BooksAndMovies.Business.Abstract;
 using BooksAndMovies.Data;
 using BooksAndMovies.Data.Concrete.Ef;
 using BooksAndMovies.Entity;
@@ -19,11 +20,13 @@ namespace BooksAndMovies.WebUI.Controllers
     {
         private readonly BookAndMovieContext _context;
         private readonly IBookService _bookService;
+        private readonly IMapper _mapper;
 
-        public BookController(BookAndMovieContext context, IBookService bookService)
+        public BookController(BookAndMovieContext context, IBookService bookService, IMapper mapper)
         {
             _context = context;
             _bookService = bookService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -31,26 +34,19 @@ namespace BooksAndMovies.WebUI.Controllers
             return View();
         }
 
+        public async Task<IActionResult> GetWishList()
+        {
+            var bookWishList = await _bookService.GetAllAsync();
+            return View("WishList", bookWishList);
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchBook(string query)
         {
             if (!string.IsNullOrEmpty(query))
             {
-                string clientUrl = "https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=5" + "&q=" + query;
+                string clientUrl = "https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&filter=full&maxResults=10" + "&q=intitle:" + query;
                 var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
-                await _bookService.AddAsync(new WantToRead
-                {
-                    UniqueId = books[0].Id,
-                    Author = books[0].VolumeInfo.Authors[0],
-                    AverageRating = books[0].VolumeInfo.AverageRating,
-                    Category = books[0].VolumeInfo.Categories[0],
-                    Description = books[0].VolumeInfo.Description,
-                    Publisher = books[0].VolumeInfo.Publisher,
-                    Title = books[0].VolumeInfo.Title,
-                    PageCount = books[0].VolumeInfo.PageCount,
-                    SmallThumbnail = books[0].VolumeInfo.ImageLinks.SmallThumbnail,
-                    Thumbnail = books[0].VolumeInfo.ImageLinks.Thumbnail
-                });
                 return View("Search", books);
             }
 
@@ -63,12 +59,26 @@ namespace BooksAndMovies.WebUI.Controllers
         /// <param name="book">Book</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task AddBookToWishList(Book book)
+        public async Task<IActionResult> AddBookToWishList(BookModel book)
         {
             if (ModelState.IsValid)
             {
+                var bookModel = _mapper.Map<WantToRead>(book);
+                bookModel.Thumbnail = book.ImageLinks.Thumbnail;
+                bookModel.SmallThumbnail = book.ImageLinks.SmallThumbnail;
+                bookModel.Author = book.Authors[0];
+                bookModel.Category = book.Categories[0];
+                await _bookService.AddAsync(bookModel);
 
             }
+            return View("GetWishList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveBookFromWishList(int id)
+        {
+            await _bookService.DeleteAsync(new WantToRead { Id = id });
+            return RedirectToAction("GetWishList");
         }
     }
 }

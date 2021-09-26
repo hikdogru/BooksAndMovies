@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Entity
 {
-    public class WantToRead:Book, IEntity
+    public class WantToRead:Book
     {
         
     }

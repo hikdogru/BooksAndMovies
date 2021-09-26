@@ -9,6 +9,5 @@ namespace BooksAndMovies.WebUI.Models
     {
         public string Id { get; set; }
         public BookModel VolumeInfo { get; set; }
-
     }
 }

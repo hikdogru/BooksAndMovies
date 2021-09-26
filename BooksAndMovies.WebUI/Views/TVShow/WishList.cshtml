@@ -1,0 +1,27 @@
+﻿@model IEnumerable<TVShowWatchList>
+
+
+
+
+@foreach (var tvShow in Model)
+{
+    if (tvShow.PosterPath != null)
+    {
+        <div id="tvShow">
+            <form asp-action="RemoveTVShowFromWishList" method="post">
+                <img src="@tvShow.PosterPath" alt="tvShow Image" />
+                <input type="hidden" name="id" asp-for="@tvShow.Id" />
+                
+
+                <h3>@tvShow.Name </h3>
+                <p>@tvShow.OriginalName</p>
+                <p>@tvShow.VoteAverage</p>
+                <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
+            </form>
+        </div>
+
+
+
+
+    }
+}

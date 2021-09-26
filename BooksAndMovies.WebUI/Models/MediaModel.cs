@@ -14,7 +14,6 @@ namespace BooksAndMovies.WebUI.Models
         public string PosterPath { get; set; }
         public string OriginalLanguage { get; set; }
         public double Popularity { get; set; }
-        public int GenreId { get; set; }
         public string BackdropPath { get; set; }
         public int VoteCount { get; set; }
         public double VoteAverage { get; set; }

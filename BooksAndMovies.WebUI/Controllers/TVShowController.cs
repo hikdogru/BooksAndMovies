@@ -27,9 +27,13 @@ namespace BooksAndMovies.WebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            string clientUrl = "https://api.themoviedb.org/3/tv/popular?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
-            var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
-            return View(tvShows);
+            return View();
+        }
+
+        public async Task<IActionResult> GetWishList()
+        {
+            var tvShowWishList = await _tVShowService.GetAllAsync();
+            return View("WishList", tvShowWishList);
         }
 
         [HttpPost]
@@ -39,14 +43,30 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 string clientUrl = "https://api.themoviedb.org/3/search/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US" + "&query=" + query;
                 var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
-                var tvShow = _mapper.Map<TVShowWatchList>(tvShows[0]);
-                _tVShowService.Add(tvShow);
-                return View("Search", tvShows);
+                return View("TVShowSearch", tvShows);
             }
 
             return null;
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddTVShowToWishList(TVShowModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var tvShow = _mapper.Map<TVShowWatchList>(model);
+                await _tVShowService.AddAsync(tvShow);
+            }
+            return RedirectToAction("GetWishList");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTVShowFromWishList(int id)
+        {
+            await _tVShowService.DeleteAsync(new TVShowWatchList { Id = id });
+            return RedirectToAction("GetWishList");
+        }
     }
 }

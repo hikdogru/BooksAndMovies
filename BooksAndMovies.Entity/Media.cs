@@ -21,7 +21,6 @@ namespace BooksAndMovies.Entity
         }
         public string OriginalLanguage { get; set; }
         public double Popularity { get; set; }
-        public int GenreId { get; set; }
         public string BackdropPath
         {
             get => _imageUrl;

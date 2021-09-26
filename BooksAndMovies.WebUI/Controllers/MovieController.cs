@@ -31,6 +31,12 @@ namespace BooksAndMovies.WebUI.Controllers
             return View(movies);
         }
 
+        public async Task<IActionResult> GetWishList()
+        {
+            var movieWishList = await _movieService.GetAllAsync();
+            return View("WishList", movieWishList);
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchMovie(string query)
         {
@@ -38,13 +44,31 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 string clientUrl = "https://api.themoviedb.org/3/search/movie?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US" + "&query=" + query;
                 var movies = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
-                var movie = _mapper.Map<MovieWatchList>(movies[0]);
-                _movieService.Add(movie);
                 return View("Search", movies);
             }
 
             return null;
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> AddMovieToWishList(MovieModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var movie = _mapper.Map<MovieWatchList>(model);
+                await _movieService.AddAsync(movie);
+                
+
+            }
+
+            return RedirectToAction("GetWishList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveMovieFromWishList(int id)
+        {
+            await _movieService.DeleteAsync(new MovieWatchList { Id = id });
+            return RedirectToAction("GetWishList");
         }
     }
 }
