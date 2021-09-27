@@ -4,6 +4,7 @@ using BooksAndMovies.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,52 +18,52 @@ namespace BooksAndMovies.Business.Concrete
         {
             _tVShowWatchListRepository = tVShowWatchListRepository;
         }
-        public void Add(TVShowWatchList entity)
+        public void Add(TVShow entity)
         {
             _tVShowWatchListRepository.Add(entity);
         }
 
-        public async Task AddAsync(TVShowWatchList entity)
+        public async Task AddAsync(TVShow entity)
         {
             await _tVShowWatchListRepository.AddAsync(entity);
         }
 
-        public void Delete(TVShowWatchList entity)
+        public void Delete(TVShow entity)
         {
             _tVShowWatchListRepository.Delete(entity);
         }
 
-        public async Task DeleteAsync(TVShowWatchList entity)
+        public async Task DeleteAsync(TVShow entity)
         {
             await _tVShowWatchListRepository.DeleteAsync(entity);
         }
 
-        public List<TVShowWatchList> GetAll()
+        public List<TVShow> GetAll(Expression<Func<TVShow, bool>> filter = null)
         {
-            return _tVShowWatchListRepository.GetAll();
+            return filter == null ? _tVShowWatchListRepository.GetAll() : _tVShowWatchListRepository.GetAll(filter);
         }
 
-        public async Task<List<TVShowWatchList>> GetAllAsync()
+        public async Task<List<TVShow>> GetAllAsync(Expression<Func<TVShow, bool>> filter = null)
         {
-            return await _tVShowWatchListRepository.GetAllAsync();
+            return filter == null ? await _tVShowWatchListRepository.GetAllAsync() : await _tVShowWatchListRepository.GetAllAsync(filter);
         }
 
-        public TVShowWatchList GetById(int id)
+        public TVShow GetById(int id)
         {
             return _tVShowWatchListRepository.GetById(x => x.Id == id);
         }
 
-        public async Task<TVShowWatchList> GetByIdAsync(int id)
+        public async Task<TVShow> GetByIdAsync(int id)
         {
             return await _tVShowWatchListRepository.GetByIdAsync(x => x.Id == id);
         }
 
-        public void Update(TVShowWatchList entity)
+        public void Update(TVShow entity)
         {
             _tVShowWatchListRepository.Update(entity);
         }
 
-        public async Task UpdateAsync(TVShowWatchList entity)
+        public async Task UpdateAsync(TVShow entity)
         {
             await _tVShowWatchListRepository.UpdateAsync(entity);
         }

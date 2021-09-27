@@ -29,5 +29,9 @@ namespace BooksAndMovies.Entity
         public int VoteCount { get; set; }
         public double VoteAverage { get; set; }
         public string Overview { get; set; }
+        /// <summary>
+        /// 1) WatchList 2) WatchedList
+        /// </summary>
+        public int DatabaseSavingType { get; set; }
     }
 }

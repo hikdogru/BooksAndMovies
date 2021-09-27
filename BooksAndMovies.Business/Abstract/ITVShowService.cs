@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,16 +10,16 @@ namespace BooksAndMovies.Business.Abstract
 {
     public interface ITVShowService
     {
-        TVShowWatchList GetById(int id);
-        List<TVShowWatchList> GetAll();
-        void Add(TVShowWatchList entity);
-        void Delete(TVShowWatchList entity);
-        void Update(TVShowWatchList entity);
+        TVShow GetById(int id);
+        List<TVShow> GetAll(Expression<Func<TVShow, bool>> filter = null);
+        void Add(TVShow entity);
+        void Delete(TVShow entity);
+        void Update(TVShow entity);
 
-        Task<TVShowWatchList> GetByIdAsync(int id);
-        Task<List<TVShowWatchList>> GetAllAsync();
-        Task AddAsync(TVShowWatchList entity);
-        Task DeleteAsync(TVShowWatchList entity);
-        Task UpdateAsync(TVShowWatchList entity);
+        Task<TVShow> GetByIdAsync(int id);
+        Task<List<TVShow>> GetAllAsync(Expression<Func<TVShow, bool>> filter = null);
+        Task AddAsync(TVShow entity);
+        Task DeleteAsync(TVShow entity);
+        Task UpdateAsync(TVShow entity);
     }
 }

@@ -6,7 +6,7 @@
     if (movie.PosterPath != null)
     {
         <div id="movie">
-            <form asp-action="AddMovieToWishList" method="post">
+            <form method="post">
                 <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
                 <input type="hidden" name="title" value="@movie.Title" />
                 <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
@@ -21,7 +21,8 @@
                 <h3>@movie.Title </h3>
                 <p>@movie.OriginalTitle</p>
                 <p>@movie.VoteAverage</p>
-                <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                <button asp-action="AddMovieToWishList" type="submit" class="btn btn-primary">Add to Wishlist</button>
+                <button asp-action="AddMovieToWatchedList" type="submit" class="btn btn-secondary">Add to WatchedList</button>
                 <input type="submit" value="Add" />
             </form>
         </div>

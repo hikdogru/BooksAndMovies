@@ -6,7 +6,7 @@
     if (tvShow.PosterPath != null)
     {
         <div id="tvShow">
-            <form asp-action="AddTVShowToWishList" method="post">
+            <form  method="post">
                 <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="tvShow Image" />
                 <input type="hidden" name="name" asp-for="@tvShow.Name" />
                 <input type="hidden" name="originalName" asp-for="@tvShow.OriginalName" />
@@ -21,12 +21,9 @@
                 <h3>@tvShow.Name </h3>
                 <p>@tvShow.OriginalName</p>
                 <p>@tvShow.VoteAverage</p>
-                <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                <button type="submit" class="btn btn-primary" asp-action="AddTVShowToWishList">Add to Wishlist</button>
+                <button type="submit" class="btn btn-secondary" asp-action="AddTVShowToWatchedList">Add to Watchedlist</button>
             </form>
         </div>
-
-
-
-
     }
 }

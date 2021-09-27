@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Data.Concrete.Ef
 {
-    public class EfBookRepository : EfEntityRepositoryBase<WantToRead, BookAndMovieContext>, IBookRepository
+    public class EfBookRepository : EfEntityRepositoryBase<Book, BookAndMovieContext>, IBookRepository
     {
         public EfBookRepository(BookAndMovieContext context) : base(context)
         {

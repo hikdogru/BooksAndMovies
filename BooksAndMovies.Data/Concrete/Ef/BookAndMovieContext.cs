@@ -10,9 +10,9 @@ namespace BooksAndMovies.Data.Concrete.Ef
 {
     public class BookAndMovieContext : DbContext
     {
-        public DbSet<WantToRead> WantToReads { get; set; }
-        public DbSet<MovieWatchList> MovieWatchLists { get; set; }
-        public DbSet<TVShowWatchList> TVShowWatchLists { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<TVShow> TVShows{ get; set; }
 
 
         public BookAndMovieContext(DbContextOptions<BookAndMovieContext> options) : base(options: options)

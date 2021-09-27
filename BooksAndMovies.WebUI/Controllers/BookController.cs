@@ -36,7 +36,7 @@ namespace BooksAndMovies.WebUI.Controllers
 
         public async Task<IActionResult> GetWishList()
         {
-            var bookWishList = await _bookService.GetAllAsync();
+            var bookWishList = await _bookService.GetAllAsync(x => x.DatabaseSavingType == 1);
             return View("WishList", bookWishList);
         }
 
@@ -45,7 +45,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                string clientUrl = "https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&filter=full&maxResults=10" + "&q=intitle:" + query;
+                string clientUrl = "https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w" + "&q=" + query;
                 var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
                 return View("Search", books);
             }
@@ -63,21 +63,22 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var bookModel = _mapper.Map<WantToRead>(book);
+                var bookModel = _mapper.Map<Book>(book);
                 bookModel.Thumbnail = book.ImageLinks.Thumbnail;
                 bookModel.SmallThumbnail = book.ImageLinks.SmallThumbnail;
                 bookModel.Author = book.Authors[0];
                 bookModel.Category = book.Categories[0];
+                bookModel.DatabaseSavingType = 1;
                 await _bookService.AddAsync(bookModel);
 
             }
-            return View("GetWishList");
+            return RedirectToAction("GetWishList");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveBookFromWishList(int id)
         {
-            await _bookService.DeleteAsync(new WantToRead { Id = id });
+            await _bookService.DeleteAsync(new Book { Id = id });
             return RedirectToAction("GetWishList");
         }
     }

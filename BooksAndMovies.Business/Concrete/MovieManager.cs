@@ -4,6 +4,7 @@ using BooksAndMovies.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,52 +18,53 @@ namespace BooksAndMovies.Business.Concrete
         {
             _movieRepository = tVShowWatchListRepository;
         }
-        public void Add(MovieWatchList entity)
+        public void Add(Movie entity)
         {
             _movieRepository.Add(entity);
         }
 
-        public async Task AddAsync(MovieWatchList entity)
+        public async Task AddAsync(Movie entity)
         {
             await _movieRepository.AddAsync(entity);
         }
 
-        public void Delete(MovieWatchList entity)
+        public void Delete(Movie entity)
         {
             _movieRepository.Delete(entity);
         }
 
-        public async Task DeleteAsync(MovieWatchList entity)
+        public async Task DeleteAsync(Movie entity)
         {
             await _movieRepository.DeleteAsync(entity);
         }
 
-        public List<MovieWatchList> GetAll()
+        public List<Movie> GetAll(Expression<Func<Movie, bool>> filter = null)
         {
-            return _movieRepository.GetAll();
+            return filter == null ? _movieRepository.GetAll() : _movieRepository.GetAll(filter);
         }
 
-        public async Task<List<MovieWatchList>> GetAllAsync()
+        
+        public async Task<List<Movie>> GetAllAsync(Expression<Func<Movie, bool>> filter = null)
         {
-            return await _movieRepository.GetAllAsync();
+            return filter == null ? await _movieRepository.GetAllAsync() : await _movieRepository.GetAllAsync(filter);
         }
 
-        public MovieWatchList GetById(int id)
+        public Movie GetById(int id)
         {
             return _movieRepository.GetById(x => x.Id == id);
         }
 
-        public async Task<MovieWatchList> GetByIdAsync(int id)
+        public async Task<Movie> GetByIdAsync(int id)
         {
             return await _movieRepository.GetByIdAsync(x => x.Id == id);
         }
 
-        public void Update(MovieWatchList entity)
+        public void Update(Movie entity)
         {
             _movieRepository.Update(entity);
         }
 
-        public async Task UpdateAsync(MovieWatchList entity)
+        public async Task UpdateAsync(Movie entity)
         {
             await _movieRepository.UpdateAsync(entity);
         }

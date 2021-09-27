@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Entity
 {
-    public class Movie : Media
+    public class Movie : Media, IEntity
     {
         public string ReleaseDate { get; set; }
         public string Title { get; set; }

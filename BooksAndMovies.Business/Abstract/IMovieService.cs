@@ -4,21 +4,22 @@ using BooksAndMovies.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace BooksAndMovies.Business.Abstract
 {
     public interface IMovieService
     {
-        MovieWatchList GetById(int id);
-        List<MovieWatchList> GetAll();
-        void Add(MovieWatchList entity);
-        void Delete(MovieWatchList entity);
-        void Update(MovieWatchList entity);
+        Movie GetById(int id);
+        List<Movie> GetAll(Expression<Func<Movie, bool>> filter = null);
+        void Add(Movie entity);
+        void Delete(Movie entity);
+        void Update(Movie entity);
 
-        Task<MovieWatchList> GetByIdAsync(int id);
-        Task<List<MovieWatchList>> GetAllAsync();
-        Task AddAsync(MovieWatchList entity);
-        Task DeleteAsync(MovieWatchList entity);
-        Task UpdateAsync(MovieWatchList entity);
+        Task<Movie> GetByIdAsync(int id);
+        Task<List<Movie>> GetAllAsync(Expression<Func<Movie, bool>> filter = null);
+        Task AddAsync(Movie entity);
+        Task DeleteAsync(Movie entity);
+        Task UpdateAsync(Movie entity);
     }
 }

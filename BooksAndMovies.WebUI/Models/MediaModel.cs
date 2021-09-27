@@ -18,5 +18,6 @@ namespace BooksAndMovies.WebUI.Models
         public int VoteCount { get; set; }
         public double VoteAverage { get; set; }
         public string Overview { get; set; }
+        public int DatabaseSavingType { get; set; }
     }
 }

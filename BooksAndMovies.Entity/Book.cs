@@ -20,5 +20,6 @@ namespace BooksAndMovies.Entity
         public double AverageRating { get; set; }
         public string Thumbnail { get; set; }
         public string SmallThumbnail { get; set; }
+        public int DatabaseSavingType { get; set; }
     }
 }

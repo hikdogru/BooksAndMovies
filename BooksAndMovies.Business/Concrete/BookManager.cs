@@ -3,66 +3,67 @@ using BooksAndMovies.Data.Abstract;
 using BooksAndMovies.Entity;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BooksAndMovies.Business.Concrete
 {
     public class BookManager : IBookService
     {
-        private readonly IBookRepository _wantToReadRepository;
+        private readonly IBookRepository _bookRepository;
 
-        public BookManager(IBookRepository wantToReadRepository)
+        public BookManager(IBookRepository bookRepository)
         {
-            _wantToReadRepository = wantToReadRepository;
+            _bookRepository = bookRepository;
         }
-        public void Add(WantToRead entity)
+        public void Add(Book entity)
         {
-            _wantToReadRepository.Add(entity);
-        }
-
-        public async Task AddAsync(WantToRead entity)
-        {
-            await _wantToReadRepository.AddAsync(entity);
+            _bookRepository.Add(entity);
         }
 
-        public void Delete(WantToRead entity)
+        public async Task AddAsync(Book entity)
         {
-            _wantToReadRepository.Delete(entity);
+            await _bookRepository.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(WantToRead entity)
+        public void Delete(Book entity)
         {
-            await _wantToReadRepository.DeleteAsync(entity);
+            _bookRepository.Delete(entity);
         }
 
-        public List<WantToRead> GetAll()
+        public async Task DeleteAsync(Book entity)
         {
-           return _wantToReadRepository.GetAll();
+            await _bookRepository.DeleteAsync(entity);
         }
 
-        public async Task<List<WantToRead>> GetAllAsync()
+        public List<Book> GetAll(Expression<Func<Book, bool>> filter = null)
         {
-            return await _wantToReadRepository.GetAllAsync();
+           return filter == null ? _bookRepository.GetAll() : _bookRepository.GetAll(filter);
         }
 
-        public WantToRead GetById(int id)
+        public async Task<List<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null)
         {
-            return _wantToReadRepository.GetById(x => x.Id == id);
+            return filter == null ? await _bookRepository.GetAllAsync() : await _bookRepository.GetAllAsync(filter);
         }
 
-        public async Task<WantToRead> GetByIdAsync(int id)
+        public Book GetById(int id)
         {
-            return await _wantToReadRepository.GetByIdAsync(x => x.Id == id);
+            return _bookRepository.GetById(x => x.Id == id);
         }
 
-        public void Update(WantToRead entity)
+        public async Task<Book> GetByIdAsync(int id)
         {
-            _wantToReadRepository.Update(entity);
+            return await _bookRepository.GetByIdAsync(x => x.Id == id);
         }
 
-        public async Task UpdateAsync(WantToRead entity)
+        public void Update(Book entity)
         {
-            await _wantToReadRepository.UpdateAsync(entity);
+            _bookRepository.Update(entity);
+        }
+
+        public async Task UpdateAsync(Book entity)
+        {
+            await _bookRepository.UpdateAsync(entity);
         }
     }
 }

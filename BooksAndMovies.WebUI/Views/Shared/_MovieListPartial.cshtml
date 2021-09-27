@@ -1,0 +1,28 @@
+﻿@model MovieViewModel
+
+@{
+    string methodName = "RemoveMovieFrom" + Model.MovieListType;
+}
+
+
+<div class="row">
+    @foreach (var movie in Model.Movies)
+    {
+        if (movie.BackdropPath != null)
+        {
+            <div class="col-md-3">
+                <div id="movie">
+                    <form method="post">
+                        <img src="@movie.BackdropPath" alt="movie Image" />
+                        <input type="hidden" name="id" asp-for="@movie.Id" />
+
+                        <h3>@movie.Title </h3>
+                        <p>@movie.Popularity</p>
+                        <p>@movie.VoteAverage</p>
+                        <button type="submit" class="btn btn-danger" asp-action="@methodName">Remove from @Model.MovieListType </button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>

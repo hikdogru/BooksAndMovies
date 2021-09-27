@@ -12,7 +12,7 @@ namespace BooksAndMovies.WebUI.Profiles
     {
         public BookProfile()
         {
-            CreateMap<BookModel, WantToRead>().ReverseMap();
+            CreateMap<BookModel, Book>().ReverseMap();
         }
     }
 }

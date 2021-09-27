@@ -1,22 +1,27 @@
-﻿@model IEnumerable<WantToRead>
+﻿@model List<Book>
 
 
 
+<div class="row">
 
-@foreach (var book in Model)
-{
+    @foreach (var book in Model)
+    {
+        if (book.SmallThumbnail != null)
+        {
+            <div class="col-md-3">
+                <div id="book">
+                    <form asp-action="RemoveBookFromWishList" method="post">
+                        <img src="@book.SmallThumbnail" alt="book Image" />
+                        <input type="hidden" name="id" asp-for="@book.Id" />
 
-    <div id="book">
-        <form asp-action="RemoveBookFromWishList" method="post">
-            <img src="@book.Thumbnail" alt="book Image" />
-            <input type="hidden" name="id" asp-for="@book.Id" />
+                        <h3>@book.Title </h3>
+                        <p>@book.AverageRating</p>
+                        <p>@book.PageCount</p>
+                        <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
+                    </form>
+                </div>
+            </div>
 
-            <h3>@book.Title </h3>
-            <p>@book.AverageRating</p>
-            <p>@book.PageCount</p>
-            <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
-        </form>
-    </div>
-
-
-}
+        }
+    }
+</div>

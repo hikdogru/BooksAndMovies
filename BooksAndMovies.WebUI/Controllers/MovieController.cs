@@ -3,6 +3,7 @@ using BooksAndMovies.Business.Abstract;
 using BooksAndMovies.Entity;
 using BooksAndMovies.WebUI.Models;
 using BooksAndMovies.WebUI.Models.TMDB;
+using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -19,6 +20,7 @@ namespace BooksAndMovies.WebUI.Controllers
         private readonly IMovieService _movieService;
         private readonly IMapper _mapper;
 
+
         public MovieController(IMovieService movieService, IMapper mapper)
         {
             _movieService = movieService;
@@ -33,8 +35,16 @@ namespace BooksAndMovies.WebUI.Controllers
 
         public async Task<IActionResult> GetWishList()
         {
-            var movieWishList = await _movieService.GetAllAsync();
-            return View("WishList", movieWishList);
+            var movieWishList = await _movieService.GetAllAsync(x => x.DatabaseSavingType == 1);
+            var movieViewModel = new MovieViewModel { Movies = movieWishList, MovieListType = "Wishlist" };
+            return View("Movies", movieViewModel);
+        }
+
+        public async Task<IActionResult> GetWatchedList()
+        {
+            var movieWatchedList = await _movieService.GetAllAsync(x => x.DatabaseSavingType == 2);
+            var movieViewModel = new MovieViewModel { Movies = movieWatchedList, MovieListType = "Watchedlist" };
+            return View("Movies", movieViewModel);
         }
 
         [HttpPost]
@@ -55,20 +65,39 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var movie = _mapper.Map<MovieWatchList>(model);
+                var movie = _mapper.Map<Movie>(model);
+                movie.DatabaseSavingType = 1;
                 await _movieService.AddAsync(movie);
-                
-
             }
+            return RedirectToAction("GetWishList");
+        }
 
+
+        [HttpPost]
+        public async Task<IActionResult> AddMovieToWatchedList(MovieModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var movie = _mapper.Map<Movie>(model);
+                movie.DatabaseSavingType = 2;
+                await _movieService.AddAsync(movie);
+            }
+            return RedirectToAction("GetWatchedList");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveMovieFromWishlist(int id)
+        {
+            await _movieService.DeleteAsync(new Movie { Id = id });
             return RedirectToAction("GetWishList");
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveMovieFromWishList(int id)
+        public async Task<IActionResult> RemoveMovieFromWatchedlist(int id)
         {
-            await _movieService.DeleteAsync(new MovieWatchList { Id = id });
-            return RedirectToAction("GetWishList");
+            await _movieService.DeleteAsync(new Movie { Id = id });
+            return RedirectToAction("GetWatchedList");
         }
     }
 }

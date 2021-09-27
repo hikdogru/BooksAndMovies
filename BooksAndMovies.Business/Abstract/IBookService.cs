@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,16 +10,16 @@ namespace BooksAndMovies.Business.Abstract
 {
     public interface IBookService
     {
-        WantToRead GetById(int id);
-        List<WantToRead> GetAll();
-        void Add(WantToRead entity);
-        void Delete(WantToRead entity);
-        void Update(WantToRead entity);
+        Book GetById(int id);
+        List<Book> GetAll(Expression<Func<Book, bool>> filter = null);
+        void Add(Book entity);
+        void Delete(Book entity);
+        void Update(Book entity);
 
-        Task<WantToRead> GetByIdAsync(int id);
-        Task<List<WantToRead>> GetAllAsync();
-        Task AddAsync(WantToRead entity);
-        Task DeleteAsync(WantToRead entity);
-        Task UpdateAsync(WantToRead entity);
+        Task<Book> GetByIdAsync(int id);
+        Task<List<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null);
+        Task AddAsync(Book entity);
+        Task DeleteAsync(Book entity);
+        Task UpdateAsync(Book entity);
     }
 }

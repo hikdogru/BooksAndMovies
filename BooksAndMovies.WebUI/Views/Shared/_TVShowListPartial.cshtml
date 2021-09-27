@@ -1,9 +1,10 @@
-﻿@model List<TVShow>
-
-
+﻿@model TVShowViewModel
+@{
+    string methodName = "RemoveTVShowFrom" + Model.TVShowListType;
+}
 
 <div class="row">
-    @foreach (var tvShow in Model)
+    @foreach (var tvShow in Model.TVShows)
     {
         if (tvShow.PosterPath != null)
         {
@@ -15,7 +16,7 @@
                         <h3>@tvShow.Name </h3>
                         <p>@tvShow.OriginalName</p>
                         <p>@tvShow.VoteAverage</p>
-                        <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
+                        <button type="submit" class="btn btn-danger" asp-action="@methodName">Remove from @Model.TVShowListType </button>
                     </form>
                 </div>
             </div>

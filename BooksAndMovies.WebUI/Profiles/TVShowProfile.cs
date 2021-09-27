@@ -12,7 +12,7 @@ namespace BooksAndMovies.WebUI.Profiles
     {
         public TVShowProfile()
         {
-            CreateMap<TVShowModel, TVShowWatchList>().ReverseMap();
+            CreateMap<TVShowModel, TVShow>().ReverseMap();
         }
     }
 }
