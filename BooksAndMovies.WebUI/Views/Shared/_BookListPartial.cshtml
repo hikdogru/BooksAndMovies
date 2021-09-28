@@ -1,0 +1,39 @@
+﻿@model BookViewModel
+
+@{
+    string methodName = "RemoveBookFrom" + Model.BookListType;
+}
+
+
+
+
+<div class="row">
+
+    @foreach (var book in Model.Books)
+    {
+        if (book.SmallThumbnail != null)
+        {
+            <div class="col-md-3">
+                <div id="book">
+                    <form method="post">
+                        <img src="@book.SmallThumbnail" alt="book Image" id="bookImage"/>
+                        <input type="hidden" name="id" asp-for="@book.Id" />
+
+
+                        <h5>@book.Title </h5>
+                        <p>@book.AverageRating</p>
+                        <p>@book.PageCount</p>
+                        @if (Model.BookListType == "Wishlist")
+                        {
+                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveBookToFinishedlist"> Move to finishedlist</button>
+
+                        }
+                        <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.BookListType</button>
+
+                    </form>
+                </div>
+            </div>
+
+        }
+    }
+</div>
