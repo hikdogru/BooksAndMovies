@@ -269,7 +269,7 @@ ServiceFabricBackup/
 *.ndf
 
 # Static files
-/wwwroot/lib
+**/wwwroot/lib/
 
 # Business Intelligence projects
 *.rdl.data
