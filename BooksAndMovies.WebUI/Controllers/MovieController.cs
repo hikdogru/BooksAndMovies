@@ -85,6 +85,18 @@ namespace BooksAndMovies.WebUI.Controllers
             return RedirectToAction("GetWatchedList");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> MoveMovieToWatchedlist(int id)
+        {
+            var movie = await _movieService.GetByIdAsync(id);
+            if (movie != null)
+            {
+                movie.DatabaseSavingType = 2;
+                await _movieService.UpdateAsync(movie);
+            }
+            return RedirectToAction("GetWatchedList");
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> RemoveMovieFromWishlist(int id)

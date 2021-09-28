@@ -18,12 +18,12 @@ namespace BooksAndMovies.WebUI.Controllers
 {
     public class TVShowController : Controller
     {
-        private readonly ITVShowService _tVShowService;
+        private readonly ITVShowService _tvShowService;
         private readonly IMapper _mapper;
 
-        public TVShowController(ITVShowService tVShowService, IMapper mapper)
+        public TVShowController(ITVShowService tvShowService, IMapper mapper)
         {
-            _tVShowService = tVShowService;
+            _tvShowService = tvShowService;
             _mapper = mapper;
         }
         public async Task<IActionResult> Index()
@@ -33,14 +33,14 @@ namespace BooksAndMovies.WebUI.Controllers
 
         public async Task<IActionResult> GetWishList()
         {
-            var tvShowWishList = await _tVShowService.GetAllAsync(x => x.DatabaseSavingType == 1);
+            var tvShowWishList = await _tvShowService.GetAllAsync(x => x.DatabaseSavingType == 1);
             var tvShowViewModel = new TVShowViewModel { TVShows = tvShowWishList, TVShowListType = "Wishlist" };
             return View("TVShows", tvShowViewModel);
         }
 
         public async Task<IActionResult> GetWatchedList()
         {
-            var tvShowWatchedList = await _tVShowService.GetAllAsync(x => x.DatabaseSavingType == 2);
+            var tvShowWatchedList = await _tvShowService.GetAllAsync(x => x.DatabaseSavingType == 2);
             var tvShowViewModel = new TVShowViewModel { TVShows = tvShowWatchedList, TVShowListType = "Watchedlist" };
             return View("TVShows", tvShowViewModel);
         }
@@ -66,7 +66,7 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 var tvShow = _mapper.Map<TVShow>(model);
                 tvShow.DatabaseSavingType = 1;
-                await _tVShowService.AddAsync(tvShow);
+                await _tvShowService.AddAsync(tvShow);
             }
             return RedirectToAction("GetWishList");
 
@@ -79,7 +79,19 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 var tvShow = _mapper.Map<TVShow>(model);
                 tvShow.DatabaseSavingType = 2;
-                await _tVShowService.AddAsync(tvShow);
+                await _tvShowService.AddAsync(tvShow);
+            }
+            return RedirectToAction("GetWatchedList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MoveTVShowToWatchedlist(int id)
+        {
+            var tvShow = await _tvShowService.GetByIdAsync(id);
+            if (tvShow != null)
+            {
+                tvShow.DatabaseSavingType = 2;
+                await _tvShowService.UpdateAsync(tvShow);
             }
             return RedirectToAction("GetWatchedList");
         }
@@ -87,14 +99,14 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveTVShowFromWishlist(int id)
         {
-            await _tVShowService.DeleteAsync(new TVShow { Id = id });
+            await _tvShowService.DeleteAsync(new TVShow { Id = id });
             return RedirectToAction("GetWishList");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveTVShowFromWatchedlist(int id)
         {
-            await _tVShowService.DeleteAsync(new TVShow { Id = id });
+            await _tvShowService.DeleteAsync(new TVShow { Id = id });
             return RedirectToAction("GetWatchedList");
         }
     }

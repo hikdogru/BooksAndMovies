@@ -79,7 +79,7 @@ img {
     object-fit:cover;
 }
 
-#book {
+#book, #movie , #tvShow {
     text-align: center !important;
 }
 

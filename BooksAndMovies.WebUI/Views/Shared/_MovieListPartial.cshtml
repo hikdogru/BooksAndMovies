@@ -6,6 +6,9 @@
 
 
 <div class="row">
+    <strong>
+        Total movie count is "@Model.Movies.Count"
+    </strong>
     @foreach (var movie in Model.Movies)
     {
         if (movie.BackdropPath != null)
@@ -19,7 +22,12 @@
                         <h3>@movie.Title </h3>
                         <p>@movie.Popularity</p>
                         <p>@movie.VoteAverage</p>
-                        <button type="submit" class="btn btn-danger" asp-action="@methodName">Remove from @Model.MovieListType </button>
+                        @if (Model.MovieListType == "Wishlist")
+                        {
+                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveMovieToWatchedlist"> Move to watchedlist</button>
+
+                        }
+                        <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.MovieListType </button>
                     </form>
                 </div>
             </div>

@@ -8,7 +8,9 @@
 
 
 <div class="row">
-
+    <strong>
+        Total book count is "@Model.Books.Count"
+    </strong>
     @foreach (var book in Model.Books)
     {
         if (book.SmallThumbnail != null)
@@ -16,7 +18,7 @@
             <div class="col-md-3">
                 <div id="book">
                     <form method="post">
-                        <img src="@book.SmallThumbnail" alt="book Image" id="bookImage"/>
+                        <img src="@book.SmallThumbnail" alt="book Image" id="bookImage" />
                         <input type="hidden" name="id" asp-for="@book.Id" />
 
 
