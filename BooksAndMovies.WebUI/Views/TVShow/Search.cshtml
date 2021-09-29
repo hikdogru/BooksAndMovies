@@ -1,26 +1,51 @@
 ﻿@model IEnumerable<TVShowModel>
 
+<h3>TV Show search page</h3>
 
-@foreach (var tvShow in Model)
+
+<form asp-action="SearchTVShow" method="post">
+    <input type="search" class="form-control" name="query" id="query" placeholder="Enter the tv show name" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+
+
+
+@if (Model != null)
 {
-    if (tvShow.PosterPath != null)
-    {
-        <div id="tvShow">
-            <form asp-action="AddTVShowToWishList" method="post">
-                <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="tvShow Image" />
-                <input type="hidden"  asp-for="@tvShow.Name" />
+    <div class="row">
+        <strong>
+            Total tvshow count is "@Model.ToList().Count"
+        </strong>
+        @foreach (var tvShow in Model)
+        {
+            if (tvShow.PosterPath != null)
+            {
+                <div class="col-md-3">
+                    <div id="tvShow">
+                        <form method="post">
+                            <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="tvShow Image" />
+                            <input type="hidden" name="name" asp-for="@tvShow.Name" />
+                            <input type="hidden" name="originalName" asp-for="@tvShow.OriginalName" />
+                            <input type="hidden" name="overview" asp-for="@tvShow.Overview" />
+                            <input type="hidden" name="posterPath" asp-for="@tvShow.PosterPath" />
+                            <input type="hidden" name="backdropPath" asp-for="@tvShow.BackdropPath" />
+                            <input type="hidden" name="firstAirDate" asp-for="@tvShow.FirstAirDate" />
+                            <input type="hidden" name="voteAverage" asp-for="@tvShow.VoteAverage" />
+                            <input type="hidden" name="voteCount" asp-for="@tvShow.VoteCount" />
+                            <input type="hidden" name="popularity" asp-for="@tvShow.Popularity" />
 
-                <h3>@tvShow.Name </h3>
-                <p>@tvShow.OriginalName</p>
-                <p>@tvShow.VoteAverage</p>
-                <button type="submit" class="btn btn-primary">Add to Wishlist</button>
-            </form>
-        </div>
+                            <h3>@tvShow.Name </h3>
+                            <p>@tvShow.OriginalName</p>
+                            <p>@tvShow.VoteAverage</p>
+                            <button type="submit" class="btn btn-primary" asp-action="AddTVShowToWishList">Add to Wishlist</button>
+                            <button type="submit" class="btn btn-secondary" asp-action="AddTVShowToWatchedList">Add to Watchedlist</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
 
-
-        
-
-    }
+    </div>
 }
-
-

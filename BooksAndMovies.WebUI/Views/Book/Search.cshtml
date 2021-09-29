@@ -2,34 +2,47 @@
 
 
 
-@if (Model.Count() > 0)
-{
-    foreach (var bookInfo in Model)
-    {
-        var book = @bookInfo.VolumeInfo;
-        if (book.ImageLinks != null)
-        {
-            <div id="book" class="mb-3" style="border:1px solid rgb(182 216 189 / 0.61)">
-                <form method="post">
-                    <img src="@book.ImageLinks.Thumbnail" alt="Book Image" />
-                    <input type="hidden" asp-for="@book.Title" />
-                    <input type="hidden" asp-for="@book.Publisher" />
-                    <input type="hidden" asp-for="@book.Description" />
-                    <input type="hidden" asp-for="@book.Authors[0]" />
-                    <input type="hidden" asp-for="@book.Categories[0]" />
-                    <input type="hidden" asp-for="@book.PageCount" />
-                    <input type="hidden" asp-for="@book.AverageRating" />
-                    <input type="hidden" asp-for="@book.ImageLinks.Thumbnail" />
-                    <input type="hidden" asp-for="@book.ImageLinks.SmallThumbnail" />
-                    <p>@book.Title </p>
-                    <p>@(book.Authors == null ? "" : book.Authors[0]) </p>
-                    <p>@book.Publisher</p>
-                    <p>@book.PageCount</p>
-                    <button type="submit" class="btn btn-primary" asp-action="AddBookToWishlist">Want to Read</button>
-                    <button type="submit" class="btn btn-secondary" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
-                </form>
-            </div>
-        }
+<form asp-action="SearchBook" method="post">
+    <input type="search" class="form-control" name="query" id="query" placeholder="Enter the book name" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
 
-    }
+
+@if (Model != null)
+{
+    <div class="row">
+        <strong>
+            Total book count is "@Model.ToList().Count"
+        </strong>
+        @foreach (var bookInfo in Model)
+        {
+            var book = @bookInfo.VolumeInfo;
+            if (book.ImageLinks != null)
+            {
+                <div class="col-md-3">
+                    <div id="book" class="mb-3">
+                        <form method="post">
+                            <img src="@book.ImageLinks.Thumbnail" alt="Book Image" />
+                            <input type="hidden" asp-for="@book.Title" />
+                            <input type="hidden" asp-for="@book.Publisher" />
+                            <input type="hidden" asp-for="@book.Description" />
+                            <input type="hidden" asp-for="@book.Authors[0]" />
+                            <input type="hidden" asp-for="@book.Categories[0]" />
+                            <input type="hidden" asp-for="@book.PageCount" />
+                            <input type="hidden" asp-for="@book.AverageRating" />
+                            <input type="hidden" asp-for="@book.ImageLinks.Thumbnail" />
+                            <input type="hidden" asp-for="@book.ImageLinks.SmallThumbnail" />
+                            <p>@book.Title </p>
+                            <p>@(book.Authors == null ? "" : book.Authors[0]) </p>
+                            <p>@book.Publisher</p>
+                            <p>@book.PageCount</p>
+                            <button type="submit" class="btn btn-primary" asp-action="AddBookToWishlist">Want to Read</button>
+                            <button type="submit" class="btn btn-secondary" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
 }

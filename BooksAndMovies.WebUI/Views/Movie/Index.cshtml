@@ -1,20 +1,36 @@
 ﻿@model List<MovieModel>
 
-<h3>Movie page</h3>
 
 
-<form asp-action="SearchMovie" method="post">
-    <input type="search" class="form-control" name="query" id="query" placeholder="Enter the movie name" />
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
-
-
-@foreach (var movie in Model)
-{
-    if (movie.PosterPath != null)
+<div class="row">
+    <strong>
+        Total movie count is "@Model.Count"
+    </strong>
+    @foreach (var movie in Model)
     {
-        <h3>@movie.Title </h3>
-        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
-
+        if (movie.PosterPath != null)
+        {
+            <div class="col-md-3">
+                <div id="movie">
+                    <form method="post">
+                        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="movie Image" />
+                        <input type="hidden" name="title" value="@movie.Title" />
+                        <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
+                        <input type="hidden" name="overview" asp-for="@movie.Overview" />
+                        <input type="hidden" name="posterPath" asp-for="@movie.PosterPath" />
+                        <input type="hidden" name="backdropPath" asp-for="@movie.BackdropPath" />
+                        <input type="hidden" name="releaseDate" asp-for="@movie.ReleaseDate" />
+                        <input type="hidden" name="voteAverage" asp-for="@movie.VoteAverage" />
+                        <input type="hidden" name="voteCount" asp-for="@movie.VoteCount" />
+                        <input type="hidden" name="popularity" asp-for="@movie.Popularity" />
+                        <h4>@movie.Title </h4>
+                        <p>@movie.Popularity</p>
+                        <p>@movie.VoteAverage</p>
+                        <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddMovieToWatchedlist"> Add to watchedlist</button>
+                        <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddMovieToWishList"> Add to wishlist </button>
+                    </form>
+                </div>
+            </div>
+        }
     }
-}
+</div>

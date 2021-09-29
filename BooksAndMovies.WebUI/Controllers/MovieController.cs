@@ -47,6 +47,12 @@ namespace BooksAndMovies.WebUI.Controllers
             return View("Movies", movieViewModel);
         }
 
+        [HttpGet]
+        public IActionResult Search()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchMovie(string query)
         {

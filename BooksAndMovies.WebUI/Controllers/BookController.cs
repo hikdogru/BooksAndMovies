@@ -30,9 +30,11 @@ namespace BooksAndMovies.WebUI.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            string clientUrl = "https://www.googleapis.com/books/v1/volumes?q=flowers&orderBy=newest&key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=20";
+            var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
+            return View(books);
         }
 
         public async Task<IActionResult> GetWishlist()
@@ -47,6 +49,12 @@ namespace BooksAndMovies.WebUI.Controllers
             var bookFinishedlist = await _bookService.GetAllAsync(x => x.DatabaseSavingType == 2);
             var bookViewModel = new BookViewModel { Books = bookFinishedlist, BookListType = "Finishedlist" };
             return View("Books", bookViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Search()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -109,7 +117,7 @@ namespace BooksAndMovies.WebUI.Controllers
         public async Task<IActionResult> MoveBookToFinishedlist(int id)
         {
             var book = await _bookService.GetByIdAsync(id);
-            if(book != null)
+            if (book != null)
             {
                 book.DatabaseSavingType = 2;
                 await _bookService.UpdateAsync(book);
