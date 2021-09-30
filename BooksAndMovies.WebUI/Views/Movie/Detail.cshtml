@@ -1,0 +1,42 @@
+﻿@model MovieModel
+
+
+<div id="movieDetail">
+
+    <div class="row">
+        <div class="col-md-3">
+            <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="Movie Image" />
+        </div>
+
+        <div class="col-md-8 mt-3">
+            <h5>Movie Details</h5>
+
+            <p>
+                <strong> Name :</strong>  @Model.Title
+            </p>
+            <p>
+                <strong>OriginalName :</strong>  @Model.OriginalTitle
+            </p>
+
+            <p>
+                <strong>Release Date :</strong>  @(Model.ReleaseDate)
+            </p>
+            <p>
+                <strong>Vote Average :</strong>  @Model.VoteAverage
+            </p>
+
+            <p>
+                <strong>Vote Count :</strong>  @Model.VoteCount
+            </p>
+
+            <p>
+                <strong>Popularity :</strong>  @Model.Popularity
+            </p>
+
+            <p>
+                <strong>Overview :</strong>  @Model.Overview
+            </p>
+        </div>
+
+    </div>
+</div>

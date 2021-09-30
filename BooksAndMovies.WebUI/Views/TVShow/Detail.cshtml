@@ -1,0 +1,42 @@
+﻿@model TVShowModel
+
+
+<div id="tvShowDetail">
+
+    <div class="row">
+        <div class="col-md-3">
+            <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="Tv Show Image" />
+        </div>
+
+        <div class="col-md-8 mt-3">
+            <h5>TV Show Details</h5>
+
+            <p>
+                <strong> Name :</strong>  @Model.Name
+            </p>
+            <p>
+                <strong>OriginalName :</strong>  @Model.OriginalName
+            </p>
+
+            <p>
+                <strong>Release Date :</strong>  @(Model.FirstAirDate)
+            </p>
+            <p>
+                <strong>Vote Average :</strong>  @Model.VoteAverage
+            </p>
+
+            <p>
+                <strong>Vote Count :</strong>  @Model.VoteCount
+            </p>
+
+            <p>
+                <strong>Popularity :</strong>  @Model.Popularity
+            </p>
+
+            <p>
+                <strong>Overview :</strong>  @Model.Overview
+            </p>
+        </div>
+
+    </div>
+</div>

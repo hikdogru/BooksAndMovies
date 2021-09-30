@@ -16,7 +16,7 @@
                     <form method="post">
                         <img src="@tvShow.BackdropPath" alt="tvShow Image" />
                         <input type="hidden" name="id" asp-for="@tvShow.Id" />
-                        <h3>@tvShow.Name </h3>
+                        <h4>@tvShow.Name </h4>
                         <p>@tvShow.OriginalName</p>
                         <p>@tvShow.VoteAverage</p>
                         @if (Model.TVShowListType == "Wishlist")

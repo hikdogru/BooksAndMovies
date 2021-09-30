@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.WebUI.Models
 {
-    public class MovieModel:MediaModel
+    public class MovieModel : MediaModel
     {
+        private string _title = "";
         public string ReleaseDate { get; set; }
-        public string Title { get; set; }
+        public string Title
+        {
+            get => _title.Length < 20 ? _title : _title.Substring(0, 20) + "...";
+            set => _title = value;
+        }
         public string OriginalTitle { get; set; }
-        public bool Video { get; set; }
-        public bool Adult { get; set; }
+        
     }
 }

@@ -36,8 +36,9 @@
                             <p>@(book.Authors == null ? "" : book.Authors[0]) </p>
                             <p>@book.Publisher</p>
                             <p>@book.PageCount</p>
-                            <button type="submit" class="btn btn-primary" asp-action="AddBookToWishlist">Want to Read</button>
-                            <button type="submit" class="btn btn-secondary" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToWishlist">Want to Read</button>
+                            <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                            <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="BookDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </form>
                     </div>
                 </div>

@@ -47,6 +47,7 @@ namespace BooksAndMovies.WebUI.Controllers
             return View("Movies", movieViewModel);
         }
 
+
         [HttpGet]
         public IActionResult Search()
         {
@@ -64,6 +65,12 @@ namespace BooksAndMovies.WebUI.Controllers
             }
 
             return null;
+        }
+
+        [HttpPost]
+        public IActionResult MovieDetail(MovieModel model)
+        {
+            return View("Detail", model: model);
         }
 
         [HttpPost]

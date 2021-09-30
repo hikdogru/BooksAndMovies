@@ -1,0 +1,43 @@
+﻿@model BookModel
+
+
+<div id="bookDetail">
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src="@(Model.ImageLinks.Thumbnail ?? Model.ImageLinks.SmallThumbnail)" alt="Book Image" />
+        </div>
+
+        <div class="col-md-8 mt-3">
+            <h5>Book Details</h5>
+
+            <p>
+                <strong> Name :</strong>  @Model.Title
+            </p>
+
+
+            <p>
+                <strong>Author :</strong>  @(Model.Authors[0])
+            </p>
+            <p>
+                <strong>Category :</strong>  @(Model.Categories[0])
+            </p>
+            <p>
+                <strong>Publisher:</strong>  @Model.Publisher
+            </p>
+
+            <p>
+                <strong>Average Rating:</strong>  @Model.AverageRating
+            </p>
+
+            <p>
+                <strong>Page Count :</strong>  @Model.PageCount
+            </p>
+
+            <p>
+                <strong>Description :</strong>  @Model.Description
+            </p>
+        </div>
+
+    </div>
+</div>

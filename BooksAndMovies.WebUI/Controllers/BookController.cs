@@ -34,7 +34,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             string clientUrl = "https://www.googleapis.com/books/v1/volumes?q=flowers&orderBy=newest&key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=20";
             var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
-            return View(books);
+            return View(model : books);
         }
 
         public async Task<IActionResult> GetWishlist()
@@ -67,6 +67,12 @@ namespace BooksAndMovies.WebUI.Controllers
                 return View("Search", books);
             }
             return null;
+        }
+
+        [HttpPost]
+        public IActionResult BookDetail(BookModel book)
+        {
+            return View("Detail", model: book);
         }
 
         /// <summary>

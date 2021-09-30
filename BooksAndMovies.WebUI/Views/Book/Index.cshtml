@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<BookInfoModel>
+@model List<BookInfoModel>
 
 
 
@@ -11,28 +11,29 @@
         </strong>
         @foreach (var bookInfo in Model)
         {
-            var book = @bookInfo.VolumeInfo;
+            var book = bookInfo.VolumeInfo;
             if (book.ImageLinks != null)
             {
                 <div class="col-md-3">
                     <div id="book" class="mb-3">
                         <form method="post">
                             <img src="@book.ImageLinks.Thumbnail" alt="Book Image" />
-                            <input type="hidden" asp-for="@book.Title" />
-                            <input type="hidden" asp-for="@book.Publisher" />
-                            <input type="hidden" asp-for="@book.Description" />
-                            <input type="hidden" asp-for="@book.Authors[0]" />
-                            <input type="hidden" asp-for="@book.Categories[0]" />
-                            <input type="hidden" asp-for="@book.PageCount" />
+                            <input type="hidden"  asp-for="@book.Title" />
+                            <input type="hidden"  asp-for="@book.Publisher" />
+                            <input type="hidden"  asp-for="@book.Description" />
+                            <input type="hidden"  asp-for="@book.Authors[0]" />
+                            <input type="hidden"  asp-for="@book.Categories[0]" />
+                            <input type="hidden"  asp-for="@book.PageCount" />
                             <input type="hidden" asp-for="@book.AverageRating" />
                             <input type="hidden" asp-for="@book.ImageLinks.Thumbnail" />
                             <input type="hidden" asp-for="@book.ImageLinks.SmallThumbnail" />
                             <p>@book.Title </p>
-                            <p>@(book.Authors == null ? "" : book.Authors[0]) </p>
+                            <p>@(book.Authors == null ? "-" : book.Authors[0]) </p>
                             <p>@book.Publisher</p>
                             <p>@book.PageCount</p>
-                            <button type="submit" class="btn btn-primary" asp-action="AddBookToWishlist">Want to Read</button>
-                            <button type="submit" class="btn btn-secondary" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToWishlist">Want to Read</button>
+                            <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                            <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="BookDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </form>
                     </div>
                 </div>

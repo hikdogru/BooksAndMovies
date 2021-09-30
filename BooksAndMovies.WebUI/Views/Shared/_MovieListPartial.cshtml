@@ -19,7 +19,7 @@
                         <img src="@movie.BackdropPath" alt="movie Image" />
                         <input type="hidden" name="id" asp-for="@movie.Id" />
 
-                        <h3>@movie.Title </h3>
+                        <h4>@movie.Title </h4>
                         <p>@movie.Popularity</p>
                         <p>@movie.VoteAverage</p>
                         @if (Model.MovieListType == "Wishlist")

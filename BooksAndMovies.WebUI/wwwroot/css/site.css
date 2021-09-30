@@ -83,6 +83,10 @@ img {
     text-align: center !important;
 }
 
-#book #bookImage {
-    height:193px;
+#book #bookImage , #book img {
+    max-height:160px;
+}
+
+#movie img , #tvShow img {
+    max-height:400px !important;
 }

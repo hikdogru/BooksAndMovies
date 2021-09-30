@@ -7,7 +7,14 @@ namespace BooksAndMovies.WebUI.Models
 {
     public class BookModel
     {
-        public string Title { get; set; }
+        private string _title;
+
+        public string Title
+        {
+            get => _title.Length < 20 ? _title : _title.Substring(0, 20) + "...";
+            set => _title = value;
+        }
+
         public List<string> Authors { get; set; }
         public List<string> Categories { get; set; }
         public string Publisher { get; set; }

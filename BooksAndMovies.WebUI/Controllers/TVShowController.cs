@@ -68,6 +68,12 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
+        public IActionResult TVShowDetail(TVShowModel model)
+        {
+            return View("Detail", model : model);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddTVShowToWishList(TVShowModel model)
         {
             if (ModelState.IsValid)
