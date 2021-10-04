@@ -48,6 +48,14 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetFavouriteTVShows()
+        {
+            var favouriteTVShowList = await _tvShowService.GetAllAsync(x => x.DatabaseSavingType == 3);
+            var tvShowViewModel = new TVShowViewModel { TVShows = favouriteTVShowList, TVShowListType = "Favouritelist" };
+            return View("TVShows", tvShowViewModel);
+        }
+
+        [HttpGet]
         public IActionResult Search()
         {
             return View();
@@ -70,7 +78,7 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public IActionResult TVShowDetail(TVShowModel model)
         {
-            return View("Detail", model : model);
+            return View("Detail", model: model);
         }
 
         [HttpPost]
@@ -99,6 +107,18 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddTVShowToFavouritelist(TVShowModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var tvShow = _mapper.Map<TVShow>(model);
+                tvShow.DatabaseSavingType = 3;
+                await _tvShowService.AddAsync(tvShow);
+            }
+            return RedirectToAction("GetWatchedList");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> MoveTVShowToWatchedlist(int id)
         {
             var tvShow = await _tvShowService.GetByIdAsync(id);
@@ -113,15 +133,27 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveTVShowFromWishlist(int id)
         {
-            await _tvShowService.DeleteAsync(new TVShow { Id = id });
+            await RemoveTVShowFromDatabase(id);
             return RedirectToAction("GetWishList");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveTVShowFromWatchedlist(int id)
         {
-            await _tvShowService.DeleteAsync(new TVShow { Id = id });
+            await RemoveTVShowFromDatabase(id);
             return RedirectToAction("GetWatchedList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTVShowFromFavouritelist(int id)
+        {
+            await RemoveTVShowFromDatabase(id);
+            return RedirectToAction("GetFavouriteTVShows");
+        }
+
+        private async Task RemoveTVShowFromDatabase(int id)
+        {
+            await _tvShowService.DeleteAsync(new TVShow { Id = id });
         }
     }
 }

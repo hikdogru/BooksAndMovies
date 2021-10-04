@@ -33,7 +33,7 @@
                                 <li><a class="dropdown-item" asp-action="GetWatchedList" asp-controller="TVShow"> Watched </a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="TVShow" asp-action="Search"> Search </a></li>
                                 <li><a class="dropdown-item" href="#"> Rate </a></li>
-                                <li><a class="dropdown-item" href="#"> Favourite </a></li>
+                                <li><a class="dropdown-item" asp-action="GetFavouriteTVShows" asp-controller="TVShow"> Favourites </a></li>
                             </ul>
                         </li>
 
@@ -45,7 +45,8 @@
                                 <li><a class="dropdown-item" asp-action="GetWatchedList" asp-controller="Movie"> Watched </a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Movie" asp-action="Search"> Search </a></li>
                                 <li><a class="dropdown-item" href="#"> Rate </a></li>
-                                <li><a class="dropdown-item" href="#"> Favourite </a></li>
+                                <li><a class="dropdown-item" asp-action="GetFavouriteMovies" asp-controller="Movie"> Favourites </a></li>
+
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -56,7 +57,7 @@
                                 <li><a class="dropdown-item" asp-action="GetFinishedlist" asp-controller="Book"> Finished </a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Search"> Search </a></li>
                                 <li><a class="dropdown-item" href="#"> Rate </a></li>
-                                <li><a class="dropdown-item" href="#"> Favourite </a></li>
+                                <li><a class="dropdown-item" asp-action="GetFavouriteBooks" asp-controller="Book"> Favourites </a></li>
                             </ul>
                         </li>
                     </ul>

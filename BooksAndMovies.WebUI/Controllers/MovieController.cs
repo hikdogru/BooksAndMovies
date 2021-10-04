@@ -47,6 +47,14 @@ namespace BooksAndMovies.WebUI.Controllers
             return View("Movies", movieViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetFavouriteMovies()
+        {
+            var favouriteMovieList = await _movieService.GetAllAsync(x => x.DatabaseSavingType == 3);
+            var movieViewModel = new MovieViewModel { Movies = favouriteMovieList, MovieListType = "Favouritelist" };
+            return View("Movies", movieViewModel);
+        }
+
 
         [HttpGet]
         public IActionResult Search()
@@ -99,6 +107,18 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddMovieToFavouritelist(MovieModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var movie = _mapper.Map<Movie>(model);
+                movie.DatabaseSavingType = 3;
+                await _movieService.AddAsync(movie);
+            }
+            return RedirectToAction("GetWatchedList");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> MoveMovieToWatchedlist(int id)
         {
             var movie = await _movieService.GetByIdAsync(id);
@@ -114,15 +134,27 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveMovieFromWishlist(int id)
         {
-            await _movieService.DeleteAsync(new Movie { Id = id });
+           await RemoveMovieFromDatabase(id);
             return RedirectToAction("GetWishList");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveMovieFromWatchedlist(int id)
         {
-            await _movieService.DeleteAsync(new Movie { Id = id });
+           await RemoveMovieFromDatabase(id);
             return RedirectToAction("GetWatchedList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveMovieFromFavouritelist(int id)
+        {
+           await RemoveMovieFromDatabase(id);
+            return RedirectToAction("GetFavouriteMovies");
+        }
+
+        private async Task RemoveMovieFromDatabase(int id)
+        {
+            await _movieService.DeleteAsync(new Movie { Id = id });
         }
     }
 }

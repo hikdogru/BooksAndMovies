@@ -20,7 +20,15 @@
                     <form method="post">
                         <img src="@book.SmallThumbnail" alt="book Image" id="bookImage" />
                         <input type="hidden" name="id" asp-for="@book.Id" />
-
+                        <input type="hidden" asp-for="@book.Title" />
+                        <input type="hidden" asp-for="@book.Publisher" />
+                        <input type="hidden" asp-for="@book.Description" />
+                        <input type="hidden" asp-for="@book.Author" />
+                        <input type="hidden" asp-for="@book.Category" />
+                        <input type="hidden" asp-for="@book.PageCount" />
+                        <input type="hidden" asp-for="@book.AverageRating" />
+                        <input type="hidden" asp-for="@book.Thumbnail" />
+                        <input type="hidden" asp-for="@book.SmallThumbnail" />
 
                         <h4>@book.Title </h4>
                         <p>@book.AverageRating</p>
@@ -28,6 +36,12 @@
                         @if (Model.BookListType == "Wishlist")
                         {
                             <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveBookToFinishedlist"> Move to finishedlist</button>
+
+                        }
+
+                        else if (Model.BookListType == "Finishedlist")
+                        {
+                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToFavouritelist"> Add to favourites</button>
 
                         }
                         <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.BookListType</button>

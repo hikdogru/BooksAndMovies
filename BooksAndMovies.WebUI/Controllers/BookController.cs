@@ -51,6 +51,13 @@ namespace BooksAndMovies.WebUI.Controllers
             return View("Books", bookViewModel);
         }
 
+        public async Task<IActionResult> GetFavouriteBooks()
+        {
+            var favouriteBooklist = await _bookService.GetAllAsync(x => x.DatabaseSavingType == 3);
+            var bookViewModel = new BookViewModel { Books = favouriteBooklist, BookListType = "Favouritelist" };
+            return View("Books", bookViewModel);
+        }
+
         [HttpGet]
         public IActionResult Search()
         {
@@ -120,6 +127,17 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddBookToFavouritelist(Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                book.DatabaseSavingType = 3;
+                await _bookService.AddAsync(book);
+            }
+            return RedirectToAction("GetFinishedlist");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> MoveBookToFinishedlist(int id)
         {
             var book = await _bookService.GetByIdAsync(id);
@@ -134,15 +152,27 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveBookFromWishlist(int id)
         {
-            await _bookService.DeleteAsync(new Book { Id = id });
+           await RemoveBookFromDatabase(id);
             return RedirectToAction("GetWishlist");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveBookFromFinishedlist(int id)
         {
-            await _bookService.DeleteAsync(new Book { Id = id });
+           await RemoveBookFromDatabase(id);
             return RedirectToAction("GetFinishedlist");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveBookFromFavouritelist(int id)
+        {
+           await RemoveBookFromDatabase(id);
+            return RedirectToAction("GetFinishedlist");
+        }
+
+        private async Task RemoveBookFromDatabase(int id)
+        {
+            await _bookService.DeleteAsync(new Book { Id = id });
         }
     }
 }
