@@ -33,26 +33,32 @@ namespace BooksAndMovies.WebUI.Controllers
             return View(movies);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetWishList()
         {
-            var movieWishList = await _movieService.GetAllAsync(x => x.DatabaseSavingType == 1);
-            var movieViewModel = new MovieViewModel { Movies = movieWishList, MovieListType = "Wishlist" };
+            var movieViewModel = await CreateMovieModel("Wishlist", 1);
             return View("Movies", movieViewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetWatchedList()
         {
-            var movieWatchedList = await _movieService.GetAllAsync(x => x.DatabaseSavingType == 2);
-            var movieViewModel = new MovieViewModel { Movies = movieWatchedList, MovieListType = "Watchedlist" };
+            var movieViewModel = await CreateMovieModel("Watchedlist", 2);
             return View("Movies", movieViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetFavouriteMovies()
         {
-            var favouriteMovieList = await _movieService.GetAllAsync(x => x.DatabaseSavingType == 3);
-            var movieViewModel = new MovieViewModel { Movies = favouriteMovieList, MovieListType = "Favouritelist" };
+            var movieViewModel = await CreateMovieModel("Favouritelist", 3);
             return View("Movies", movieViewModel);
+        }
+
+        private async Task<MovieViewModel> CreateMovieModel(string movieListType, int databaseSavingType)
+        {
+            var movies = await _movieService.GetAllAsync(x => x.DatabaseSavingType == databaseSavingType);
+            var movieViewModel = new MovieViewModel { Movies = movies, MovieListType = movieListType };
+            return movieViewModel;
         }
 
 
@@ -86,9 +92,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var movie = _mapper.Map<Movie>(model);
-                movie.DatabaseSavingType = 1;
-                await _movieService.AddAsync(movie);
+                await SaveMovieToDatabase(model: model, databaseSavingType: 1);
             }
             return RedirectToAction("GetWishList");
         }
@@ -99,9 +103,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var movie = _mapper.Map<Movie>(model);
-                movie.DatabaseSavingType = 2;
-                await _movieService.AddAsync(movie);
+                await SaveMovieToDatabase(model: model, databaseSavingType: 2);
             }
             return RedirectToAction("GetWatchedList");
         }
@@ -111,11 +113,16 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var movie = _mapper.Map<Movie>(model);
-                movie.DatabaseSavingType = 3;
-                await _movieService.AddAsync(movie);
+                await SaveMovieToDatabase(model: model, databaseSavingType: 3);
             }
             return RedirectToAction("GetWatchedList");
+        }
+
+        private async Task SaveMovieToDatabase(MovieModel model, int databaseSavingType)
+        {
+            var movie = _mapper.Map<Movie>(model);
+            movie.DatabaseSavingType = databaseSavingType;
+            await _movieService.AddAsync(movie);
         }
 
         [HttpPost]
@@ -134,21 +141,21 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveMovieFromWishlist(int id)
         {
-           await RemoveMovieFromDatabase(id);
+            await RemoveMovieFromDatabase(id);
             return RedirectToAction("GetWishList");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveMovieFromWatchedlist(int id)
         {
-           await RemoveMovieFromDatabase(id);
+            await RemoveMovieFromDatabase(id);
             return RedirectToAction("GetWatchedList");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveMovieFromFavouritelist(int id)
         {
-           await RemoveMovieFromDatabase(id);
+            await RemoveMovieFromDatabase(id);
             return RedirectToAction("GetFavouriteMovies");
         }
 

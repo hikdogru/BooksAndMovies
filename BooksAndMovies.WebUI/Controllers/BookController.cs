@@ -19,16 +19,20 @@ namespace BooksAndMovies.WebUI.Controllers
 {
     public class BookController : Controller
     {
+        #region fields
         private readonly BookAndMovieContext _context;
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
+        #endregion fields
 
+        #region ctor
         public BookController(BookAndMovieContext context, IBookService bookService, IMapper mapper)
         {
             _context = context;
             _bookService = bookService;
             _mapper = mapper;
         }
+        #endregion ctor
 
         public async Task<IActionResult> Index()
         {
@@ -39,23 +43,27 @@ namespace BooksAndMovies.WebUI.Controllers
 
         public async Task<IActionResult> GetWishlist()
         {
-            var bookWishList = await _bookService.GetAllAsync(x => x.DatabaseSavingType == 1);
-            var bookViewModel = new BookViewModel { Books = bookWishList, BookListType = "Wishlist" };
+            var bookViewModel = await CreateBookModel(bookListType: "Wishlist", databaseSavingType: 1);
             return View("Books", bookViewModel);
         }
 
         public async Task<IActionResult> GetFinishedlist()
         {
-            var bookFinishedlist = await _bookService.GetAllAsync(x => x.DatabaseSavingType == 2);
-            var bookViewModel = new BookViewModel { Books = bookFinishedlist, BookListType = "Finishedlist" };
+            var bookViewModel = await CreateBookModel(bookListType: "Finishedlist", databaseSavingType: 2);
             return View("Books", bookViewModel);
         }
 
         public async Task<IActionResult> GetFavouriteBooks()
         {
-            var favouriteBooklist = await _bookService.GetAllAsync(x => x.DatabaseSavingType == 3);
-            var bookViewModel = new BookViewModel { Books = favouriteBooklist, BookListType = "Favouritelist" };
+            var bookViewModel = await CreateBookModel(bookListType: "Favouritelist", databaseSavingType: 3);
             return View("Books", bookViewModel);
+        }
+
+        private async Task<BookViewModel> CreateBookModel(string bookListType, int databaseSavingType)
+        {
+            var books = await _bookService.GetAllAsync(x => x.DatabaseSavingType == databaseSavingType);
+            var bookViewModel = new BookViewModel { Books =books, BookListType = bookListType };
+            return bookViewModel;
         }
 
         [HttpGet]
@@ -92,14 +100,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var bookModel = _mapper.Map<Book>(book);
-                bookModel.Thumbnail = book.ImageLinks.Thumbnail;
-                bookModel.SmallThumbnail = book.ImageLinks.SmallThumbnail;
-                bookModel.Author = book.Authors[0];
-                bookModel.Category = book.Categories[0];
-                bookModel.DatabaseSavingType = 1;
-                await _bookService.AddAsync(bookModel);
-
+                await SaveBookToDatabase(model: book, 1);
             }
             return RedirectToAction("GetWishlist");
         }
@@ -114,16 +115,20 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var bookModel = _mapper.Map<Book>(book);
-                bookModel.Thumbnail = book.ImageLinks.Thumbnail;
-                bookModel.SmallThumbnail = book.ImageLinks.SmallThumbnail;
-                bookModel.Author = book.Authors[0];
-                bookModel.Category = book.Categories[0];
-                bookModel.DatabaseSavingType = 2;
-                await _bookService.AddAsync(bookModel);
-
+                await SaveBookToDatabase(model: book, 2);
             }
             return RedirectToAction("GetFinishedlist");
+        }
+
+        private async Task SaveBookToDatabase(BookModel model, int databaseSavingType)
+        {
+            var bookModel = _mapper.Map<Book>(model);
+            bookModel.Thumbnail = model.ImageLinks.Thumbnail;
+            bookModel.SmallThumbnail = model.ImageLinks.SmallThumbnail;
+            bookModel.Author = model.Authors[0];
+            bookModel.Category = model.Categories[0];
+            bookModel.DatabaseSavingType = databaseSavingType;
+            await _bookService.AddAsync(bookModel);
         }
 
         [HttpPost]
