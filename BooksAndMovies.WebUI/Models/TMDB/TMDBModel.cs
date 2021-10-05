@@ -25,7 +25,7 @@ namespace BooksAndMovies.WebUI.Models.TMDB
             return MovieJsonModel.Results;
         }
 
-        public async Task GetContentFromTMDB(string url, int modelNo)
+        private async Task GetContentFromTMDB(string url, int modelNo)
         {
             string clientUrl = url;
             var restApiModel = new RestApiModel(url: clientUrl, method: Method.GET);

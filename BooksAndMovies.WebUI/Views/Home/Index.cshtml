@@ -1,22 +1,75 @@
-﻿@model List<MovieModel>
+﻿@model MovieTVShowViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="row">
+    <h4 class="text-center">Popular Movies</h4>
+
+    @foreach (var movie in Model.Movies)
+    {
+        if (movie.PosterPath != null)
+        {
+            <div class="col-md-3">
+                <div id="movie">
+                    <form method="post">
+                        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+                        <input type="hidden" name="title" asp-for="@movie.Title" />
+                        <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
+                        <input type="hidden" name="overview" asp-for="@movie.Overview" />
+                        <input type="hidden" name="posterPath" asp-for="@movie.PosterPath" />
+                        <input type="hidden" name="backdropPath" asp-for="@movie.BackdropPath" />
+                        <input type="hidden" name="releaseDate" asp-for="@movie.ReleaseDate" />
+                        <input type="hidden" name="voteAverage" asp-for="@movie.VoteAverage" />
+                        <input type="hidden" name="voteCount" asp-for="@movie.VoteCount" />
+                        <input type="hidden" name="popularity" asp-for="@movie.Popularity" />
+                        <h4>@movie.Title </h4>
+                        <p>@movie.Popularity</p>
+                        <p>@movie.VoteAverage</p>
+                        <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddMovieToWatchedlist" asp-controller="Movie"> Add to watchedlist</button>
+                        <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddMovieToWishList" asp-controller="Movie"> Add to wishlist </button>
+                        <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail" asp-controller="Movie"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
 </div>
 
-<div>
-    @foreach (var item in Model)
-    {
-        if (item.PosterPath != null)
-        {
+<div class="row mt-3">
+    <h4 class="text-center">Popular TV Shows</h4>
 
-            <h3>@item.Title</h3>
-            <img src="https://image.tmdb.org/t/p/w500/@item.PosterPath" alt="Movie Image" />
+    @foreach (var tvShow in Model.TVShows)
+
+    {
+        if (tvShow.PosterPath != null)
+        {
+            <div class="col-md-3">
+                <div id="tvShow">
+                    <form method="post">
+
+                        <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="TV Show Image" />
+                        <input type="hidden" name="name" asp-for="@tvShow.Name" />
+                        <input type="hidden" name="originalName" asp-for="@tvShow.OriginalName" />
+                        <input type="hidden" name="overview" asp-for="@tvShow.Overview" />
+                        <input type="hidden" name="posterPath" asp-for="@tvShow.PosterPath" />
+                        <input type="hidden" name="backdropPath" asp-for="@tvShow.BackdropPath" />
+                        <input type="hidden" name="firstAirDate" asp-for="@tvShow.FirstAirDate" />
+                        <input type="hidden" name="voteAverage" asp-for="@tvShow.VoteAverage" />
+                        <input type="hidden" name="voteCount" asp-for="@tvShow.VoteCount" />
+                        <input type="hidden" name="popularity" asp-for="@tvShow.Popularity" />
+                        <h4>@tvShow.Name </h4>
+                        <p>@tvShow.Popularity</p>
+                        <p>@tvShow.VoteAverage</p>
+                        <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddTVShowToWatchedlist" asp-controller="TVShow"> Add to watchedlist</button>
+                        <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddTVShowToWishList" asp-controller="TVShow"> Add to wishlist </button>
+                        <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="TVShowDetail" asp-controller="TVShow"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+
+            </div>
         }
     }
 </div>

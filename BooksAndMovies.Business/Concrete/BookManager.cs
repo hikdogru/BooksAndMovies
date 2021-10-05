@@ -18,12 +18,18 @@ namespace BooksAndMovies.Business.Concrete
         }
         public void Add(Book entity)
         {
-            _bookRepository.Add(entity);
+            if(IsBookExistInDatabase(entity : entity, databaseSaveType : entity.DatabaseSavingType ) == false)
+            {
+                _bookRepository.Add(entity);
+            }
         }
 
         public async Task AddAsync(Book entity)
         {
-            await _bookRepository.AddAsync(entity);
+            if (await IsBookExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
+            {
+                await _bookRepository.AddAsync(entity);
+            }
         }
 
         public void Delete(Book entity)
@@ -38,7 +44,7 @@ namespace BooksAndMovies.Business.Concrete
 
         public List<Book> GetAll(Expression<Func<Book, bool>> filter = null)
         {
-           return filter == null ? _bookRepository.GetAll() : _bookRepository.GetAll(filter);
+            return filter == null ? _bookRepository.GetAll() : _bookRepository.GetAll(filter);
         }
 
         public async Task<List<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null)
@@ -54,6 +60,18 @@ namespace BooksAndMovies.Business.Concrete
         public async Task<Book> GetByIdAsync(int id)
         {
             return await _bookRepository.GetByIdAsync(x => x.Id == id);
+        }
+
+        public bool IsBookExistInDatabase(Book entity, int databaseSaveType)
+        {
+            var isExist = GetAll(x => x.Thumbnail == entity.Thumbnail && x.DatabaseSavingType == databaseSaveType);
+            return isExist.Count == 0 ? false : true;
+        }
+
+        public async Task<bool> IsBookExistInDatabaseAsync(Book entity, int databaseSaveType)
+        {
+            var isExist = await GetAllAsync(x => x.Thumbnail == entity.Thumbnail && x.DatabaseSavingType == databaseSaveType);
+            return isExist.Count == 0 ? false : true;
         }
 
         public void Update(Book entity)

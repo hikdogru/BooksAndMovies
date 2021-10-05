@@ -20,12 +20,18 @@ namespace BooksAndMovies.Business.Concrete
         }
         public void Add(Movie entity)
         {
-            _movieRepository.Add(entity);
+            if (IsMovieExistInDatabase(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
+            {
+                _movieRepository.Add(entity);
+            }
         }
 
         public async Task AddAsync(Movie entity)
         {
-            await _movieRepository.AddAsync(entity);
+            if (await IsMovieExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
+            {
+                await _movieRepository.AddAsync(entity);
+            }
         }
 
         public void Delete(Movie entity)
@@ -43,7 +49,7 @@ namespace BooksAndMovies.Business.Concrete
             return filter == null ? _movieRepository.GetAll() : _movieRepository.GetAll(filter);
         }
 
-        
+
         public async Task<List<Movie>> GetAllAsync(Expression<Func<Movie, bool>> filter = null)
         {
             return filter == null ? await _movieRepository.GetAllAsync() : await _movieRepository.GetAllAsync(filter);
@@ -57,6 +63,18 @@ namespace BooksAndMovies.Business.Concrete
         public async Task<Movie> GetByIdAsync(int id)
         {
             return await _movieRepository.GetByIdAsync(x => x.Id == id);
+        }
+
+        public bool IsMovieExistInDatabase(Movie entity, int databaseSaveType)
+        {
+            var isExist = GetAll(x => x.BackdropPath == entity.BackdropPath && x.DatabaseSavingType == databaseSaveType);
+            return isExist.Count == 0 ? false : true;
+        }
+
+        public async Task<bool> IsMovieExistInDatabaseAsync(Movie entity, int databaseSaveType)
+        {
+            var isExist = await GetAllAsync(x => x.BackdropPath == entity.BackdropPath && x.DatabaseSavingType == databaseSaveType);
+            return isExist.Count == 0 ? false : true;
         }
 
         public void Update(Movie entity)

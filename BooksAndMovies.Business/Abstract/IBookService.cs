@@ -15,11 +15,15 @@ namespace BooksAndMovies.Business.Abstract
         void Add(Book entity);
         void Delete(Book entity);
         void Update(Book entity);
+        bool IsBookExistInDatabase(Book entity, int databaseSaveType);
+
 
         Task<Book> GetByIdAsync(int id);
         Task<List<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null);
         Task AddAsync(Book entity);
         Task DeleteAsync(Book entity);
         Task UpdateAsync(Book entity);
+        Task<bool> IsBookExistInDatabaseAsync(Book entity, int databaseSaveType);
+
     }
 }

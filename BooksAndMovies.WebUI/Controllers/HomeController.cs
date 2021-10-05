@@ -1,4 +1,6 @@
 ﻿using BooksAndMovies.WebUI.Models;
+using BooksAndMovies.WebUI.Models.TMDB;
+using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -22,25 +24,15 @@ namespace BooksAndMovies.WebUI.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(GetContentFromImdb());
+            string movieClientUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
+            string tvShowClientUrl = "https://api.themoviedb.org/3/tv/top_rated?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
+            var movies = await new TMDBModel().GetMoviesFromTMDB(url: movieClientUrl);
+            var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: tvShowClientUrl);
+            return View(model: new MovieTVShowViewModel { Movies = movies, TVShows = tvShows });
         }
 
-
-        private List<MovieModel> GetContentFromImdb()
-        {
-            var client = new RestClient("https://api.themoviedb.org/3/search/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US&query=the+office&page=1");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            IRestResponse response =  client.Execute(request);
-            var settings = new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() }
-            };
-            var content = JsonConvert.DeserializeObject<MovieJsonModel>(response.Content, settings);
-            return content.Results;
-        }
 
         public IActionResult Privacy()
         {

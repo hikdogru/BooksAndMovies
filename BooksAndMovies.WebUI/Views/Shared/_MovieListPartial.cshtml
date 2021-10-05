@@ -18,6 +18,7 @@
                     <form method="post">
                         <img src="@movie.BackdropPath" alt="movie Image" />
                         <input type="hidden" name="id" asp-for="@movie.Id" />
+                        <input type="hidden" name="title" asp-for="@movie.Title" />
                         <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
                         <input type="hidden" name="overview" asp-for="@movie.Overview" />
                         <input type="hidden" name="posterPath" asp-for="@movie.PosterPath" />

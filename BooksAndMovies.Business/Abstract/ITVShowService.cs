@@ -15,11 +15,14 @@ namespace BooksAndMovies.Business.Abstract
         void Add(TVShow entity);
         void Delete(TVShow entity);
         void Update(TVShow entity);
+        bool IsTVShowExistInDatabase(TVShow entity, int databaseSaveType);
 
         Task<TVShow> GetByIdAsync(int id);
         Task<List<TVShow>> GetAllAsync(Expression<Func<TVShow, bool>> filter = null);
         Task AddAsync(TVShow entity);
         Task DeleteAsync(TVShow entity);
         Task UpdateAsync(TVShow entity);
+        Task<bool> IsTVShowExistInDatabaseAsync(TVShow entity, int databaseSaveType);
+
     }
 }
