@@ -13,6 +13,7 @@ namespace BooksAndMovies.Entity
         private string _backdropImageUrl;
 
         public int Id { get; set; }
+        public int RealId { get; set; }
         /// <summary>
         /// Media's image url
         /// </summary>

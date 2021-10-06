@@ -30,13 +30,13 @@
                         <input type="hidden" asp-for="@book.Thumbnail" />
                         <input type="hidden" asp-for="@book.SmallThumbnail" />
 
-                        <h4>@book.Title </h4>
+                        <h5>@book.Title </h5>
+                        <p>@book.Author </p>
                         <p>@book.AverageRating</p>
                         <p>@book.PageCount</p>
                         @if (Model.BookListType == "Wishlist")
                         {
                             <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveBookToFinishedlist"> Move to finishedlist</button>
-
                         }
 
                         else if (Model.BookListType == "Finishedlist")

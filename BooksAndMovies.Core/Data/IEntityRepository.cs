@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BooksAndMovies.Core.Data.Abstract
+namespace BooksAndMovies.Core.Data
 {
     public interface IEntityRepository<T> where T : class, IEntity, new()
     {

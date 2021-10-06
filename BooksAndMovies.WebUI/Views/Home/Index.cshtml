@@ -16,6 +16,7 @@
                 <div id="movie">
                     <form method="post">
                         <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+                        <input type="hidden" name="id" asp-for="@movie.Id" />
                         <input type="hidden" name="title" asp-for="@movie.Title" />
                         <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
                         <input type="hidden" name="overview" asp-for="@movie.Overview" />
@@ -50,6 +51,7 @@
                 <div id="tvShow">
                     <form method="post">
                         <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="TV Show Image" />
+                        <input type="hidden" name="id" asp-for="@tvShow.Id" />
                         <input type="hidden" name="name" asp-for="@tvShow.Name" />
                         <input type="hidden" name="originalName" asp-for="@tvShow.OriginalName" />
                         <input type="hidden" name="overview" asp-for="@tvShow.Overview" />

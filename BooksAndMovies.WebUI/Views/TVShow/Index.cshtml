@@ -16,6 +16,8 @@
                 <div id="tvShow">
                     <form method="post">
                         <img src="https://image.tmdb.org/t/p/w500/@tvShow.PosterPath" alt="tvShow Image" />
+                        <input type="hidden" name="id" asp-for="@tvShow.Id" />
+                        <input type="hidden" name="realId" asp-for="@tvShow.RealId" />
                         <input type="hidden" name="name" asp-for="@tvShow.Name" />
                         <input type="hidden" name="originalName" asp-for="@tvShow.OriginalName" />
                         <input type="hidden" name="overview" asp-for="@tvShow.Overview" />

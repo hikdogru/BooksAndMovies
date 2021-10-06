@@ -34,6 +34,8 @@ namespace BooksAndMovies.WebUI.Controllers
         }
         #endregion ctor
 
+        #region methods
+
         public async Task<IActionResult> Index()
         {
             string clientUrl = "https://www.googleapis.com/books/v1/volumes?q=flowers&orderBy=newest&key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=20";
@@ -179,5 +181,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             await _bookService.DeleteAsync(new Book { Id = id });
         }
+
+        #endregion methods
     }
 }

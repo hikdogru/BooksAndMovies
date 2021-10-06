@@ -1,4 +1,4 @@
-﻿using BooksAndMovies.Core.Data.Abstract;
+﻿using BooksAndMovies.Core.Data;
 using BooksAndMovies.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;

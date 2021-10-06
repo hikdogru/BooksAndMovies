@@ -11,11 +11,12 @@
     {
         if (tvShow.BackdropPath != null)
         {
-            <div class="col-md-3">
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 <div id="tvShow">
                     <form method="post">
                         <img src="@tvShow.BackdropPath" alt="tvShow Image" />
                         <input type="hidden" name="id" asp-for="@tvShow.Id" />
+                        <input type="hidden" name="realId" asp-for="@tvShow.RealId" />
                         <input type="hidden" name="name" asp-for="@tvShow.Name" />
                         <input type="hidden" name="originalName" asp-for="@tvShow.OriginalName" />
                         <input type="hidden" name="overview" asp-for="@tvShow.Overview" />
@@ -33,9 +34,10 @@
                             <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveTVShowToWatchedlist"> Move to watchedlist</button>
 
                         }
-                        else if(Model.TVShowListType == "Watchedlist")
+                        else if (Model.TVShowListType == "Watchedlist")
                         {
                             <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddTVShowToFavouritelist"> Add to favourites</button>
+                            <button type="submit" class="btn btn-success btn-sm mb-2" asp-action="RateTVShow"> Rate TV Show</button>
 
                         }
                         <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.TVShowListType </button>

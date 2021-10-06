@@ -1,0 +1,55 @@
+﻿@model TVShowModel
+
+
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="text-center">
+            <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="TV Show Image" />
+            <h4>@Model.Name </h4>
+            <p>@Model.Popularity</p>
+            <p>@Model.VoteAverage</p>
+            <form method="post">
+                <input type="hidden" name="tvShowId" id="tvShowId" value="@Model.RealId" />
+                <input type="text" placeholder="TV Show Id" name="tvShowRateValue" id="tvShowRateValue" />
+                <input type="submit" asp-action="Rate" />
+            </form>
+        </div>
+
+    </div>
+}
+
+
+
+else
+{
+    @if (ViewBag.Rate != null)
+    {
+        <div class="row">
+            <strong>
+                Total rated tvshow count is "@ViewBag.Rate.Count"
+            </strong>
+            @foreach (var tvShow in ViewBag.Rate)
+            {
+                if (tvShow.BackdropPath != null)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div id="tvShow">
+                            
+                                <img src="https://image.tmdb.org/t/p/w500/@tvShow.BackdropPath" alt="tvShow Image" />
+
+                                <h4>@tvShow.Name </h4>
+                                <p>@tvShow.OriginalName</p>
+                                <p>@tvShow.VoteAverage</p>
+                            
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+}
+
+
+

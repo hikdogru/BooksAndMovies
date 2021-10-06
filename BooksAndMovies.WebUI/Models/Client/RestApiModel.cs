@@ -28,7 +28,7 @@ namespace BooksAndMovies.WebUI.Models.Client
             GetRestRequest();
         }
 
-        private void GetRestRequest()
+        public void GetRestRequest()
         {
             Request = new RestRequest(_method);
         }
@@ -37,6 +37,13 @@ namespace BooksAndMovies.WebUI.Models.Client
         {
             return await Client.ExecuteAsync(Request);
         }
+
+        public IRestResponse GetRestResponse(RestRequest request = null)
+        {
+            return Client.Execute(request);
+        }
+
+
 
 
 
