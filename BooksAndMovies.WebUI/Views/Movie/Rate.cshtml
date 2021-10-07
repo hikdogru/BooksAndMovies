@@ -1,0 +1,52 @@
+﻿@model MovieModel
+
+
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="text-center">
+            <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="TV Show Image" />
+            <h4>@Model.Title </h4>
+            <p>@Model.Popularity</p>
+            <p><i class="fa fa-star" aria-hidden="true"></i> @Model.VoteAverage</p>
+            <form method="post">
+                <input type="hidden" name="movieId" id="movieId" value="@Model.RealId" />
+                <input type="text" placeholder="Movie Rate Value" name="movieRateValue" id="movieRateValue" />
+                <input type="submit" asp-action="Rate" />
+            </form>
+        </div>
+
+    </div>
+}
+
+
+
+else
+{
+    @if (ViewBag.Rate != null)
+    {
+        <div class="row">
+            <strong>
+                Total rated movie count is "@ViewBag.Rate.Count"
+            </strong>
+            @foreach (var movie in ViewBag.Rate)
+            {
+                if (movie.BackdropPath != null)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div id="movie">
+                            <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="tvShow Image" />
+                            <h4>@movie.Title </h4>
+                            <p>@movie.OriginalTitle</p>
+                            <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.VoteAverage</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+}
+
+
+

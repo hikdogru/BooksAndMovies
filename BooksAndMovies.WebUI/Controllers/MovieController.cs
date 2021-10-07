@@ -11,6 +11,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BooksAndMovies.WebUI.Controllers
@@ -120,6 +121,8 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task SaveMovieToDatabase(MovieModel model, int databaseSavingType)
         {
+            model.RealId = model.Id;
+            model.Id = 0;
             var movie = _mapper.Map<Movie>(model);
             movie.DatabaseSavingType = databaseSavingType;
             await _movieService.AddAsync(movie);
@@ -162,6 +165,37 @@ namespace BooksAndMovies.WebUI.Controllers
         private async Task RemoveMovieFromDatabase(int id)
         {
             await _movieService.DeleteAsync(new Movie { Id = id });
+        }
+
+        [HttpPost]
+        public IActionResult RateMovie(MovieModel model)
+        {
+            return View("Rate", model: model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Rate()
+        {
+            ViewBag.Rate = await GetMyRatings();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Rate(double movieRateValue, int movieId)
+        {
+            string clientUrl = $"https://api.themoviedb.org/3/movie/{movieId}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
+            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { value = movieRateValue }));
+            var model = new TMDBModel();
+            model.PostContentToTMDB(url: clientUrl, data: data);
+            ViewBag.Rate = await GetMyRatings();
+            return View("Rate");
+        }
+
+        private async Task<List<MovieModel>> GetMyRatings()
+        {
+            string clientUrl = "https://api.themoviedb.org/3/account/%7Baccount_id%7D/rated/movies?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
+            var tvShows = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
+            return tvShows;
         }
     }
 }

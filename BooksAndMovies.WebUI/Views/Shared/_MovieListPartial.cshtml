@@ -18,6 +18,7 @@
                     <form method="post">
                         <img src="@movie.BackdropPath" alt="movie Image" />
                         <input type="hidden" name="id" asp-for="@movie.Id" />
+                        <input type="hidden" name="realId" asp-for="@movie.RealId" />
                         <input type="hidden" name="title" asp-for="@movie.Title" />
                         <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
                         <input type="hidden" name="overview" asp-for="@movie.Overview" />
@@ -38,6 +39,8 @@
                         else if (Model.MovieListType == "Watchedlist")
                         {
                             <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddMovieToFavouritelist"> Add to favourites</button>
+                            <button type="submit" class="btn btn-success btn-sm mb-2" asp-action="RateMovie"> Rate Movie</button>
+
 
                         }
                         <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.MovieListType </button>

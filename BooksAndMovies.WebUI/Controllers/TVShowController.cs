@@ -179,7 +179,7 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Rate(int tvShowRateValue, int tvShowId)
+        public async Task<IActionResult> Rate(double tvShowRateValue, int tvShowId)
         {
             string clientUrl = $"https://api.themoviedb.org/3/tv/{tvShowId}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
             var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { value = tvShowRateValue }));

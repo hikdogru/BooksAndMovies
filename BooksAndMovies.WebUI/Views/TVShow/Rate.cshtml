@@ -9,10 +9,10 @@
             <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="TV Show Image" />
             <h4>@Model.Name </h4>
             <p>@Model.Popularity</p>
-            <p>@Model.VoteAverage</p>
+             <p><i class="fa fa-star" aria-hidden="true"></i> @Model.VoteAverage</p>
             <form method="post">
                 <input type="hidden" name="tvShowId" id="tvShowId" value="@Model.RealId" />
-                <input type="text" placeholder="TV Show Id" name="tvShowRateValue" id="tvShowRateValue" />
+                <input type="text" placeholder="TV Show Rate Value" name="tvShowRateValue" id="tvShowRateValue" />
                 <input type="submit" asp-action="Rate" />
             </form>
         </div>
@@ -41,7 +41,7 @@ else
 
                                 <h4>@tvShow.Name </h4>
                                 <p>@tvShow.OriginalName</p>
-                                <p>@tvShow.VoteAverage</p>
+                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @tvShow.VoteAverage</p>
                             
                         </div>
                     </div>
