@@ -6,12 +6,12 @@
 {
     <div class="row">
         <div class="text-center">
-            <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="TV Show Image" />
+            <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="Movie Image" />
             <h4>@Model.Title </h4>
-            <p>@Model.Popularity</p>
-            <p><i class="fa fa-star" aria-hidden="true"></i> @Model.VoteAverage</p>
+            <p>@(Model.Popularity !=0 ? Model.Popularity : "")</p>
+            <p><i class="fa fa-star" aria-hidden="true"></i> @(Model.VoteAverage != 0 ? Model.VoteAverage : Model.Rating )</p>
             <form method="post">
-                <input type="hidden" name="movieId" id="movieId" value="@Model.RealId" />
+                <input type="hidden" name="movieId" id="movieId" value="@(Model.RealId == 0 ? Model.Id : Model.RealId )" />
                 <input type="text" placeholder="Movie Rate Value" name="movieRateValue" id="movieRateValue" />
                 <input type="submit" asp-action="Rate" />
             </form>
@@ -38,12 +38,16 @@ else
                         <div id="movie">
                             <form method="post">
 
-                                <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="tvShow Image" />
+                                <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="movie Image" />
                                 <input type="hidden" name="id" id="id" value="@movie.Id" />
+                                <input type="hidden" name="posterPath" id="posterPath" value="@movie.PosterPath" />
+                                <input type="hidden" name="title" id="title" value="@movie.Title" />
+                                <input type="hidden" name="rating" id="rating" value="@movie.Rating" />
                                 <h4>@movie.Title </h4>
                                 <p>@movie.OriginalTitle</p>
-                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.VoteAverage</p>
+                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.Rating</p>
                                 <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
+                                <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateMovie" />
 
                             </form>
                         </div>

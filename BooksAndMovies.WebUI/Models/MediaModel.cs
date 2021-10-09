@@ -18,6 +18,7 @@ namespace BooksAndMovies.WebUI.Models
         public string BackdropPath { get; set; }
         public int VoteCount { get; set; }
         public double VoteAverage { get; set; }
+        public double Rating { get; set; }
         public string Overview { get; set; }
         public int DatabaseSavingType { get; set; }
     }

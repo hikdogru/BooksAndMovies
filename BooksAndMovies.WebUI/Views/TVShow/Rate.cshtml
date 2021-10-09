@@ -4,20 +4,24 @@
 
 @if (Model != null)
 {
+
     <div class="row">
         <div class="text-center">
             <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" alt="TV Show Image" />
             <h4>@Model.Name </h4>
-            <p>@Model.Popularity</p>
-             <p><i class="fa fa-star" aria-hidden="true"></i> @Model.VoteAverage</p>
+            <p>@(Model.Popularity !=0 ? Model.Popularity : "") </p>
+            <p><i class="fa fa-star" aria-hidden="true"></i> @(Model.VoteAverage != 0 ? Model.VoteAverage : Model.Rating )</p>
             <form method="post">
-                <input type="hidden" name="tvShowId" id="tvShowId" value="@Model.RealId" />
+                <input type="hidden" name="tvShowId" id="tvShowId" value="@(Model.RealId == 0 ? Model.Id : Model.RealId )" />
                 <input type="text" placeholder="TV Show Rate Value" name="tvShowRateValue" id="tvShowRateValue" />
-                <input type="submit" asp-action="Rate" />
+                <input type="submit" class="btn btn-warning btn-sm mb-2"  value="Rate" asp-action="Rate" />
             </form>
         </div>
 
     </div>
+
+
+
 }
 
 
@@ -38,11 +42,15 @@ else
                         <div id="tvShow">
                             <form method="post">
                                 <img src="https://image.tmdb.org/t/p/w500/@tvShow.BackdropPath" alt="tvShow Image" />
-                                <input type="hidden" name="id" id="id" value="@tvShow.Id"/>
+                                <input type="hidden" name="id" id="id" value="@tvShow.Id" />
+                                <input type="hidden" name="posterPath" id="posterPath" value="@tvShow.PosterPath" />
+                                <input type="hidden" name="name" id="name" value="@tvShow.Name" />
+                                <input type="hidden" name="rating" id="rating" value="@tvShow.Rating" />
                                 <h4>@tvShow.Name </h4>
                                 <p>@tvShow.OriginalName</p>
-                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @tvShow.VoteAverage</p>
-                                <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating"  asp-action="DeleteRating" />
+                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @tvShow.Rating</p>
+                                <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
+                                <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateTVShow" />
                             </form>
                         </div>
                     </div>
