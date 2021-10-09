@@ -36,10 +36,16 @@ else
                 {
                     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                         <div id="movie">
-                            <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="tvShow Image" />
-                            <h4>@movie.Title </h4>
-                            <p>@movie.OriginalTitle</p>
-                            <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.VoteAverage</p>
+                            <form method="post">
+
+                                <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="tvShow Image" />
+                                <input type="hidden" name="id" id="id" value="@movie.Id" />
+                                <h4>@movie.Title </h4>
+                                <p>@movie.OriginalTitle</p>
+                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.VoteAverage</p>
+                                <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
+
+                            </form>
                         </div>
                     </div>
                 }

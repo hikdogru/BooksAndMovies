@@ -46,8 +46,15 @@ namespace BooksAndMovies.WebUI.Models.TMDB
             var client = new RestApiModel(url: url, method: Method.POST);
             var request = client.Request;
             request.AddParameter("application/json", json, ParameterType.RequestBody);
-           var response =  client.GetRestResponse(request);
+            var response = client.GetRestResponse(request);
 
+        }
+
+        public void DeleteContentFromTMDB(string url)
+        {
+            var client = new RestApiModel(url: url, Method.DELETE);
+            var request = client.Request;
+            var response = client.GetRestResponse(request);
         }
     }
 }

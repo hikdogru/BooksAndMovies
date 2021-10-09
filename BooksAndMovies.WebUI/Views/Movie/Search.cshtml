@@ -23,21 +23,8 @@
                     <div id="movie">
                         <form method="post">
                             <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
-                            <input type="hidden" name="id" asp-for="@movie.Id" />
-                            <input type="hidden" name="realId" asp-for="@movie.RealId" />
-                            <input type="hidden" name="title" value="@movie.Title" />
-                            <input type="hidden" name="originalTitle" asp-for="@movie.OriginalTitle" />
-                            <input type="hidden" name="overview" asp-for="@movie.Overview" />
-                            <input type="hidden" name="posterPath" asp-for="@movie.PosterPath" />
-                            <input type="hidden" name="backdropPath" asp-for="@movie.BackdropPath" />
-                            <input type="hidden" name="releaseDate" asp-for="@movie.ReleaseDate" />
-                            <input type="hidden" name="voteAverage" asp-for="@movie.VoteAverage" />
-                            <input type="hidden" name="voteCount" asp-for="@movie.VoteCount" />
-                            <input type="hidden" name="popularity" asp-for="@movie.Popularity" />
+                            @await Html.PartialAsync("_MovieInputsPartial", movie)
 
-                            <h4>@movie.Title </h4>
-                            <p>@movie.OriginalTitle</p>
-                            <p>@movie.VoteAverage</p>
                             <button asp-action="AddMovieToWishList" type="submit" class="btn btn-primary btn-sm mb-2">Add to Wishlist</button>
                             <button asp-action="AddMovieToWatchedList" type="submit" class="btn btn-secondary btn-sm mb-2">Add to WatchedList</button>
                             <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>

@@ -58,7 +58,8 @@ namespace BooksAndMovies.WebUI.Controllers
         private async Task<MovieViewModel> CreateMovieModel(string movieListType, int databaseSavingType)
         {
             var movies = await _movieService.GetAllAsync(x => x.DatabaseSavingType == databaseSavingType);
-            var movieViewModel = new MovieViewModel { Movies = movies, MovieListType = movieListType };
+            var moviesModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
+            var movieViewModel = new MovieViewModel { Movies = moviesModel, MovieListType = movieListType };
             return movieViewModel;
         }
 
@@ -187,6 +188,16 @@ namespace BooksAndMovies.WebUI.Controllers
             var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { value = movieRateValue }));
             var model = new TMDBModel();
             model.PostContentToTMDB(url: clientUrl, data: data);
+            ViewBag.Rate = await GetMyRatings();
+            return View("Rate");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRating(int id)
+        {
+            string clientUrl = $"https://api.themoviedb.org/3/movie/{id}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
+            var model = new TMDBModel();
+            model.DeleteContentFromTMDB(url: clientUrl);
             ViewBag.Rate = await GetMyRatings();
             return View("Rate");
         }

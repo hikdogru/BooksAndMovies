@@ -1,4 +1,5 @@
 ﻿using BooksAndMovies.Entity;
+using BooksAndMovies.WebUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace BooksAndMovies.WebUI.ViewModels
 {
     public class TVShowViewModel
     {
-        public List<TVShow> TVShows { get; set; }
+        public List<TVShowModel> TVShows { get; set; }
         /// <summary>
         /// Wishlist or Watchedlist
         /// </summary>
