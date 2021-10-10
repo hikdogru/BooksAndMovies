@@ -40,7 +40,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             string clientUrl = "https://www.googleapis.com/books/v1/volumes?q=flowers&orderBy=newest&key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=20";
             var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
-            return View(model : books);
+            return View(model: books);
         }
 
         public async Task<IActionResult> GetWishlist()
@@ -64,7 +64,8 @@ namespace BooksAndMovies.WebUI.Controllers
         private async Task<BookViewModel> CreateBookModel(string bookListType, int databaseSavingType)
         {
             var books = await _bookService.GetAllAsync(x => x.DatabaseSavingType == databaseSavingType);
-            var bookViewModel = new BookViewModel { Books =books, BookListType = bookListType };
+            var booksModel = books.Select(x => _mapper.Map<BookModel>(x)).ToList();
+            var bookViewModel = new BookViewModel { Books = booksModel, BookListType = bookListType };
             return bookViewModel;
         }
 
@@ -159,21 +160,21 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveBookFromWishlist(int id)
         {
-           await RemoveBookFromDatabase(id);
+            await RemoveBookFromDatabase(id);
             return RedirectToAction("GetWishlist");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveBookFromFinishedlist(int id)
         {
-           await RemoveBookFromDatabase(id);
+            await RemoveBookFromDatabase(id);
             return RedirectToAction("GetFinishedlist");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveBookFromFavouritelist(int id)
         {
-           await RemoveBookFromDatabase(id);
+            await RemoveBookFromDatabase(id);
             return RedirectToAction("GetFinishedlist");
         }
 

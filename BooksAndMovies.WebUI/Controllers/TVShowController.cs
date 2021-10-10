@@ -11,6 +11,7 @@ using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,20 @@ namespace BooksAndMovies.WebUI.Controllers
 {
     public class TVShowController : Controller
     {
+        #region fields
         private readonly ITVShowService _tvShowService;
         private readonly IMapper _mapper;
+        #endregion fields
 
+        #region ctor
         public TVShowController(ITVShowService tvShowService, IMapper mapper)
         {
             _tvShowService = tvShowService;
             _mapper = mapper;
         }
+        #endregion ctor
+
+        #region methods
         public async Task<IActionResult> Index()
         {
             string clientUrl = "https://api.themoviedb.org/3/tv/top_rated?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US&page=1";
@@ -206,5 +213,6 @@ namespace BooksAndMovies.WebUI.Controllers
             var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
             return tvShows;
         }
+        #endregion methods
     }
 }

@@ -22,5 +22,7 @@ namespace BooksAndMovies.WebUI.Models
         public int PageCount { get; set; }
         public double AverageRating { get; set; }
         public BookImageModel ImageLinks { get; set; }
+        public string Thumbnail { get; set; }
+        public string SmallThumbnail { get; set; }
     }
 }

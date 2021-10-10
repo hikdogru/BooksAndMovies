@@ -18,15 +18,20 @@ namespace BooksAndMovies.WebUI.Controllers
 {
     public class MovieController : Controller
     {
+        #region fields
         private readonly IMovieService _movieService;
         private readonly IMapper _mapper;
+        #endregion fields
 
-
+        #region ctor
         public MovieController(IMovieService movieService, IMapper mapper)
         {
             _movieService = movieService;
             _mapper = mapper;
         }
+        #endregion ctor
+
+        #region methods
         public async Task<IActionResult> Index()
         {
             string clientUrl = "https://api.themoviedb.org/3/movie/popular?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
@@ -208,5 +213,7 @@ namespace BooksAndMovies.WebUI.Controllers
             var tvShows = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
             return tvShows;
         }
+
+        #endregion methods
     }
 }

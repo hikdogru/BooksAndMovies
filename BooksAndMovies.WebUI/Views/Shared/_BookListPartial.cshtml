@@ -18,22 +18,9 @@
             <div class="col-md-3">
                 <div id="book">
                     <form method="post">
-                        <img src="@book.SmallThumbnail" alt="book Image" id="bookImage" />
-                        <input type="hidden" name="id" asp-for="@book.Id" />
-                        <input type="hidden" asp-for="@book.Title" />
-                        <input type="hidden" asp-for="@book.Publisher" />
-                        <input type="hidden" asp-for="@book.Description" />
-                        <input type="hidden" asp-for="@book.Author" />
-                        <input type="hidden" asp-for="@book.Category" />
-                        <input type="hidden" asp-for="@book.PageCount" />
-                        <input type="hidden" asp-for="@book.AverageRating" />
-                        <input type="hidden" asp-for="@book.Thumbnail" />
-                        <input type="hidden" asp-for="@book.SmallThumbnail" />
 
-                        <h5>@book.Title </h5>
-                        <p>@book.Author </p>
-                        <p>@book.AverageRating</p>
-                        <p>@book.PageCount</p>
+                        @await Html.PartialAsync("_BookInputsPartial", book)
+
                         @if (Model.BookListType == "Wishlist")
                         {
                             <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveBookToFinishedlist"> Move to finishedlist</button>
