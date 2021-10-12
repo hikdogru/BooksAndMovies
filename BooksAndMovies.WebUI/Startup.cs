@@ -35,6 +35,7 @@ namespace BooksAndMovies.WebUI
 
             // DbContext
             services.AddDbContext<BookAndMovieContext>(option => option.UseSqlServer(Configuration.GetConnectionString("BookAndMovieConnectionString")));
+           
 
             // WantToRead
             services.AddScoped<IBookService, BookManager>();
