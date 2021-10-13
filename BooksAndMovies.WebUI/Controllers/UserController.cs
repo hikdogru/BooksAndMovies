@@ -1,4 +1,5 @@
-﻿using BooksAndMovies.Entity;
+﻿using BooksAndMovies.Business.Abstract;
+using BooksAndMovies.Entity;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +12,13 @@ namespace BooksAndMovies.WebUI.Controllers
 {
     public class UserController : Controller
     {
-        
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -28,12 +35,14 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var messages = ModelState.ToList();
                 return View(user);
             }
 
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = passwordHash;
+            _userService.Add(entity: user);
 
+            TempData["SuccessMessage"] = "Account created successfully!";
 
             return View();
         }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BooksAndMovies.Data.Concrete.Ef
 {
-    public class EfMovieRepository : EfEntityRepositoryBase<Movie, BookAndMovieContext> , IMovieRepository
+    public class EfUserRepository : EfEntityRepositoryBase<User, BookAndMovieContext>, IUserRepository
     {
-        public EfMovieRepository(BookAndMovieContext context) : base(context : context)
+        public EfUserRepository(BookAndMovieContext context) : base(context)
         {
         }
     }

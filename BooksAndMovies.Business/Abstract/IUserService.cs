@@ -15,7 +15,7 @@ namespace BooksAndMovies.Business.Abstract
         void Add(User entity);
         void Delete(User entity);
         void Update(User entity);
-        bool IsUserExistInDatabase(User entity, int databaseSaveType);
+        bool IsUserExistInDatabase(User entity);
 
 
         Task<User> GetByIdAsync(int id);
@@ -23,6 +23,6 @@ namespace BooksAndMovies.Business.Abstract
         Task AddAsync(User entity);
         Task DeleteAsync(User entity);
         Task UpdateAsync(User entity);
-        Task<bool> IsUserExistInDatabaseAsync(User entity, int databaseSaveType);
+        Task<bool> IsUserExistInDatabaseAsync(User entity);
     }
 }
