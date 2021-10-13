@@ -2,16 +2,11 @@
 using BooksAndMovies.Business.Abstract;
 using BooksAndMovies.Entity;
 using BooksAndMovies.WebUI.Models;
-using BooksAndMovies.WebUI.Models.Client;
 using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using RestSharp;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

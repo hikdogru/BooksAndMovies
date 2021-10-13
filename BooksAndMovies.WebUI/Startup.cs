@@ -15,6 +15,10 @@ using BooksAndMovies.Data.Concrete.Ef;
 using BooksAndMovies.Business.Abstract;
 using BooksAndMovies.Business.Concrete;
 using BooksAndMovies.Data.Abstract;
+using FluentValidation.AspNetCore;
+using BooksAndMovies.Entity;
+using FluentValidation;
+using BooksAndMovies.Business.ValidationRules.FluentValidation;
 
 namespace BooksAndMovies.WebUI
 {
@@ -49,7 +53,11 @@ namespace BooksAndMovies.WebUI
             services.AddScoped<ITVShowService, TVShowManager>();
             services.AddScoped<ITVShowRepository, EfTVShowRepository>();
 
-            services.AddControllersWithViews();
+            // Fluent validation
+            services.AddControllersWithViews().AddFluentValidation() ;
+            services.AddTransient<IValidator<User> , UserValidator>(); 
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

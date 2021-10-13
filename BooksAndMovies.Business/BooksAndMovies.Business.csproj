@@ -9,4 +9,8 @@
     <ProjectReference Include="..\BooksAndMovies.Entity\BooksAndMovies.Entity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
+  </ItemGroup>
+
 </Project>
