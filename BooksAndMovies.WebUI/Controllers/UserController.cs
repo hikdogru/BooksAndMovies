@@ -1,5 +1,6 @@
 ﻿using BooksAndMovies.Business.Abstract;
 using BooksAndMovies.Entity;
+using BooksAndMovies.WebUI.Models.UserAccount;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -41,14 +42,39 @@ namespace BooksAndMovies.WebUI.Controllers
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
             user.Password = passwordHash;
             _userService.Add(entity: user);
-
-            TempData["SuccessMessage"] = "Account created successfully!";
+            TempData["SuccessMessage"] = "Account created successfuly!";
 
             return View();
         }
 
         public IActionResult Login()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(User user)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                if(string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+                {
+                    return View(model: user);
+                }
+            }
+            var account = _userService.GetAll(x => x.Email == user.Email).SingleOrDefault();
+            bool passwordVerified = BCrypt.Net.BCrypt.Verify(user.Password, account.Password);
+            if (account != null && passwordVerified)
+            {
+                TempData["SuccessMessage"] = "Login successfuly!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Login failed!";
+            }
+
+
             return View();
         }
     }

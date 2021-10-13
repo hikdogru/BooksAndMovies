@@ -1,5 +1,13 @@
 ﻿@model User
 
+@section Styles
+{
+    <style>
+        div.mb-3 > span {
+            color: red;
+        }
+    </style>
+}
 
 
 <h3>Register page</h3>
@@ -34,6 +42,6 @@
 
     @if (TempData["SuccessMessage"] != null)
     {
-        <span>@TempData["SuccessMessage"]</span>
+        <span class="alert alert-success">@TempData["SuccessMessage"]</span>
     }
 </form>
