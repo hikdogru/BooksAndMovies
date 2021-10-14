@@ -21,11 +21,8 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <span class="alert alert-success">@TempData["SuccessMessage"]</span>
-    }
-    else if (TempData["ErrorMessage"] != null)
+
+    @if (TempData["ErrorMessage"] != null)
     {
         <span class="alert alert-danger">@TempData["ErrorMessage"]</span>
     }

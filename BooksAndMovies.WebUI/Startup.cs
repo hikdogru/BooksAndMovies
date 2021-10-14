@@ -34,6 +34,9 @@ namespace BooksAndMovies.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
+
             //Automapper
             services.AddAutoMapper(typeof(Startup));
 
@@ -57,9 +60,18 @@ namespace BooksAndMovies.WebUI
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<IUserRepository, EfUserRepository>();
 
+           
+
             // Fluent validation
             services.AddControllersWithViews().AddFluentValidation() ;
-            services.AddTransient<IValidator<User> , UserValidator>(); 
+            services.AddTransient<IValidator<User> , UserValidator>();
+
+            // Session
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
 
 
         }
@@ -83,6 +95,9 @@ namespace BooksAndMovies.WebUI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // Session
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

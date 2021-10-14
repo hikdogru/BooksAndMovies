@@ -2,11 +2,13 @@
 using BooksAndMovies.Entity;
 using BooksAndMovies.WebUI.Models.UserAccount;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BooksAndMovies.WebUI.Controllers
@@ -14,6 +16,8 @@ namespace BooksAndMovies.WebUI.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+
+        public object Session { get; private set; }
 
         public UserController(IUserService userService)
         {
@@ -67,15 +71,22 @@ namespace BooksAndMovies.WebUI.Controllers
             bool passwordVerified = BCrypt.Net.BCrypt.Verify(user.Password, account.Password);
             if (account != null && passwordVerified)
             {
-                TempData["SuccessMessage"] = "Login successfuly!";
+                HttpContext.Session.SetString(key: "email", value: account.Email);
+                HttpContext.Session.SetString(key: "firstname", value: account.FirstName);
+                return RedirectToAction("Index", "Home");
             }
-            else
-            {
-                TempData["ErrorMessage"] = "Login failed!";
-            }
-
-
-            return View();
+            TempData["ErrorMessage"] = "Login failed!";
+            return View(model : user);
         }
+
+       
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
     }
 }
