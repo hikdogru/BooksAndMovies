@@ -16,15 +16,19 @@
         </strong>
         @foreach (var bookInfo in Model)
         {
-            var book = @bookInfo.VolumeInfo;
+            var book = bookInfo.VolumeInfo;
             if (book.ImageLinks != null)
             {
                 <div class="col-md-3">
                     <div id="book" class="mb-3">
                         <form method="post">
                             @await Html.PartialAsync("_BookInputsPartial", book)
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToWishlist">Want to Read</button>
-                            <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                            @if (Context.Session.GetString("email") != null)
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToWishlist">Want to Read</button>
+                                <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddBookToFinishedlist">Add to Finishedlist</button>
+                            }
+
                             <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="BookDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </form>
                     </div>

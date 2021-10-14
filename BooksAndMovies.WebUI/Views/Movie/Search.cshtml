@@ -25,10 +25,13 @@
                             <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
                             @await Html.PartialAsync("_MovieInputsPartial", movie)
 
-                            <button asp-action="AddMovieToWishList" type="submit" class="btn btn-primary btn-sm mb-2">Add to Wishlist</button>
-                            <button asp-action="AddMovieToWatchedList" type="submit" class="btn btn-secondary btn-sm mb-2">Add to WatchedList</button>
-                            <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                            @if (Context.Session.GetString("email") != null)
+                            {
+                                <button asp-action="AddMovieToWishList" type="submit" class="btn btn-primary btn-sm mb-2">Add to Wishlist</button>
+                                <button asp-action="AddMovieToWatchedList" type="submit" class="btn btn-secondary btn-sm mb-2">Add to WatchedList</button>
+                            }
 
+                            <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
                         </form>
                     </div>
                 </div>

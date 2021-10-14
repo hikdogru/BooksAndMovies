@@ -14,6 +14,7 @@ namespace BooksAndMovies.Data.Concrete.Ef
         public DbSet<Movie> Movies { get; set; }
         public DbSet<TVShow> TVShows{ get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserMovie> UserMovies { get; set; }
 
 
         public BookAndMovieContext(DbContextOptions<BookAndMovieContext> options) : base(options: options)

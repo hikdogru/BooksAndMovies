@@ -84,9 +84,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
-
         }
-
 
     }
 }

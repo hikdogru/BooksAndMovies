@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http;
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,7 +11,9 @@
 </head>
 <body>
 
-
+    @{
+        var isAuthenticated = Context.Session.GetString("email") != null;
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -31,11 +32,16 @@
                             <a class="nav-link dropdown-toggle text-dark" id="tvShowDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">TV Show</a>
                             <ul class="dropdown-menu" aria-labelledby="tvShowDropdown">
                                 <li><a class="dropdown-item" asp-action="Index" asp-controller="TVShow">Index</a></li>
-                                <li><a class="dropdown-item" asp-action="GetWishList" asp-controller="TVShow"> Wishlist </a></li>
-                                <li><a class="dropdown-item" asp-action="GetWatchedList" asp-controller="TVShow"> Watched </a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="TVShow" asp-action="Search"> Search </a></li>
-                                <li><a class="dropdown-item" asp-controller="TVShow" asp-action="Rate"> Rate </a></li>
-                                <li><a class="dropdown-item" asp-action="GetFavouriteTVShows" asp-controller="TVShow"> Favourites </a></li>
+
+                                @if (isAuthenticated)
+                                {
+                                    <li><a class="dropdown-item" asp-action="GetWishList" asp-controller="TVShow"> Wishlist </a></li>
+                                    <li><a class="dropdown-item" asp-action="GetWatchedList" asp-controller="TVShow"> Watched </a></li>
+                                    <li><a class="dropdown-item" asp-controller="TVShow" asp-action="Rate"> Rate </a></li>
+                                    <li><a class="dropdown-item" asp-action="GetFavouriteTVShows" asp-controller="TVShow"> Favourites </a></li>
+                                }
+
                             </ul>
                         </li>
 
@@ -43,11 +49,16 @@
                             <a class="nav-link dropdown-toggle text-dark" id="movieDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Movie</a>
                             <ul class="dropdown-menu" aria-labelledby="movieDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Movie" asp-action="Index">Index</a></li>
-                                <li><a class="dropdown-item" asp-action="GetWishList" asp-controller="Movie"> Wishlist </a></li>
-                                <li><a class="dropdown-item" asp-action="GetWatchedList" asp-controller="Movie"> Watched </a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Movie" asp-action="Search"> Search </a></li>
-                                <li><a class="dropdown-item" asp-controller="Movie" asp-action="Rate"> Rate </a></li>
-                                <li><a class="dropdown-item" asp-action="GetFavouriteMovies" asp-controller="Movie"> Favourites </a></li>
+
+                                @if (isAuthenticated)
+                                {
+                                    <li><a class="dropdown-item" asp-action="GetWishList" asp-controller="Movie"> Wishlist </a></li>
+                                    <li><a class="dropdown-item" asp-action="GetWatchedList" asp-controller="Movie"> Watched </a></li>
+                                    <li><a class="dropdown-item" asp-controller="Movie" asp-action="Rate"> Rate </a></li>
+                                    <li><a class="dropdown-item" asp-action="GetFavouriteMovies" asp-controller="Movie"> Favourites </a></li>
+                                }
+
 
                             </ul>
                         </li>
@@ -55,16 +66,21 @@
                             <a class="nav-link dropdown-toggle text-dark" id="bookDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Book</a>
                             <ul class="dropdown-menu" aria-labelledby="bookDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Index">Index</a></li>
-                                <li><a class="dropdown-item" asp-action="GetWishlist" asp-controller="Book"> Wishlist </a></li>
-                                <li><a class="dropdown-item" asp-action="GetFinishedlist" asp-controller="Book"> Finished </a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Book" asp-action="Search"> Search </a></li>
-                                <li><a class="dropdown-item" asp-action="GetFavouriteBooks" asp-controller="Book"> Favourites </a></li>
+
+                                @if (isAuthenticated)
+                                {
+                                    <li><a class="dropdown-item" asp-action="GetWishlist" asp-controller="Book"> Wishlist </a></li>
+                                    <li><a class="dropdown-item" asp-action="GetFinishedlist" asp-controller="Book"> Finished </a></li>
+                                    <li><a class="dropdown-item" asp-action="GetFavouriteBooks" asp-controller="Book"> Favourites </a></li>
+                                }
+
                             </ul>
                         </li>
                     </ul>
 
                     <div class="d-flex">
-                        @if (Context.Session.GetString("email") != null)
+                        @if (isAuthenticated)
                         {
                             string firstname = Context.Session.GetString("firstname");
                             <div class="m-auto">
@@ -103,7 +119,7 @@
             &copy; 2021 - BooksAndMovies
         </div>
     </footer>
-    
+
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
