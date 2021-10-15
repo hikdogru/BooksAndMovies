@@ -60,6 +60,10 @@ namespace BooksAndMovies.WebUI
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<IUserRepository, EfUserRepository>();
 
+            // UserMovie
+            services.AddScoped<IUserMovieService, UserMovieManager>();
+            services.AddScoped<IUserMovieRepository, EfUserMovieRepository>();
+
            
 
             // Fluent validation

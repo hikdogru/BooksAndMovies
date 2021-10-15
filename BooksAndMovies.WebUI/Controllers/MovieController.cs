@@ -4,6 +4,7 @@ using BooksAndMovies.Entity;
 using BooksAndMovies.WebUI.Models;
 using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -20,14 +21,18 @@ namespace BooksAndMovies.WebUI.Controllers
     {
         #region fields
         private readonly IMovieService _movieService;
+        private readonly IUserMovieService _userMovieService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         #endregion fields
 
         #region ctor
-        public MovieController(IMovieService movieService, IMapper mapper)
+        public MovieController(IMovieService movieService, IMapper mapper, IUserMovieService userMovieService, IUserService userService)
         {
             _movieService = movieService;
             _mapper = mapper;
+            _userMovieService = userMovieService;
+            _userService = userService;
         }
         #endregion ctor
 
@@ -62,10 +67,18 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<MovieViewModel> CreateMovieModel(string movieListType, int databaseSavingType)
         {
-            var movies = await _movieService.GetAllAsync(x => x.DatabaseSavingType == databaseSavingType);
-            var moviesModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
-            var movieViewModel = new MovieViewModel { Movies = moviesModel, MovieListType = movieListType };
-            return movieViewModel;
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user =  _userService.GetAll(x => x.Email == email).SingleOrDefault();
+                var userMovies = await _userMovieService.GetAllAsync(x => x.UserId == user.Id && x.DatabaseSavingType == databaseSavingType);
+                var movies = _movieService.GetAll().Where(x => userMovies.Any(y => y.MovieId == x.Id));
+                var moviesModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
+                var movieViewModel = new MovieViewModel { Movies = moviesModel, MovieListType = movieListType };
+                return movieViewModel;
+            }
+
+            return null;
         }
 
 
@@ -84,7 +97,6 @@ namespace BooksAndMovies.WebUI.Controllers
                 var movies = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
                 return View("Search", movies);
             }
-
             return null;
         }
 
@@ -132,6 +144,14 @@ namespace BooksAndMovies.WebUI.Controllers
             var movie = _mapper.Map<Movie>(model);
             movie.DatabaseSavingType = databaseSavingType;
             await _movieService.AddAsync(movie);
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var movieInDatabase = await _movieService.GetAllAsync(x => x.RealId == model.RealId);
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                _userMovieService.Add(new UserMovie { MovieId = movieInDatabase[0].Id, UserId = user[0].Id, DatabaseSavingType = databaseSavingType });
+            }
+
         }
 
         [HttpPost]
