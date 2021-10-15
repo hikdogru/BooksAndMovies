@@ -18,5 +18,6 @@ namespace BooksAndMovies.Entity
             set => _title = value;
         }
         public string OriginalTitle { get; set; }
+
     }
 }

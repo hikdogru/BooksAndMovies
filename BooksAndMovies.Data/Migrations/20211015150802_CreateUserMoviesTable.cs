@@ -2,7 +2,7 @@
 
 namespace BooksAndMovies.Data.Migrations
 {
-    public partial class CreateUserMovieTable : Migration
+    public partial class CreateUserMoviesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

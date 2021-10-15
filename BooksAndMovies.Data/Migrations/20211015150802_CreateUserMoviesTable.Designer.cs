@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BooksAndMovies.Data.Migrations
 {
     [DbContext(typeof(BookAndMovieContext))]
-    [Migration("20211014133857_CreateUserMovieTable")]
-    partial class CreateUserMovieTable
+    [Migration("20211015150802_CreateUserMoviesTable")]
+    partial class CreateUserMoviesTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
