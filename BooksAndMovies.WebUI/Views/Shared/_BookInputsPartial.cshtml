@@ -1,7 +1,7 @@
 ﻿@model BookModel
-
-
 @* Form inputs *@
+
+<input type="hidden" asp-for="@Model.Id" />
 <input type="hidden" asp-for="@Model.Title" />
 <input type="hidden" asp-for="@Model.Publisher" />
 <input type="hidden" asp-for="@Model.Description" />
@@ -9,8 +9,11 @@
 <input type="hidden" asp-for="@Model.Categories[0]" />
 <input type="hidden" asp-for="@Model.PageCount" />
 <input type="hidden" asp-for="@Model.AverageRating" />
+<input type="hidden" asp-for="@Model.Thumbnail" />
 <input type="hidden" asp-for="@Model.ImageLinks.Thumbnail" />
+<input type="hidden" asp-for="@Model.SmallThumbnail" />
 <input type="hidden" asp-for="@Model.ImageLinks.SmallThumbnail" />
+
 
 <img src="@(Model.ImageLinks != null ? Model.ImageLinks.SmallThumbnail : Model.SmallThumbnail )" alt="Book Image" />
 <p>@Model.Title </p>

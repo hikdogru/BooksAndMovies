@@ -12,7 +12,6 @@ namespace BooksAndMovies.Entity
         private string _title;
 
         public int Id { get; set; }
-        public string UniqueId { get; set; }
         public string Title
         {
             get => _title.Length < 20 ? _title : _title.Substring(0, 20) + "...";

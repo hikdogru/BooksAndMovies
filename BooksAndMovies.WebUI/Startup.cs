@@ -64,7 +64,13 @@ namespace BooksAndMovies.WebUI
             services.AddScoped<IUserMovieService, UserMovieManager>();
             services.AddScoped<IUserMovieRepository, EfUserMovieRepository>();
 
-           
+            // UserTVShow
+            services.AddScoped<IUserTVShowService, UserTVShowManager>();
+            services.AddScoped<IUserTVShowRepository, EfUserTVShowRepository>();
+
+            // UserBook
+            services.AddScoped<IUserBookService, UserBookManager>();
+            services.AddScoped<IUserBookRepository, EfUserBookRepository>();
 
             // Fluent validation
             services.AddControllersWithViews().AddFluentValidation() ;

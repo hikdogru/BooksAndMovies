@@ -4,6 +4,7 @@ using BooksAndMovies.Entity;
 using BooksAndMovies.WebUI.Models;
 using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -17,14 +18,18 @@ namespace BooksAndMovies.WebUI.Controllers
     {
         #region fields
         private readonly ITVShowService _tvShowService;
+        private readonly IUserTVShowService _userTVShowService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         #endregion fields
 
         #region ctor
-        public TVShowController(ITVShowService tvShowService, IMapper mapper)
+        public TVShowController(ITVShowService tvShowService, IMapper mapper, IUserTVShowService userTVShowService, IUserService userService)
         {
             _tvShowService = tvShowService;
             _mapper = mapper;
+            _userTVShowService = userTVShowService;
+            _userService = userService;
         }
         #endregion ctor
 
@@ -57,10 +62,18 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<TVShowViewModel> CreateTVShowModel(string tvShowListType, int databaseSavingType)
         {
-            var tvShows = await _tvShowService.GetAllAsync(x => x.DatabaseSavingType == databaseSavingType);
-            var tvShowsModel = tvShows.Select(x => _mapper.Map<TVShowModel>(x)).ToList(); 
-            var tvShowViewModel = new TVShowViewModel { TVShows = tvShowsModel, TVShowListType = tvShowListType };
-            return tvShowViewModel;
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = _userService.GetAll(x => x.Email == email).SingleOrDefault();
+                var userTVShows = await _userTVShowService.GetAllAsync(x => x.UserId == user.Id && x.DatabaseSavingType == databaseSavingType);
+                var tvShows = _tvShowService.GetAll().Where(x => userTVShows.Any(y => y.TVShowId == x.Id));
+                var tvShowsModel = tvShows.Select(x => _mapper.Map<TVShowModel>(x)).ToList();
+                var tvShowViewModel = new TVShowViewModel { TVShows = tvShowsModel, TVShowListType = tvShowListType };
+                return tvShowViewModel;
+            }
+
+            return null;
         }
 
         [HttpGet]
@@ -128,6 +141,13 @@ namespace BooksAndMovies.WebUI.Controllers
             var tvShow = _mapper.Map<TVShow>(model);
             tvShow.DatabaseSavingType = databaseSavingType;
             await _tvShowService.AddAsync(tvShow);
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var tvShowInDatabase = await _tvShowService.GetAllAsync(x => x.RealId == model.RealId);
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                _userTVShowService.Add(new UserTVShow { TVShowId = tvShowInDatabase[0].Id, UserId = user[0].Id, DatabaseSavingType = databaseSavingType });
+            }
         }
 
         [HttpPost]
