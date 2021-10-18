@@ -14,6 +14,7 @@ namespace BooksAndMovies.Entity
         public int UserId { get; set; }
         public int MovieId { get; set; }
         public int DatabaseSavingType { get; set; }
+        public double Rating { get; set; }
         public User User { get; set; }
         public Movie Movie { get; set; }
     }

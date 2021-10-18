@@ -202,14 +202,19 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Rate(double tvShowRateValue, int tvShowId)
+        public async Task<IActionResult> Rate(double tvShowRateValue, int id)
         {
-            string clientUrl = $"https://api.themoviedb.org/3/tv/{tvShowId}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
-            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { value = tvShowRateValue }));
-            var model = new TMDBModel();
-            model.PostContentToTMDB(url: clientUrl, data: data);
-            ViewBag.Rate = await GetMyRatings();
-            return View("Rate");
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userTVShow = _userTVShowService.GetAll(x => x.TVShowId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
+                userTVShow.Rating = tvShowRateValue;
+                await _userTVShowService.UpdateAsync(entity: userTVShow);
+                //ViewBag.Rate = await GetMyRatings();
+                return View("Rate");
+            }
+            return null;
         }
 
         [HttpPost]
@@ -224,9 +229,16 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<List<TVShowModel>> GetMyRatings()
         {
-            string clientUrl = "https://api.themoviedb.org/3/account/%7Baccount_id%7D/rated/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
-            var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
-            return tvShows;
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
+                var tvShows = _tvShowService.GetAll().Where(x => userTVShows.Any(y => y.TVShowId == x.Id)).ToList();
+                var tvShowModel = tvShows.Select(x => _mapper.Map<TVShowModel>(x)).ToList();
+                return tvShowModel;
+            }
+            return null;
         }
         #endregion methods
     }

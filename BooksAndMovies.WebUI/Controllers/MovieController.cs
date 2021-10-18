@@ -207,14 +207,19 @@ namespace BooksAndMovies.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Rate(double movieRateValue, int movieId)
+        public async Task<IActionResult> Rate(double movieRateValue, int id)
         {
-            string clientUrl = $"https://api.themoviedb.org/3/movie/{movieId}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
-            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { value = movieRateValue }));
-            var model = new TMDBModel();
-            model.PostContentToTMDB(url: clientUrl, data: data);
-            ViewBag.Rate = await GetMyRatings();
-            return View("Rate");
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userMovie = _userMovieService.GetAll(x => x.MovieId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
+                userMovie.Rating = movieRateValue;
+                await _userMovieService.UpdateAsync(entity: userMovie);
+                //ViewBag.Rate = await GetMyRatings();
+                return View("Rate");
+            }
+            return null;
         }
 
         [HttpPost]
@@ -229,9 +234,16 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<List<MovieModel>> GetMyRatings()
         {
-            string clientUrl = "https://api.themoviedb.org/3/account/%7Baccount_id%7D/rated/movies?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
-            var tvShows = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
-            return tvShows;
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
+                var movies = _movieService.GetAll().Where(x => userMovies.Any(y => y.MovieId == x.Id)).ToList();
+                var movieModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
+                return movieModel;
+            }
+            return null;
         }
 
         #endregion methods

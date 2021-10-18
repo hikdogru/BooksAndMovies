@@ -12,6 +12,7 @@
             <p><i class="fa fa-star" aria-hidden="true"></i> @(Model.VoteAverage != 0 ? Model.VoteAverage : Model.Rating )</p>
             <form method="post">
                 <input type="hidden" name="movieId" id="movieId" value="@(Model.RealId == 0 ? Model.Id : Model.RealId )" />
+                <input type="hidden" name="id" id="id" value="@Model.Id" />
                 <input type="text" placeholder="Movie Rate Value" name="movieRateValue" id="movieRateValue" />
                 <input type="submit" asp-action="Rate" />
             </form>

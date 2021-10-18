@@ -13,8 +13,9 @@
             <p><i class="fa fa-star" aria-hidden="true"></i> @(Model.VoteAverage != 0 ? Model.VoteAverage : Model.Rating )</p>
             <form method="post">
                 <input type="hidden" name="tvShowId" id="tvShowId" value="@(Model.RealId == 0 ? Model.Id : Model.RealId )" />
+                <input type="hidden" name="id" id="id" value="@Model.Id" />
                 <input type="text" placeholder="TV Show Rate Value" name="tvShowRateValue" id="tvShowRateValue" />
-                <input type="submit" class="btn btn-warning btn-sm mb-2"  value="Rate" asp-action="Rate" />
+                <input type="submit" class="btn btn-warning btn-sm mb-2" value="Rate" asp-action="Rate" />
             </form>
         </div>
 
