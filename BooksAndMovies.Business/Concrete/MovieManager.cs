@@ -12,17 +12,19 @@ namespace BooksAndMovies.Business.Concrete
 {
     public class MovieManager : IMovieService
     {
-        private readonly IMovieRepository _movieRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MovieManager(IMovieRepository tVShowWatchListRepository)
+        public MovieManager(IUnitOfWork unitOfWork)
         {
-            _movieRepository = tVShowWatchListRepository;
+            _unitOfWork = unitOfWork;
+
         }
         public void Add(Movie entity)
         {
             if (IsMovieExistInDatabase(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
             {
-                _movieRepository.Add(entity);
+                _unitOfWork.Movies.Add(entity);
+                _unitOfWork.SaveChanges();
             }
         }
 
@@ -30,39 +32,42 @@ namespace BooksAndMovies.Business.Concrete
         {
             if (await IsMovieExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
             {
-                await _movieRepository.AddAsync(entity);
+                await _unitOfWork.Movies.AddAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
             }
         }
 
         public void Delete(Movie entity)
         {
-            _movieRepository.Delete(entity);
+            _unitOfWork.Movies.Delete(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task DeleteAsync(Movie entity)
         {
-            await _movieRepository.DeleteAsync(entity);
+            await _unitOfWork.Movies.DeleteAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public List<Movie> GetAll(Expression<Func<Movie, bool>> filter = null)
         {
-            return filter == null ? _movieRepository.GetAll() : _movieRepository.GetAll(filter);
+            return filter == null ? _unitOfWork.Movies.GetAll() : _unitOfWork.Movies.GetAll(filter);
         }
 
 
         public async Task<List<Movie>> GetAllAsync(Expression<Func<Movie, bool>> filter = null)
         {
-            return filter == null ? await _movieRepository.GetAllAsync() : await _movieRepository.GetAllAsync(filter);
+            return filter == null ? await _unitOfWork.Movies.GetAllAsync() : await _unitOfWork.Movies.GetAllAsync(filter);
         }
 
         public Movie GetById(int id)
         {
-            return _movieRepository.GetById(x => x.Id == id);
+            return _unitOfWork.Movies.GetById(x => x.Id == id);
         }
 
         public async Task<Movie> GetByIdAsync(int id)
         {
-            return await _movieRepository.GetByIdAsync(x => x.Id == id);
+            return await _unitOfWork.Movies.GetByIdAsync(x => x.Id == id);
         }
 
         public bool IsMovieExistInDatabase(Movie entity, int databaseSaveType)
@@ -79,12 +84,14 @@ namespace BooksAndMovies.Business.Concrete
 
         public void Update(Movie entity)
         {
-            _movieRepository.Update(entity);
+            _unitOfWork.Movies.Update(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task UpdateAsync(Movie entity)
         {
-            await _movieRepository.UpdateAsync(entity);
+            await _unitOfWork.Movies.UpdateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

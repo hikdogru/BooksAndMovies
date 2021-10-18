@@ -26,25 +26,21 @@ namespace BooksAndMovies.Data.Concrete.Ef
         public void Add(TEntity entity)
         {
             Table.Add(entity);
-            _context.SaveChanges();
         }
 
         public async Task AddAsync(TEntity entity)
         {
             await Table.AddAsync(entity);
-            await _context.SaveChangesAsync();
         }
 
         public void Delete(TEntity entity)
         {
             _context.Remove(entity);
-            _context.SaveChanges();
         }
 
         public async Task DeleteAsync(TEntity entity)
         {
             _context.Remove(entity);
-            await _context.SaveChangesAsync();
         }
 
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
@@ -71,14 +67,12 @@ namespace BooksAndMovies.Data.Concrete.Ef
         {
             var updatedEntity = _context.Entry(entity);
             updatedEntity.State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public async Task UpdateAsync(TEntity entity)
         {
             var updatedEntity = _context.Entry(entity);
             updatedEntity.State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
     }
 }

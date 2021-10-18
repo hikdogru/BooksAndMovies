@@ -42,35 +42,24 @@ namespace BooksAndMovies.WebUI
 
             // DbContext
             services.AddDbContext<BookAndMovieContext>(option => option.UseSqlServer(Configuration.GetConnectionString("BookAndMovieConnectionString")));
-           
 
-            // Book
+            #region Services
             services.AddScoped<IBookService, BookManager>();
-            services.AddScoped<IBookRepository, EfBookRepository>();
-
-            // Movie
             services.AddScoped<IMovieService, MovieManager>();
-            services.AddScoped<IMovieRepository, EfMovieRepository>();
-
-            // TVShow
             services.AddScoped<ITVShowService, TVShowManager>();
-            services.AddScoped<ITVShowRepository, EfTVShowRepository>();
-
-            // User
             services.AddScoped<IUserService, UserManager>();
-            services.AddScoped<IUserRepository, EfUserRepository>();
-
-            // UserMovie
             services.AddScoped<IUserMovieService, UserMovieManager>();
-            services.AddScoped<IUserMovieRepository, EfUserMovieRepository>();
-
-            // UserTVShow
             services.AddScoped<IUserTVShowService, UserTVShowManager>();
-            services.AddScoped<IUserTVShowRepository, EfUserTVShowRepository>();
-
-            // UserBook
             services.AddScoped<IUserBookService, UserBookManager>();
-            services.AddScoped<IUserBookRepository, EfUserBookRepository>();
+            #endregion Services
+
+
+            #region UnitOfWork
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            #endregion UnitOfWork
+
+
 
             // Fluent validation
             services.AddControllersWithViews().AddFluentValidation() ;

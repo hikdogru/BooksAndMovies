@@ -10,17 +10,20 @@ namespace BooksAndMovies.Business.Concrete
 {
     public class BookManager : IBookService
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookManager(IBookRepository bookRepository)
+        public BookManager(IUnitOfWork unitOfWork)
         {
-            _bookRepository = bookRepository;
+            _unitOfWork = unitOfWork;
         }
+
+        
         public void Add(Book entity)
         {
             if(IsBookExistInDatabase(entity : entity, databaseSaveType : entity.DatabaseSavingType ) == false)
             {
-                _bookRepository.Add(entity);
+                _unitOfWork.Books.Add(entity);
+                _unitOfWork.SaveChanges();
             }
         }
 
@@ -28,38 +31,41 @@ namespace BooksAndMovies.Business.Concrete
         {
             if (await IsBookExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
             {
-                await _bookRepository.AddAsync(entity);
+                await _unitOfWork.Books.AddAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
             }
         }
 
         public void Delete(Book entity)
         {
-            _bookRepository.Delete(entity);
+            _unitOfWork.Books.Delete(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task DeleteAsync(Book entity)
         {
-            await _bookRepository.DeleteAsync(entity);
+            await _unitOfWork.Books.DeleteAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public List<Book> GetAll(Expression<Func<Book, bool>> filter = null)
         {
-            return filter == null ? _bookRepository.GetAll() : _bookRepository.GetAll(filter);
+            return filter == null ? _unitOfWork.Books.GetAll() : _unitOfWork.Books.GetAll(filter);
         }
 
         public async Task<List<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null)
         {
-            return filter == null ? await _bookRepository.GetAllAsync() : await _bookRepository.GetAllAsync(filter);
+            return filter == null ? await _unitOfWork.Books.GetAllAsync() : await _unitOfWork.Books.GetAllAsync(filter);
         }
 
         public Book GetById(int id)
         {
-            return _bookRepository.GetById(x => x.Id == id);
+            return _unitOfWork.Books.GetById(x => x.Id == id);
         }
 
         public async Task<Book> GetByIdAsync(int id)
         {
-            return await _bookRepository.GetByIdAsync(x => x.Id == id);
+            return await _unitOfWork.Books.GetByIdAsync(x => x.Id == id);
         }
 
         public bool IsBookExistInDatabase(Book entity, int databaseSaveType)
@@ -76,12 +82,14 @@ namespace BooksAndMovies.Business.Concrete
 
         public void Update(Book entity)
         {
-            _bookRepository.Update(entity);
+            _unitOfWork.Books.Update(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task UpdateAsync(Book entity)
         {
-            await _bookRepository.UpdateAsync(entity);
+            await _unitOfWork.Books.UpdateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

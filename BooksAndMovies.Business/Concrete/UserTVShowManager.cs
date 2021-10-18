@@ -12,64 +12,75 @@ namespace BooksAndMovies.Business.Concrete
 {
     public class UserTVShowManager : IUserTVShowService
     {
-        private readonly IUserTVShowRepository _userTVShowRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserTVShowManager(IUserTVShowRepository userTVShowRepository)
+        public UserTVShowManager(IUnitOfWork unitOfWork)
         {
-            _userTVShowRepository = userTVShowRepository;
+            _unitOfWork = unitOfWork;
+
         }
 
         public void Add(UserTVShow entity)
         {
-            _userTVShowRepository.Add(entity);
+            _unitOfWork.UserTVShows.Add(entity);
+            _unitOfWork.SaveChanges();
         }
 
         public async Task AddAsync(UserTVShow entity)
         {
-            await _userTVShowRepository.AddAsync(entity);
+            await _unitOfWork.UserTVShows.AddAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
+
         }
 
         public void Delete(UserTVShow entity)
         {
-            _userTVShowRepository.Delete(entity);
+            _unitOfWork.UserTVShows.Delete(entity);
+            _unitOfWork.SaveChanges();
+
         }
 
         public async Task DeleteAsync(UserTVShow entity)
         {
-            await _userTVShowRepository.DeleteAsync(entity);
+            await _unitOfWork.UserTVShows.DeleteAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
+
         }
 
         public List<UserTVShow> GetAll(Expression<Func<UserTVShow, bool>> filter = null)
         {
-            return filter == null ? _userTVShowRepository.GetAll() : _userTVShowRepository.GetAll(filter);
+            return filter == null ? _unitOfWork.UserTVShows.GetAll() : _unitOfWork.UserTVShows.GetAll(filter);
         }
 
         public async Task<List<UserTVShow>> GetAllAsync(Expression<Func<UserTVShow, bool>> filter = null)
         {
-            return filter == null ? await _userTVShowRepository.GetAllAsync() : await _userTVShowRepository.GetAllAsync(filter);
+            return filter == null ? await _unitOfWork.UserTVShows.GetAllAsync() : await _unitOfWork.UserTVShows.GetAllAsync(filter);
         }
 
         public UserTVShow GetById(int id)
         {
-            var UserTVShow = _userTVShowRepository.GetById(x => x.Id == id);
+            var UserTVShow = _unitOfWork.UserTVShows.GetById(x => x.Id == id);
             return UserTVShow;
         }
 
         public async Task<UserTVShow> GetByIdAsync(int id)
         {
-            var UserTVShow = await _userTVShowRepository.GetByIdAsync(x => x.Id == id);
+            var UserTVShow = await _unitOfWork.UserTVShows.GetByIdAsync(x => x.Id == id);
             return UserTVShow;
         }
 
 
         public void Update(UserTVShow entity)
         {
-            _userTVShowRepository.Update(entity);
+            _unitOfWork.UserTVShows.Update(entity);
+            _unitOfWork.SaveChanges();
+
         }
 
         public async Task UpdateAsync(UserTVShow entity)
         {
-            await _userTVShowRepository.UpdateAsync(entity);
+            await _unitOfWork.UserTVShows.UpdateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
