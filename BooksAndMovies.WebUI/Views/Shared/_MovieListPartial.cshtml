@@ -6,34 +6,43 @@
 
 
 <div class="row">
-    <strong>
-        Total movie count is "@Model.Movies.Count"
-    </strong>
-    @foreach (var movie in Model.Movies)
+    @if (Model.Movies.Count > 0)
     {
-        if (movie.BackdropPath != null)
+        <strong>
+            Total movie count is "@Model.Movies.Count"
+        </strong>
+        @foreach (var movie in Model.Movies)
         {
-            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div id="movie">
-                    <form method="post">
-                        <img src="@movie.BackdropPath" alt="movie Image" />
-                        @await Html.PartialAsync("_MovieInputsPartial", movie)
+            if (movie.BackdropPath != null)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div id="movie">
+                        <form method="post">
+                            <img src="@movie.BackdropPath" alt="movie Image" />
+                            @await Html.PartialAsync("_MovieInputsPartial", movie)
 
-                        @if (Model.MovieListType == "Wishlist")
-                        {
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveMovieToWatchedlist"> Move to watchedlist</button>
+                            @if (Model.MovieListType == "Wishlist")
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveMovieToWatchedlist"> Move to watchedlist</button>
 
-                        }
-                        else if (Model.MovieListType == "Watchedlist")
-                        {
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddMovieToFavouritelist"> Add to favourites</button>
-                            <button type="submit" class="btn btn-success btn-sm mb-2" asp-action="RateMovie"> Rate Movie</button>
+                            }
+                            else if (Model.MovieListType == "Watchedlist")
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddMovieToFavouritelist"> Add to favourites</button>
+                                <button type="submit" class="btn btn-success btn-sm mb-2" asp-action="RateMovie"> Rate Movie</button>
 
-                        }
-                        <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.MovieListType </button>
-                    </form>
+                            }
+                            <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.MovieListType </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            }
         }
+
+    }
+
+    else
+    {
+        <span class="alert alert-danger"> Movie is not found! </span>
     }
 </div>

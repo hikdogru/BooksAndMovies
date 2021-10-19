@@ -8,35 +8,44 @@
 
 
 <div class="row">
-    <strong>
-        Total book count is "@Model.Books.Count"
-    </strong>
-    @foreach (var book in Model.Books)
+
+    @if (Model.Books.Count > 0)
     {
-        if (book.SmallThumbnail != null)
+        <strong>
+            Total book count is "@Model.Books.Count"
+        </strong>
+        @foreach (var book in Model.Books)
         {
-            <div class="col-md-3">
-                <div id="book">
-                    <form method="post">
+            if (book.SmallThumbnail != null)
+            {
+                <div class="col-md-3">
+                    <div id="book">
+                        <form method="post">
 
-                        @await Html.PartialAsync("_BookInputsPartial", book)
+                            @await Html.PartialAsync("_BookInputsPartial", book)
 
-                        @if (Model.BookListType == "Wishlist")
-                        {
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveBookToFinishedlist"> Move to finishedlist</button>
-                        }
+                            @if (Model.BookListType == "Wishlist")
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveBookToFinishedlist"> Move to finishedlist</button>
+                            }
 
-                        else if (Model.BookListType == "Finishedlist")
-                        {
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToFavouritelist"> Add to favourites</button>
+                            else if (Model.BookListType == "Finishedlist")
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddBookToFavouritelist"> Add to favourites</button>
 
-                        }
-                        <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.BookListType</button>
+                            }
+                            <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.BookListType</button>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
+            }
         }
     }
+    else
+    {
+        <span class="alert alert-danger"> Book is not found! </span>
+    }
+
 </div>

@@ -29,9 +29,10 @@
 
 else
 {
-    @if (ViewBag.Rate != null)
-    {
-        <div class="row">
+
+    <div class="row">
+        @if (ViewBag.Rate.Count > 0)
+        {
             <strong>
                 Total rated tvshow count is "@ViewBag.Rate.Count"
             </strong>
@@ -57,8 +58,15 @@ else
                     </div>
                 }
             }
-        </div>
-    }
+        }
+
+        else
+        {
+            <span class="alert alert-danger"> Rated tvshow is not found! </span>
+
+        }
+    </div>
+
 }
 
 

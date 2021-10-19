@@ -4,35 +4,43 @@
 }
 
 <div class="row">
-    <strong>
-        Total tvshow count is "@Model.TVShows.Count"
-    </strong>
-    @foreach (var tvShow in Model.TVShows)
+    @if (Model.TVShows.Count > 0)
     {
-        if (tvShow.BackdropPath != null)
+
+        <strong>
+            Total tvshow count is "@Model.TVShows.Count"
+        </strong>
+        @foreach (var tvShow in Model.TVShows)
         {
-            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div id="tvShow">
-                    <form method="post">
-                        <img src="@tvShow.BackdropPath" alt="tvShow Image" />
-                        @await Html.PartialAsync("_TVShowInputsPartial", tvShow)
+            if (tvShow.BackdropPath != null)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div id="tvShow">
+                        <form method="post">
+                            <img src="@tvShow.BackdropPath" alt="tvShow Image" />
+                            @await Html.PartialAsync("_TVShowInputsPartial", tvShow)
 
-                        
-                        @if (Model.TVShowListType == "Wishlist")
-                        {
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveTVShowToWatchedlist"> Move to watchedlist</button>
 
-                        }
-                        else if (Model.TVShowListType == "Watchedlist")
-                        {
-                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddTVShowToFavouritelist"> Add to favourites</button>
-                            <button type="submit" class="btn btn-success btn-sm mb-2" asp-action="RateTVShow"> Rate TV Show</button>
+                            @if (Model.TVShowListType == "Wishlist")
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="MoveTVShowToWatchedlist"> Move to watchedlist</button>
 
-                        }
-                        <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.TVShowListType </button>
-                    </form>
+                            }
+                            else if (Model.TVShowListType == "Watchedlist")
+                            {
+                                <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddTVShowToFavouritelist"> Add to favourites</button>
+                                <button type="submit" class="btn btn-success btn-sm mb-2" asp-action="RateTVShow"> Rate TV Show</button>
+
+                            }
+                            <button type="submit" class="btn btn-danger btn-sm mb-2" asp-action="@methodName">Remove from @Model.TVShowListType </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            }
         }
+    }
+    else
+    {
+        <span class="alert alert-danger"> TVShow is not found! </span>
     }
 </div>
