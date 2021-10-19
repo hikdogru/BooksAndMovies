@@ -216,7 +216,7 @@ namespace BooksAndMovies.WebUI.Controllers
                 var userMovie = _userMovieService.GetAll(x => x.MovieId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
                 userMovie.Rating = movieRateValue;
                 await _userMovieService.UpdateAsync(entity: userMovie);
-                //ViewBag.Rate = await GetMyRatings();
+                ViewBag.Rate = await GetMyRatings();
                 return View("Rate");
             }
             return null;
@@ -225,11 +225,18 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteRating(int id)
         {
-            string clientUrl = $"https://api.themoviedb.org/3/movie/{id}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
-            var model = new TMDBModel();
-            model.DeleteContentFromTMDB(url: clientUrl);
-            ViewBag.Rate = await GetMyRatings();
-            return View("Rate");
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2 && x.MovieId == id);
+                userMovies[0].Rating = 0;
+                await _userMovieService.UpdateAsync(entity: userMovies[0]);
+                ViewBag.Rate = await GetMyRatings();
+                return View("Rate");
+            }
+
+            return null;
         }
 
         private async Task<List<MovieModel>> GetMyRatings()
@@ -241,6 +248,10 @@ namespace BooksAndMovies.WebUI.Controllers
                 var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
                 var movies = _movieService.GetAll().Where(x => userMovies.Any(y => y.MovieId == x.Id)).ToList();
                 var movieModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
+                for (int i = 0; i < movieModel.Count; i++)
+                {
+                    movieModel[i].Rating = userMovies[i].Rating;
+                }
                 return movieModel;
             }
             return null;

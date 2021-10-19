@@ -211,7 +211,7 @@ namespace BooksAndMovies.WebUI.Controllers
                 var userTVShow = _userTVShowService.GetAll(x => x.TVShowId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
                 userTVShow.Rating = tvShowRateValue;
                 await _userTVShowService.UpdateAsync(entity: userTVShow);
-                //ViewBag.Rate = await GetMyRatings();
+                ViewBag.Rate = await GetMyRatings();
                 return View("Rate");
             }
             return null;
@@ -220,11 +220,18 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteRating(int id)
         {
-            string clientUrl = $"https://api.themoviedb.org/3/tv/{id}/rating?api_key=ebd943da4f3d062ae4451758267b1ca9&session_id=b29465be3cbc9870641e7c32544e064c9741b6e6";
-            var model = new TMDBModel();
-            model.DeleteContentFromTMDB(url: clientUrl);
-            ViewBag.Rate = await GetMyRatings();
-            return View("Rate");
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2 && x.TVShowId == id);
+                userTVShows[0].Rating = 0;
+                await _userTVShowService.UpdateAsync(entity: userTVShows[0]);
+                ViewBag.Rate = await GetMyRatings();
+                return View("Rate");
+            }
+
+            return null;
         }
 
         private async Task<List<TVShowModel>> GetMyRatings()
@@ -236,6 +243,10 @@ namespace BooksAndMovies.WebUI.Controllers
                 var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
                 var tvShows = _tvShowService.GetAll().Where(x => userTVShows.Any(y => y.TVShowId == x.Id)).ToList();
                 var tvShowModel = tvShows.Select(x => _mapper.Map<TVShowModel>(x)).ToList();
+                for (int i = 0; i < tvShowModel.Count; i++)
+                {
+                    tvShowModel[i].Rating = userTVShows[i].Rating;
+                }
                 return tvShowModel;
             }
             return null;
