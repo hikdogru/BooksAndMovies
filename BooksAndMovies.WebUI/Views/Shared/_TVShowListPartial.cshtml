@@ -7,9 +7,8 @@
     @if (Model.TVShows.Count > 0)
     {
 
-        <strong>
-            Total tvshow count is "@Model.TVShows.Count"
-        </strong>
+        @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = Model.TVShows.Count, ItemName = "tvshow" })
+
         @foreach (var tvShow in Model.TVShows)
         {
             if (tvShow.BackdropPath != null)

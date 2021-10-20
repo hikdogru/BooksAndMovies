@@ -26,43 +26,44 @@
 else
 {
 
-    <div class="row">
-        @if (ViewBag.Rate.Count > 0)
+<div class="row">
+    @if (ViewBag.Rate.Count > 0)
+    {
+        
+
+        @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = ViewBag.Rate.Count, ItemName = "rated movie" })
+
+        @foreach (var movie in ViewBag.Rate)
         {
-            <strong>
-                Total rated movie count is "@ViewBag.Rate.Count"
-            </strong>
-            @foreach (var movie in ViewBag.Rate)
+            if (movie.BackdropPath != null)
             {
-                if (movie.BackdropPath != null)
-                {
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                        <div id="movie">
-                            <form method="post">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div id="movie">
+                        <form method="post">
 
-                                <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="movie Image" />
-                                <input type="hidden" name="id" id="id" value="@movie.Id" />
-                                <input type="hidden" name="posterPath" id="posterPath" value="@movie.PosterPath" />
-                                <input type="hidden" name="title" id="title" value="@movie.Title" />
-                                <input type="hidden" name="rating" id="rating" value="@movie.Rating" />
-                                <h4>@movie.Title </h4>
-                                <p>@movie.OriginalTitle</p>
-                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.Rating</p>
-                                <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
-                                <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateMovie" />
+                            <img src="https://image.tmdb.org/t/p/w500/@movie.BackdropPath" alt="movie Image" />
+                            <input type="hidden" name="id" id="id" value="@movie.Id" />
+                            <input type="hidden" name="posterPath" id="posterPath" value="@movie.PosterPath" />
+                            <input type="hidden" name="title" id="title" value="@movie.Title" />
+                            <input type="hidden" name="rating" id="rating" value="@movie.Rating" />
+                            <h4>@movie.Title </h4>
+                            <p>@movie.OriginalTitle</p>
+                            <p> <i class="fa fa-star" aria-hidden="true"></i>  @movie.Rating</p>
+                            <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
+                            <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateMovie" />
 
-                            </form>
-                        </div>
+                        </form>
                     </div>
-                }
+                </div>
             }
         }
-        else
-        {
-            <span class="alert alert-danger"> Rated movie is not found! </span>
+    }
+    else
+    {
+        <span class="alert alert-danger"> Rated movie is not found! </span>
 
-        }
-    </div>
+    }
+</div>
 
 }
 

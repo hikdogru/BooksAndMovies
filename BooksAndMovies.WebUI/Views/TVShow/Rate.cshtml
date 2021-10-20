@@ -30,42 +30,42 @@
 else
 {
 
-    <div class="row">
-        @if (ViewBag.Rate.Count > 0)
+<div class="row">
+    @if (ViewBag.Rate.Count > 0)
+    {
+        
+        @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = ViewBag.Rate.Count, ItemName = "rated tvshow" })
+
+        @foreach (var tvShow in ViewBag.Rate)
         {
-            <strong>
-                Total rated tvshow count is "@ViewBag.Rate.Count"
-            </strong>
-            @foreach (var tvShow in ViewBag.Rate)
+            if (tvShow.BackdropPath != null)
             {
-                if (tvShow.BackdropPath != null)
-                {
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                        <div id="tvShow">
-                            <form method="post">
-                                <img src="https://image.tmdb.org/t/p/w500/@tvShow.BackdropPath" alt="tvShow Image" />
-                                <input type="hidden" name="id" id="id" value="@tvShow.Id" />
-                                <input type="hidden" name="posterPath" id="posterPath" value="@tvShow.PosterPath" />
-                                <input type="hidden" name="name" id="name" value="@tvShow.Name" />
-                                <input type="hidden" name="rating" id="rating" value="@tvShow.Rating" />
-                                <h4>@tvShow.Name </h4>
-                                <p>@tvShow.OriginalName</p>
-                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @tvShow.Rating</p>
-                                <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
-                                <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateTVShow" />
-                            </form>
-                        </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div id="tvShow">
+                        <form method="post">
+                            <img src="https://image.tmdb.org/t/p/w500/@tvShow.BackdropPath" alt="tvShow Image" />
+                            <input type="hidden" name="id" id="id" value="@tvShow.Id" />
+                            <input type="hidden" name="posterPath" id="posterPath" value="@tvShow.PosterPath" />
+                            <input type="hidden" name="name" id="name" value="@tvShow.Name" />
+                            <input type="hidden" name="rating" id="rating" value="@tvShow.Rating" />
+                            <h4>@tvShow.Name </h4>
+                            <p>@tvShow.OriginalName</p>
+                            <p> <i class="fa fa-star" aria-hidden="true"></i>  @tvShow.Rating</p>
+                            <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
+                            <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateTVShow" />
+                        </form>
                     </div>
-                }
+                </div>
             }
         }
+    }
 
-        else
-        {
-            <span class="alert alert-danger"> Rated tvshow is not found! </span>
+    else
+    {
+        <span class="alert alert-danger"> Rated tvshow is not found! </span>
 
-        }
-    </div>
+    }
+</div>
 
 }
 

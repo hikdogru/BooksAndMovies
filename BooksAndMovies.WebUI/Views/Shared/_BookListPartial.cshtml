@@ -11,9 +11,10 @@
 
     @if (Model.Books.Count > 0)
     {
-        <strong>
-            Total book count is "@Model.Books.Count"
-        </strong>
+       
+
+        @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = Model.Books.Count, ItemName = "book" })
+
         @foreach (var book in Model.Books)
         {
             if (book.SmallThumbnail != null)

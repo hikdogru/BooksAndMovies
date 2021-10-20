@@ -45,8 +45,10 @@ namespace BooksAndMovies.Business.Concrete
 
         public async Task DeleteAsync(Movie entity)
         {
+
             await _unitOfWork.Movies.DeleteAsync(entity);
             await _unitOfWork.SaveChangesAsync();
+
         }
 
         public List<Movie> GetAll(Expression<Func<Movie, bool>> filter = null)
@@ -84,14 +86,22 @@ namespace BooksAndMovies.Business.Concrete
 
         public void Update(Movie entity)
         {
-            _unitOfWork.Movies.Update(entity);
-            _unitOfWork.SaveChanges();
+            bool isMovieExist = IsMovieExistInDatabase(entity: entity, databaseSaveType: entity.DatabaseSavingType);
+            if (isMovieExist == false)
+            {
+                _unitOfWork.Movies.Update(entity);
+                _unitOfWork.SaveChanges();
+            }
         }
 
         public async Task UpdateAsync(Movie entity)
         {
-            await _unitOfWork.Movies.UpdateAsync(entity);
-            await _unitOfWork.SaveChangesAsync();
+            bool isMovieExist = await IsMovieExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType);
+            if (isMovieExist == false)
+            {
+                await _unitOfWork.Movies.UpdateAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

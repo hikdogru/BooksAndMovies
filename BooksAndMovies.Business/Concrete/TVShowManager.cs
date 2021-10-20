@@ -79,19 +79,31 @@ namespace BooksAndMovies.Business.Concrete
         public async Task<bool> IsTVShowExistInDatabaseAsync(TVShow entity, int databaseSaveType)
         {
             var isExist = await GetAllAsync(x => x.BackdropPath == entity.BackdropPath && x.DatabaseSavingType == databaseSaveType);
+            if (entity.Id != 0)
+            {
+                isExist = GetAll(x => x.Id == entity.Id);
+            }
             return isExist.Count == 0 ? false : true;
         }
 
         public void Update(TVShow entity)
         {
-            _unitOfWork.TVShows.Update(entity);
-            _unitOfWork.SaveChanges();
+            bool isTVShowExist = IsTVShowExistInDatabase(entity: entity, databaseSaveType: entity.DatabaseSavingType);
+            if (isTVShowExist == false)
+            {
+                _unitOfWork.TVShows.Update(entity);
+                _unitOfWork.SaveChanges();
+            }
         }
 
         public async Task UpdateAsync(TVShow entity)
         {
-            await _unitOfWork.TVShows.UpdateAsync(entity);
-            await _unitOfWork.SaveChangesAsync();
+            bool isTVShowExist = await IsTVShowExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType);
+            if (isTVShowExist == false)
+            {
+                await _unitOfWork.TVShows.UpdateAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

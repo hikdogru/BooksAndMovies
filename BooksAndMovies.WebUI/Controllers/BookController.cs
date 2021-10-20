@@ -288,8 +288,5 @@ namespace BooksAndMovies.WebUI.Controllers
 
         #endregion methods
 
-        #region Todo
-        // TODO Complete rating page
-        #endregion Todo
     }
 }

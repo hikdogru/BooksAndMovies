@@ -17,10 +17,10 @@ namespace BooksAndMovies.Business.Concrete
             _unitOfWork = unitOfWork;
         }
 
-        
+
         public void Add(Book entity)
         {
-            if(IsBookExistInDatabase(entity : entity, databaseSaveType : entity.DatabaseSavingType ) == false)
+            if (IsBookExistInDatabase(entity: entity, databaseSaveType: entity.DatabaseSavingType) == false)
             {
                 _unitOfWork.Books.Add(entity);
                 _unitOfWork.SaveChanges();
@@ -82,14 +82,23 @@ namespace BooksAndMovies.Business.Concrete
 
         public void Update(Book entity)
         {
-            _unitOfWork.Books.Update(entity);
-            _unitOfWork.SaveChanges();
+            bool isBookExist = IsBookExistInDatabase(entity: entity, databaseSaveType: entity.DatabaseSavingType);
+            if (isBookExist == false)
+            {
+                _unitOfWork.Books.Update(entity);
+                _unitOfWork.SaveChanges();
+            }
+
         }
 
         public async Task UpdateAsync(Book entity)
         {
-            await _unitOfWork.Books.UpdateAsync(entity);
-            await _unitOfWork.SaveChangesAsync();
+            bool isBookExist = await IsBookExistInDatabaseAsync(entity: entity, databaseSaveType: entity.DatabaseSavingType);
+            if (isBookExist == false)
+            {
+                await _unitOfWork.Books.UpdateAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

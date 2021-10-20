@@ -11,31 +11,30 @@
 
 @if (Model != null)
 {
-    <div class="row">
-        <strong>
-            Total movie count is "@Model.ToList().Count"
-        </strong>
-        @foreach (var movie in Model)
+<div class="row">
+    @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = Model.Where(x => x.PosterPath != null).ToList().Count, ItemName = "movie" })
+
+    @foreach (var movie in Model)
+    {
+        if (movie.PosterPath != null)
         {
-            if (movie.PosterPath != null)
-            {
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                    <div id="movie">
-                        <form method="post">
-                            <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
-                            @await Html.PartialAsync("_MovieInputsPartial", movie)
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                <div id="movie">
+                    <form method="post">
+                        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+                        @await Html.PartialAsync("_MovieInputsPartial", movie)
 
-                            @if (Context.Session.GetString("email") != null)
-                            {
-                                <button asp-action="AddMovieToWishList" type="submit" class="btn btn-primary btn-sm mb-2">Add to Wishlist</button>
-                                <button asp-action="AddMovieToWatchedList" type="submit" class="btn btn-secondary btn-sm mb-2">Add to WatchedList</button>
-                            }
+                        @if (Context.Session.GetString("email") != null)
+                        {
+                            <button asp-action="AddMovieToWishList" type="submit" class="btn btn-primary btn-sm mb-2">Add to Wishlist</button>
+                            <button asp-action="AddMovieToWatchedList" type="submit" class="btn btn-secondary btn-sm mb-2">Add to WatchedList</button>
+                        }
 
-                            <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                        </form>
-                    </div>
+                        <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </form>
                 </div>
-            }
+            </div>
         }
-    </div>
+    }
+</div>
 }

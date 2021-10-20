@@ -8,9 +8,9 @@
 <div class="row">
     @if (Model.Movies.Count > 0)
     {
-        <strong>
-            Total movie count is "@Model.Movies.Count"
-        </strong>
+        
+        @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = Model.Movies.Count, ItemName = "movie" })
+
         @foreach (var movie in Model.Movies)
         {
             if (movie.BackdropPath != null)
