@@ -31,7 +31,7 @@ namespace BooksAndMovies.Data.Concrete.Ef.Config
             builder
                 .Property(b => b.Description)
                 .IsRequired()
-                .HasMaxLength(1000);
+                .HasMaxLength(2500);
 
             builder
                 .Property(x => x.DatabaseSavingType)

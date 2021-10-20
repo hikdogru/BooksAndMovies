@@ -222,6 +222,74 @@ namespace BooksAndMovies.WebUI.Controllers
             await _bookService.DeleteAsync(new Book { Id = id });
         }
 
+        [HttpPost]
+        public IActionResult RateBook(BookModel model)
+        {
+            return View("Rate", model: model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Rate()
+        {
+            ViewBag.Rate = await GetMyRatings();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Rate(float bookRateValue, int id)
+        {
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userBook = _userBookService.GetAll(x => x.BookId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
+                userBook.Rating = bookRateValue;
+                await _userBookService.UpdateAsync(entity: userBook);
+                ViewBag.Rate = await GetMyRatings();
+                return View("Rate");
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRating(int id)
+        {
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userBooks = await _userBookService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2 && x.BookId == id);
+                userBooks[0].Rating = 0;
+                await _userBookService.UpdateAsync(entity: userBooks[0]);
+                ViewBag.Rate = await GetMyRatings();
+                return View("Rate");
+            }
+
+            return null;
+        }
+
+        private async Task<List<BookModel>> GetMyRatings()
+        {
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = await _userService.GetAllAsync(x => x.Email == email);
+                var userBooks = await _userBookService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
+                var books = _bookService.GetAll().Where(x => userBooks.Any(y => y.BookId == x.Id)).ToList();
+                var bookModel = books.Select(x => _mapper.Map<BookModel>(x)).ToList();
+                for (int i = 0; i < bookModel.Count; i++)
+                {
+                    bookModel[i].AverageRating = userBooks[i].Rating;
+                }
+                return bookModel;
+            }
+            return null;
+        }
+
         #endregion methods
+
+        #region Todo
+        // TODO Complete rating page
+        #endregion Todo
     }
 }

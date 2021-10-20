@@ -14,7 +14,7 @@
                 <input type="hidden" name="movieId" id="movieId" value="@(Model.RealId == 0 ? Model.Id : Model.RealId )" />
                 <input type="hidden" name="id" id="id" value="@Model.Id" />
                 <input type="text" placeholder="Movie Rate Value" name="movieRateValue" id="movieRateValue" />
-                <input type="submit" asp-action="Rate" />
+                <input type="submit" class="btn btn-warning btn-sm mb-2" asp-action="Rate" value="Rate" />
             </form>
         </div>
 

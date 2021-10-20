@@ -1,0 +1,69 @@
+﻿@model BookModel
+
+
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="text-center">
+            <img src="@Model.SmallThumbnail" alt="Book Image" />
+            <h4>@Model.Title </h4>
+            <p>@Model.Publisher</p>
+            <p><i class="fa fa-star" aria-hidden="true"></i> @(Model.AverageRating != 0 ? Model.AverageRating : "-" )</p>
+            <form method="post">
+                <input type="hidden" name="id" id="id" value="@Model.Id" />
+                <input type="text" placeholder="Book Rate Value" name="bookRateValue" id="bookRateValue" />
+                <input type="submit" class="btn btn-warning btn-sm mb-2" asp-action="Rate" value="Rate"/>
+            </form>
+        </div>
+
+    </div>
+}
+
+
+
+else
+{
+
+    <div class="row">
+        @if (ViewBag.Rate.Count > 0)
+        {
+            <strong>
+                Total rated book count is "@ViewBag.Rate.Count"
+            </strong>
+            @foreach (var book in ViewBag.Rate)
+            {
+                if (book.SmallThumbnail != null)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div id="book">
+                            <form method="post">
+
+                                <img src="@book.SmallThumbnail" alt="book Image" />
+                                <input type="hidden" name="id" id="id" value="@book.Id" />
+                                <input type="hidden" name="smallThumbnail" id="smallThumbnail" value="@book.SmallThumbnail" />
+                                <input type="hidden" name="title" id="title" value="@book.Title" />
+                                <input type="hidden" name="rating" id="rating" value="@book.AverageRating" />
+                                <h4>@book.Title </h4>
+                                <p>@book.Publisher</p>
+                                <p> <i class="fa fa-star" aria-hidden="true"></i>  @book.AverageRating</p>
+                                <input type="submit" class="btn btn-danger btn-sm btn-sm mb-2" value="Delete Rating" asp-action="DeleteRating" />
+                                <input type="submit" class="btn btn-warning btn-sm mb-2" value="Update Rating" asp-action="RateMovie" />
+
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        else
+        {
+            <span class="alert alert-danger"> Rated book is not found! </span>
+
+        }
+    </div>
+
+}
+
+
+

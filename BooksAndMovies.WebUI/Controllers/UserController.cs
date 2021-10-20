@@ -47,7 +47,7 @@ namespace BooksAndMovies.WebUI.Controllers
             user.Password = passwordHash;
             _userService.Add(entity: user);
             TempData["SuccessMessage"] = "Account created successfuly!";
-
+            
             return View();
         }
 
@@ -62,24 +62,28 @@ namespace BooksAndMovies.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                if(string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+                if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
                 {
                     return View(model: user);
                 }
             }
             var account = _userService.GetAll(x => x.Email == user.Email).SingleOrDefault();
-            bool passwordVerified = BCrypt.Net.BCrypt.Verify(user.Password, account.Password);
-            if (account != null && passwordVerified)
+            if (account != null)
             {
-                HttpContext.Session.SetString(key: "email", value: account.Email);
-                HttpContext.Session.SetString(key: "firstname", value: account.FirstName);
-                return RedirectToAction("Index", "Home");
+                bool passwordVerified = BCrypt.Net.BCrypt.Verify(user.Password, account.Password);
+                if (passwordVerified)
+                {
+                    HttpContext.Session.SetString(key: "email", value: account.Email);
+                    HttpContext.Session.SetString(key: "firstname", value: account.FirstName);
+                    return RedirectToAction("Index", "Home");
+                }
             }
+
             TempData["ErrorMessage"] = "Login failed!";
-            return View(model : user);
+            return View(model: user);
         }
 
-       
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();

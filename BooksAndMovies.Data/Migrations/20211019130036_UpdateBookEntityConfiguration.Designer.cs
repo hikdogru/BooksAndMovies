@@ -3,14 +3,16 @@ using BooksAndMovies.Data.Concrete.Ef;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BooksAndMovies.Data.Migrations
 {
     [DbContext(typeof(BookAndMovieContext))]
-    partial class BookAndMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20211019130036_UpdateBookEntityConfiguration")]
+    partial class UpdateBookEntityConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,9 +222,6 @@ namespace BooksAndMovies.Data.Migrations
 
                     b.Property<int>("DatabaseSavingType")
                         .HasColumnType("int");
-
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
