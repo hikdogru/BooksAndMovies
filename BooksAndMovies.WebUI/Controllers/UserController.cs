@@ -46,9 +46,8 @@ namespace BooksAndMovies.WebUI.Controllers
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
             user.Password = passwordHash;
             _userService.Add(entity: user);
-            TempData["SuccessMessage"] = "Account created successfuly!";
             
-            return View();
+            return RedirectToAction("Login");
         }
 
         public IActionResult Login()

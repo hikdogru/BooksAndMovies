@@ -17,7 +17,7 @@
 
 <img src="@(Model.ImageLinks != null ? Model.ImageLinks.SmallThumbnail : Model.SmallThumbnail )" alt="Book Image" />
 <p>@Model.Title </p>
-<p>@(Model.Authors == null ? "-" : Model.Authors[0]) </p>
+<p>@(Model.Authors == null ? Model.Author : Model.Authors[0]) </p>
 <p>@(Model.Publisher ?? "-")</p>
 <p>@Model.AverageRating</p>
 <p>@Model.PageCount</p>
