@@ -26,10 +26,11 @@ namespace BooksAndMovies.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string movieClientUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
-            string tvShowClientUrl = "https://api.themoviedb.org/3/tv/top_rated?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
-            var movies = await new TMDBModel().GetMoviesFromTMDB(url: movieClientUrl);
-            var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: tvShowClientUrl);
+            var model = new TMDBModel();
+            string movieClientUrl = $"{model.WebsiteRootUrl}movie/top_rated?api_key={model.APIKey}";
+            string tvShowClientUrl = $"{model.WebsiteRootUrl}tv/top_rated?api_key={model.APIKey}";
+            var movies = await model.GetMoviesFromTMDB(url: movieClientUrl);
+            var tvShows = await model.GetTVShowsFromTMDB(url: tvShowClientUrl);
             return View(model: new MovieTVShowViewModel { Movies = movies, TVShows = tvShows });
         }
 

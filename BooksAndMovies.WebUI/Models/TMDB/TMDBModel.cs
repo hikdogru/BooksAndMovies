@@ -1,4 +1,5 @@
 ﻿using BooksAndMovies.WebUI.Models.Client;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
@@ -13,8 +14,16 @@ namespace BooksAndMovies.WebUI.Models.TMDB
 {
     public class TMDBModel
     {
+        public string APIKey { get; set; }
+        public string WebsiteRootUrl { get; set; }
         public MovieJsonModel MovieJsonModel { get; set; }
         public TVShowJsonModel TVShowJsonModel { get; set; }
+
+        public TMDBModel()
+        {
+            APIKey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ApiKeys")["TMDBApiKey"];
+            WebsiteRootUrl = "https://api.themoviedb.org/3/";
+        }
         public async Task<List<TVShowModel>> GetTVShowsFromTMDB(string url)
         {
             await GetContentFromTMDB(url: url, modelNo: 1);

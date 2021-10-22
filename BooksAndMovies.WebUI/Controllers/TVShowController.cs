@@ -6,8 +6,11 @@ using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,8 +39,9 @@ namespace BooksAndMovies.WebUI.Controllers
         #region methods
         public async Task<IActionResult> Index()
         {
-            string clientUrl = "https://api.themoviedb.org/3/tv/top_rated?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US&page=1";
-            var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
+            var model = new TMDBModel();
+            string clientUrl = $"{model.WebsiteRootUrl}tv/top_rated?api_key={model.APIKey}";
+            var tvShows = await model.GetTVShowsFromTMDB(url: clientUrl);
             return View(tvShows);
         }
 
@@ -87,7 +91,8 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                string clientUrl = "https://api.themoviedb.org/3/search/tv?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US" + "&query=" + query;
+                var model = new TMDBModel();
+                string clientUrl = $"{model.WebsiteRootUrl}search/tv?api_key={model.APIKey}" + "&query=" + query;
                 var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
                 return View("Search", tvShows);
             }

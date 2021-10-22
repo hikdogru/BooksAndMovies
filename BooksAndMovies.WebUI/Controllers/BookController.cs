@@ -44,8 +44,9 @@ namespace BooksAndMovies.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string clientUrl = "https://www.googleapis.com/books/v1/volumes?q=flowers&orderBy=newest&key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w&maxResults=20";
-            var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
+            var model = new BookApiModel();
+            string clientUrl = $"{model.WebsiteRootUrl}?q=flowers&orderBy=newest&key={model.APIKey}&maxResults=20";
+            var books = await model.GetBookFromGoogle(url: clientUrl);
             return View(model: books);
         }
 
@@ -94,8 +95,9 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                string clientUrl = "https://www.googleapis.com/books/v1/volumes?key=AIzaSyAWeKsrZKQlLMC2AaDxM1zRbLoBHoEMj8w" + "&q=" + query + "+intitle:" + query;
-                var books = await new BookApiModel().GetBookFromGoogle(url: clientUrl);
+                var model = new BookApiModel();
+                string clientUrl = $"{model.WebsiteRootUrl}?key={model.APIKey}" + "&q=" + query + "+intitle:" + query;
+                var books = await model.GetBookFromGoogle(url: clientUrl);
                 return View("Search", books);
             }
             return null;

@@ -39,8 +39,9 @@ namespace BooksAndMovies.WebUI.Controllers
         #region methods
         public async Task<IActionResult> Index()
         {
-            string clientUrl = "https://api.themoviedb.org/3/movie/popular?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US";
-            var movies = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
+            var model = new TMDBModel();
+            string clientUrl = $"{model.WebsiteRootUrl}movie/popular?api_key={model.APIKey}";
+            var movies = await model.GetMoviesFromTMDB(url: clientUrl);
             return View(movies);
         }
 
@@ -93,8 +94,9 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                string clientUrl = "https://api.themoviedb.org/3/search/movie?api_key=ebd943da4f3d062ae4451758267b1ca9&language=en-US" + "&query=" + query;
-                var movies = await new TMDBModel().GetMoviesFromTMDB(url: clientUrl);
+                var model = new TMDBModel();
+                string clientUrl = $"{model.WebsiteRootUrl}search/movie?api_key={model.APIKey}" + "&query=" + query;
+                var movies = await model.GetMoviesFromTMDB(url: clientUrl);
                 return View("Search", movies);
             }
             return null;

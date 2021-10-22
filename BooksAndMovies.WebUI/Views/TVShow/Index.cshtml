@@ -5,9 +5,8 @@
 
 
 <div class="row">
-    <strong>
-        Total tvshow count is "@Model.Count"
-    </strong>
+    @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = Model.Where(x => x.PosterPath != null).ToList().Count, ItemName = "tvshow" })
+
     @foreach (var tvShow in Model)
     {
         if (tvShow.PosterPath != null)
