@@ -66,17 +66,15 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<TVShowViewModel> CreateTVShowModel(string tvShowListType, int databaseSavingType)
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = _userService.GetAll(x => x.Email == email).SingleOrDefault();
                 var userTVShows = await _userTVShowService.GetAllAsync(x => x.UserId == user.Id && x.DatabaseSavingType == databaseSavingType);
                 var tvShows = _tvShowService.GetAll().Where(x => userTVShows.Any(y => y.TVShowId == x.Id));
                 var tvShowsModel = tvShows.Select(x => _mapper.Map<TVShowModel>(x)).ToList();
                 var tvShowViewModel = new TVShowViewModel { TVShows = tvShowsModel, TVShowListType = tvShowListType };
                 return tvShowViewModel;
             }
-
             return null;
         }
 
@@ -149,8 +147,8 @@ namespace BooksAndMovies.WebUI.Controllers
             var email = HttpContext.Session.GetString("email");
             if (email != null)
             {
-                var tvShowInDatabase = await _tvShowService.GetAllAsync(x => x.RealId == model.RealId);
                 var user = await _userService.GetAllAsync(x => x.Email == email);
+                var tvShowInDatabase = await _tvShowService.GetAllAsync(x => x.RealId == model.RealId);
                 _userTVShowService.Add(new UserTVShow { TVShowId = tvShowInDatabase[0].Id, UserId = user[0].Id, DatabaseSavingType = databaseSavingType });
             }
         }
@@ -209,11 +207,10 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Rate(double tvShowRateValue, int id)
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                var userTVShow = _userTVShowService.GetAll(x => x.TVShowId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
+                var userTVShow = _userTVShowService.GetAll(x => x.TVShowId == id && x.DatabaseSavingType == 2 && x.UserId == user.Id).SingleOrDefault();
                 userTVShow.Rating = tvShowRateValue;
                 await _userTVShowService.UpdateAsync(entity: userTVShow);
                 ViewBag.Rate = await GetMyRatings();
@@ -225,11 +222,10 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteRating(int id)
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2 && x.TVShowId == id);
+                var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user.Id && x.DatabaseSavingType == 2 && x.TVShowId == id);
                 userTVShows[0].Rating = 0;
                 await _userTVShowService.UpdateAsync(entity: userTVShows[0]);
                 ViewBag.Rate = await GetMyRatings();
@@ -241,11 +237,10 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<List<TVShowModel>> GetMyRatings()
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
+                var userTVShows = await _userTVShowService.GetAllAsync(x => x.Rating > 0 && x.UserId == user.Id && x.DatabaseSavingType == 2);
                 var tvShows = _tvShowService.GetAll().Where(x => userTVShows.Any(y => y.TVShowId == x.Id)).ToList();
                 var tvShowModel = tvShows.Select(x => _mapper.Map<TVShowModel>(x)).ToList();
                 for (int i = 0; i < tvShowModel.Count; i++)
@@ -254,6 +249,19 @@ namespace BooksAndMovies.WebUI.Controllers
                 }
                 return tvShowModel;
             }
+
+            return null;
+        }
+
+        private User UserLoggedIn()
+        {
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = _userService.GetAll(x => x.Email == email).Single();
+                return user;
+            }
+
             return null;
         }
         #endregion methods

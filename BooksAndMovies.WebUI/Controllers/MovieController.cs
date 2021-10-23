@@ -68,10 +68,9 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<MovieViewModel> CreateMovieModel(string movieListType, int databaseSavingType)
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user =  _userService.GetAll(x => x.Email == email).SingleOrDefault();
                 var userMovies = await _userMovieService.GetAllAsync(x => x.UserId == user.Id && x.DatabaseSavingType == databaseSavingType);
                 var movies = _movieService.GetAll().Where(x => userMovies.Any(y => y.MovieId == x.Id));
                 var moviesModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
@@ -146,12 +145,11 @@ namespace BooksAndMovies.WebUI.Controllers
             var movie = _mapper.Map<Movie>(model);
             movie.DatabaseSavingType = databaseSavingType;
             await _movieService.AddAsync(movie);
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
                 var movieInDatabase = await _movieService.GetAllAsync(x => x.RealId == model.RealId);
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                _userMovieService.Add(new UserMovie { MovieId = movieInDatabase[0].Id, UserId = user[0].Id, DatabaseSavingType = databaseSavingType });
+                _userMovieService.Add(new UserMovie { MovieId = movieInDatabase[0].Id, UserId = user.Id, DatabaseSavingType = databaseSavingType });
             }
 
         }
@@ -211,11 +209,10 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Rate(double movieRateValue, int id)
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                var userMovie = _userMovieService.GetAll(x => x.MovieId == id && x.DatabaseSavingType == 2 && x.UserId == user[0].Id).SingleOrDefault();
+                var userMovie = _userMovieService.GetAll(x => x.MovieId == id && x.DatabaseSavingType == 2 && x.UserId == user.Id).SingleOrDefault();
                 userMovie.Rating = movieRateValue;
                 await _userMovieService.UpdateAsync(entity: userMovie);
                 ViewBag.Rate = await GetMyRatings();
@@ -227,11 +224,10 @@ namespace BooksAndMovies.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteRating(int id)
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2 && x.MovieId == id);
+                var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user.Id && x.DatabaseSavingType == 2 && x.MovieId == id);
                 userMovies[0].Rating = 0;
                 await _userMovieService.UpdateAsync(entity: userMovies[0]);
                 ViewBag.Rate = await GetMyRatings();
@@ -243,11 +239,10 @@ namespace BooksAndMovies.WebUI.Controllers
 
         private async Task<List<MovieModel>> GetMyRatings()
         {
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
-                var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user[0].Id && x.DatabaseSavingType == 2);
+                var userMovies = await _userMovieService.GetAllAsync(x => x.Rating > 0 && x.UserId == user.Id && x.DatabaseSavingType == 2);
                 var movies = _movieService.GetAll().Where(x => userMovies.Any(y => y.MovieId == x.Id)).ToList();
                 var movieModel = movies.Select(x => _mapper.Map<MovieModel>(x)).ToList();
                 for (int i = 0; i < movieModel.Count; i++)
@@ -256,6 +251,18 @@ namespace BooksAndMovies.WebUI.Controllers
                 }
                 return movieModel;
             }
+            return null;
+        }
+
+        private User UserLoggedIn()
+        {
+            var email = HttpContext.Session.GetString("email");
+            if (email != null)
+            {
+                var user = _userService.GetAll(x => x.Email == email).Single();
+                return user;
+            }
+
             return null;
         }
 
