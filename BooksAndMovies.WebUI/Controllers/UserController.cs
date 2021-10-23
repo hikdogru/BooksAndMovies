@@ -7,17 +7,24 @@ using System.Linq;
 
 namespace BooksAndMovies.WebUI.Controllers
 {
+    
     public class UserController : Controller
     {
+        #region fields
+
         private readonly IUserService _userService;
 
-        public object Session { get; private set; }
+        #endregion fields
 
+        #region ctor
         public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
+        #endregion ctor
+
+        #region methods
         public IActionResult Index()
         {
             return View();
@@ -119,6 +126,8 @@ namespace BooksAndMovies.WebUI.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
+        #endregion methods
 
     }
 }

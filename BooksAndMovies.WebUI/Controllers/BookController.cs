@@ -53,19 +53,19 @@ namespace BooksAndMovies.WebUI.Controllers
         public async Task<IActionResult> GetWishlist()
         {
             var bookViewModel = await CreateBookModel(bookListType: "Wishlist", databaseSavingType: 1);
-            return View("Books", bookViewModel);
+            return PartialView("_BookListPartial", bookViewModel);
         }
 
         public async Task<IActionResult> GetFinishedlist()
         {
             var bookViewModel = await CreateBookModel(bookListType: "Finishedlist", databaseSavingType: 2);
-            return View("Books", bookViewModel);
+            return PartialView("_BookListPartial", bookViewModel);
         }
 
         public async Task<IActionResult> GetFavouriteBooks()
         {
             var bookViewModel = await CreateBookModel(bookListType: "Favouritelist", databaseSavingType: 3);
-            return View("Books", bookViewModel);
+            return PartialView("_BookListPartial", bookViewModel);
         }
 
         private async Task<BookViewModel> CreateBookModel(string bookListType, int databaseSavingType)

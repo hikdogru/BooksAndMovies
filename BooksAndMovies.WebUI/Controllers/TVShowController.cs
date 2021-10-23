@@ -48,20 +48,20 @@ namespace BooksAndMovies.WebUI.Controllers
         public async Task<IActionResult> GetWishList()
         {
             var tvShowViewModel = await CreateTVShowModel(tvShowListType: "Wishlist", databaseSavingType: 1);
-            return View("TVShows", tvShowViewModel);
+            return PartialView("_TVShowListPartial", tvShowViewModel);
         }
 
         public async Task<IActionResult> GetWatchedList()
         {
             var tvShowViewModel = await CreateTVShowModel(tvShowListType: "Watchedlist", databaseSavingType: 2);
-            return View("TVShows", tvShowViewModel);
+            return PartialView("_TVShowListPartial", tvShowViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetFavouriteTVShows()
         {
             var tvShowViewModel = await CreateTVShowModel(tvShowListType: "Favouritelist", databaseSavingType: 3);
-            return View("TVShows", tvShowViewModel);
+            return PartialView("_TVShowListPartial", tvShowViewModel);
         }
 
         private async Task<TVShowViewModel> CreateTVShowModel(string tvShowListType, int databaseSavingType)

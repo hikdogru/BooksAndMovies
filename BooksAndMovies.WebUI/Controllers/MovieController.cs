@@ -49,21 +49,22 @@ namespace BooksAndMovies.WebUI.Controllers
         public async Task<IActionResult> GetWishList()
         {
             var movieViewModel = await CreateMovieModel("Wishlist", 1);
-            return View("Movies", movieViewModel);
+            return PartialView("_MovieListPartial", movieViewModel);
+
         }
 
         [HttpGet]
         public async Task<IActionResult> GetWatchedList()
         {
             var movieViewModel = await CreateMovieModel("Watchedlist", 2);
-            return View("Movies", movieViewModel);
+            return PartialView("_MovieListPartial", movieViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetFavouriteMovies()
         {
             var movieViewModel = await CreateMovieModel("Favouritelist", 3);
-            return View("Movies", movieViewModel);
+            return PartialView("_MovieListPartial", movieViewModel);
         }
 
         private async Task<MovieViewModel> CreateMovieModel(string movieListType, int databaseSavingType)

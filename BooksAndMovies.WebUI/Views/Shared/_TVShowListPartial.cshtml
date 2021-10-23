@@ -1,7 +1,9 @@
 ﻿@model TVShowViewModel
-@{
+@{ 
+    Layout = "_Layout.cshtml";
     string methodName = "RemoveTVShowFrom" + Model.TVShowListType;
 }
+
 
 <div class="row">
     @if (Model.TVShows.Count > 0)

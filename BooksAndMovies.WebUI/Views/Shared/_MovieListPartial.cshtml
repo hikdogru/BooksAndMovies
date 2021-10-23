@@ -1,6 +1,6 @@
 ﻿@model MovieViewModel
-
 @{
+    Layout = "_Layout.cshtml";
     string methodName = "RemoveMovieFrom" + Model.MovieListType;
 }
 
@@ -8,7 +8,7 @@
 <div class="row">
     @if (Model.Movies.Count > 0)
     {
-        
+
         @await Html.PartialAsync("_TotalItemsCountPartial", new ItemCountModel { Count = Model.Movies.Count, ItemName = "movie" })
 
         @foreach (var movie in Model.Movies)
