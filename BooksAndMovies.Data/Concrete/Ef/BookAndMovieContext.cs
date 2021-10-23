@@ -35,6 +35,7 @@ namespace BooksAndMovies.Data.Concrete.Ef
             modelBuilder.ApplyConfiguration(new MovieConfiguration());
             modelBuilder.ApplyConfiguration(new TVShowConfiguration());
             modelBuilder.ApplyConfiguration(new BookConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
 
     }

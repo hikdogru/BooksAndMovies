@@ -13,7 +13,7 @@
 <h3>Login page</h3>
 
 <div asp-validation-summary="ModelOnly"></div>
-<form method="post" asp-action="Login">
+<form method="post">
     <div class="mb-3">
         <label asp-for="Email" class="form-label">Email address</label>
         <input class="form-control" asp-for="Email">
@@ -26,7 +26,8 @@
         <span asp-validation-for="Password"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" asp-action="Login">Login</button>
+    <button type="submit" class="btn btn-success" asp-action="LoginWithDemoAccount"> Demo account</button>
 
 
     @if (TempData["ErrorMessage"] != null)
