@@ -23,7 +23,7 @@ namespace BooksAndMovies.WebUI.Models.GoogleApi
         {
             string clientUrl = url;
             var restApiModel = new RestApiModel(url: clientUrl, method: Method.GET);
-            IRestResponse response = await restApiModel.GetRestResponse();
+            IRestResponse response = await restApiModel.GetRestResponseAsync();
             var jsonConvertModel = new JsonConvertModel(new CamelCaseNamingStrategy());
             var bookJsonModel = jsonConvertModel.GetContent<BookJsonModel>(response.Content);
             return bookJsonModel.Items;

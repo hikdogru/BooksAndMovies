@@ -6,11 +6,8 @@ using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,9 +36,13 @@ namespace BooksAndMovies.WebUI.Controllers
         #region methods
         public async Task<IActionResult> Index()
         {
+            var watch = Stopwatch.StartNew();
             var model = new TMDBModel();
             string clientUrl = $"{model.WebsiteRootUrl}tv/top_rated?api_key={model.APIKey}";
-            var tvShows = await model.GetTVShowsFromTMDB(url: clientUrl);
+            var tvShows = await model.GetTVShowsFromTMDBAsync(url: clientUrl);
+            watch.Stop();
+            var elapsedTime = watch.ElapsedMilliseconds;
+            Debug.WriteLine(elapsedTime);
             return View(tvShows);
         }
 
@@ -91,7 +92,7 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 var model = new TMDBModel();
                 string clientUrl = $"{model.WebsiteRootUrl}search/tv?api_key={model.APIKey}" + "&query=" + query;
-                var tvShows = await new TMDBModel().GetTVShowsFromTMDB(url: clientUrl);
+                var tvShows = await new TMDBModel().GetTVShowsFromTMDBAsync(url: clientUrl);
                 return View("Search", tvShows);
             }
 
@@ -144,12 +145,11 @@ namespace BooksAndMovies.WebUI.Controllers
             var tvShow = _mapper.Map<TVShow>(model);
             tvShow.DatabaseSavingType = databaseSavingType;
             await _tvShowService.AddAsync(tvShow);
-            var email = HttpContext.Session.GetString("email");
-            if (email != null)
+            var user = UserLoggedIn();
+            if (user != null)
             {
-                var user = await _userService.GetAllAsync(x => x.Email == email);
                 var tvShowInDatabase = await _tvShowService.GetAllAsync(x => x.RealId == model.RealId);
-                _userTVShowService.Add(new UserTVShow { TVShowId = tvShowInDatabase[0].Id, UserId = user[0].Id, DatabaseSavingType = databaseSavingType });
+                _userTVShowService.Add(new UserTVShow { TVShowId = tvShowInDatabase[0].Id, UserId = user.Id, DatabaseSavingType = databaseSavingType });
             }
         }
 

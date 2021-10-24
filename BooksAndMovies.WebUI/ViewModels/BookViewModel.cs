@@ -11,7 +11,7 @@ namespace BooksAndMovies.WebUI.ViewModels
     {
         public List<BookModel> Books { get; set; }
         /// <summary>
-        /// Wishlist or FinishedList
+        /// Wishlist, FinishedList or FavouriteList
         /// </summary>
         public string BookListType { get; set; }
     }

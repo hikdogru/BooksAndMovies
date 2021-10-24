@@ -33,9 +33,14 @@ namespace BooksAndMovies.WebUI.Models.Client
             Request = new RestRequest(_method);
         }
 
-        public async Task<IRestResponse> GetRestResponse()
+        public async Task<IRestResponse> GetRestResponseAsync()
         {
             return await Client.ExecuteAsync(Request);
+        }
+
+        public IRestResponse GetRestResponse()
+        {
+            return Client.Execute(Request);
         }
 
         public IRestResponse GetRestResponse(RestRequest request = null)

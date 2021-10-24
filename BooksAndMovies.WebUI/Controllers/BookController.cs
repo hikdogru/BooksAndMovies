@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BooksAndMovies.Business.Abstract;
-using BooksAndMovies.Data;
 using BooksAndMovies.Data.Concrete.Ef;
 using BooksAndMovies.Entity;
 using BooksAndMovies.WebUI.Models;
@@ -8,10 +7,6 @@ using BooksAndMovies.WebUI.Models.GoogleApi;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

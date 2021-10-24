@@ -6,10 +6,6 @@ using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,7 +37,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             var model = new TMDBModel();
             string clientUrl = $"{model.WebsiteRootUrl}movie/popular?api_key={model.APIKey}";
-            var movies = await model.GetMoviesFromTMDB(url: clientUrl);
+            var movies = await model.GetMoviesFromTMDBAsync(url: clientUrl);
             return View(movies);
         }
 
@@ -96,7 +92,7 @@ namespace BooksAndMovies.WebUI.Controllers
             {
                 var model = new TMDBModel();
                 string clientUrl = $"{model.WebsiteRootUrl}search/movie?api_key={model.APIKey}" + "&query=" + query;
-                var movies = await model.GetMoviesFromTMDB(url: clientUrl);
+                var movies = await model.GetMoviesFromTMDBAsync(url: clientUrl);
                 return View("Search", movies);
             }
             return null;

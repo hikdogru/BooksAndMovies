@@ -24,29 +24,46 @@ namespace BooksAndMovies.WebUI.Models.TMDB
             APIKey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ApiKeys")["TMDBApiKey"];
             WebsiteRootUrl = "https://api.themoviedb.org/3/";
         }
-        public async Task<List<TVShowModel>> GetTVShowsFromTMDB(string url)
+        public async Task<List<TVShowModel>> GetTVShowsFromTMDBAsync(string url)
         {
-            await GetContentFromTMDB(url: url, modelNo: 1);
+            await GetContentFromTMDBAsync(url: url, modelNo: 1);
             return TVShowJsonModel.Results;
         }
 
-        public async Task<List<MovieModel>> GetMoviesFromTMDB(string url)
+        public List<TVShowModel> GetTVShowsFromTMDB(string url)
         {
-            await GetContentFromTMDB(url: url, modelNo: 2);
+            GetContentFromTMDB(url: url, modelNo: 1);
+            return TVShowJsonModel.Results;
+        }
+
+        public async Task<List<MovieModel>> GetMoviesFromTMDBAsync(string url)
+        {
+            await GetContentFromTMDBAsync(url: url, modelNo: 2);
             return MovieJsonModel.Results;
         }
 
-        private async Task GetContentFromTMDB(string url, int modelNo)
+        private async Task GetContentFromTMDBAsync(string url, int modelNo)
         {
             string clientUrl = url;
             var restApiModel = new RestApiModel(url: clientUrl, method: Method.GET);
-            IRestResponse response = await restApiModel.GetRestResponse();
+            IRestResponse response = await restApiModel.GetRestResponseAsync();
             var jsonConvertModel = new JsonConvertModel(new SnakeCaseNamingStrategy());
             if (modelNo == 1)
                 TVShowJsonModel = jsonConvertModel.GetContent<TVShowJsonModel>(response.Content);
             else
                 MovieJsonModel = jsonConvertModel.GetContent<MovieJsonModel>(response.Content);
+        }
 
+        private void GetContentFromTMDB(string url, int modelNo)
+        {
+            string clientUrl = url;
+            var restApiModel = new RestApiModel(url: clientUrl, method: Method.GET);
+            IRestResponse response = restApiModel.GetRestResponse();
+            var jsonConvertModel = new JsonConvertModel(new SnakeCaseNamingStrategy());
+            if (modelNo == 1)
+                TVShowJsonModel = jsonConvertModel.GetContent<TVShowJsonModel>(response.Content);
+            else
+                MovieJsonModel = jsonConvertModel.GetContent<MovieJsonModel>(response.Content);
         }
 
         public void PostContentToTMDB(string url, byte[] data)
