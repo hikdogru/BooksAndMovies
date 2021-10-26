@@ -24,14 +24,9 @@ namespace BooksAndMovies.WebUI.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var model = new TMDBModel();
-            string movieClientUrl = $"{model.WebsiteRootUrl}movie/top_rated?api_key={model.APIKey}";
-            string tvShowClientUrl = $"{model.WebsiteRootUrl}tv/top_rated?api_key={model.APIKey}";
-            var movies = await model.GetMoviesFromTMDBAsync(url: movieClientUrl);
-            var tvShows = await model.GetTVShowsFromTMDBAsync(url: tvShowClientUrl);
-            return View(model: new MovieTVShowViewModel { Movies = movies, TVShows = tvShows });
+            return View();
         }
 
 

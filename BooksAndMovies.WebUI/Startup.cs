@@ -19,6 +19,7 @@ using FluentValidation.AspNetCore;
 using BooksAndMovies.Entity;
 using FluentValidation;
 using BooksAndMovies.Business.ValidationRules.FluentValidation;
+using System.Reflection;
 
 namespace BooksAndMovies.WebUI
 {

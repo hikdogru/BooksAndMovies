@@ -1,0 +1,29 @@
+﻿@model List<MovieModel>
+
+
+<div class="row">
+    <h4 class="text-center">Popular Movies</h4>
+
+    @foreach (var movie in Model)
+    {
+        if (movie.PosterPath != null)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                <div id="movie">
+                    <form method="post">
+                        <img src="https://image.tmdb.org/t/p/w500/@movie.PosterPath" alt="Movie Image" />
+                        @await Html.PartialAsync("_MovieInputsPartial", movie)
+
+                        @if (Context.Session.GetString("email") != null)
+                        {
+                            <button type="submit" class="btn btn-primary btn-sm mb-2" asp-action="AddMovieToWatchedlist" asp-controller="Movie"> Add to watchedlist</button>
+                            <button type="submit" class="btn btn-secondary btn-sm mb-2" asp-action="AddMovieToWishList" asp-controller="Movie"> Add to wishlist </button>
+                        }
+
+                        <button type="submit" class="btn btn-info btn-sm mb-2" asp-action="MovieDetail" asp-controller="Movie"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>
