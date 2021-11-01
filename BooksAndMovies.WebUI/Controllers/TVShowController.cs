@@ -6,6 +6,7 @@ using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,16 +21,20 @@ namespace BooksAndMovies.WebUI.Controllers
         private readonly ITVShowService _tvShowService;
         private readonly IUserTVShowService _userTVShowService;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         #endregion fields
 
         #region ctor
-        public TVShowController(ITVShowService tvShowService, IMapper mapper, IUserTVShowService userTVShowService, IUserService userService)
+        public TVShowController(ITVShowService tvShowService,
+            IMapper mapper, IUserTVShowService userTVShowService,
+            IUserService userService, IConfiguration configuration)
         {
             _tvShowService = tvShowService;
             _mapper = mapper;
             _userTVShowService = userTVShowService;
             _userService = userService;
+            _configuration = configuration;
         }
         #endregion ctor
 
@@ -37,7 +42,7 @@ namespace BooksAndMovies.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var watch = Stopwatch.StartNew();
-            var model = new TMDBModel();
+            var model = new TMDBModel(configuration: _configuration);
             string clientUrl = $"{model.WebsiteRootUrl}tv/top_rated?api_key={model.APIKey}";
             var tvShows = await model.GetTVShowsFromTMDBAsync(url: clientUrl);
             watch.Stop();
@@ -90,9 +95,9 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                var model = new TMDBModel();
+                var model = new TMDBModel(configuration: _configuration);
                 string clientUrl = $"{model.WebsiteRootUrl}search/tv?api_key={model.APIKey}" + "&query=" + query;
-                var tvShows = await new TMDBModel().GetTVShowsFromTMDBAsync(url: clientUrl);
+                var tvShows = await model.GetTVShowsFromTMDBAsync(url: clientUrl);
                 return View("Search", tvShows);
             }
 

@@ -6,6 +6,7 @@ using BooksAndMovies.WebUI.Models.TMDB;
 using BooksAndMovies.WebUI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,22 +21,25 @@ namespace BooksAndMovies.WebUI.Controllers
         private readonly IUserMovieService _userMovieService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+
         #endregion fields
 
         #region ctor
-        public MovieController(IMovieService movieService, IMapper mapper, IUserMovieService userMovieService, IUserService userService)
+        public MovieController(IMovieService movieService, IMapper mapper, IUserMovieService userMovieService, IUserService userService, IConfiguration configuration)
         {
             _movieService = movieService;
             _mapper = mapper;
             _userMovieService = userMovieService;
             _userService = userService;
+            _configuration = configuration;
         }
         #endregion ctor
 
         #region methods
         public async Task<IActionResult> Index()
         {
-            var model = new TMDBModel();
+            var model = new TMDBModel(configuration: _configuration);
             string clientUrl = $"{model.WebsiteRootUrl}movie/popular?api_key={model.APIKey}";
             var movies = await model.GetMoviesFromTMDBAsync(url: clientUrl);
             return View(movies);
@@ -90,7 +94,7 @@ namespace BooksAndMovies.WebUI.Controllers
         {
             if (!string.IsNullOrEmpty(query))
             {
-                var model = new TMDBModel();
+                var model = new TMDBModel(configuration: _configuration);
                 string clientUrl = $"{model.WebsiteRootUrl}search/movie?api_key={model.APIKey}" + "&query=" + query;
                 var movies = await model.GetMoviesFromTMDBAsync(url: clientUrl);
                 return View("Search", movies);
